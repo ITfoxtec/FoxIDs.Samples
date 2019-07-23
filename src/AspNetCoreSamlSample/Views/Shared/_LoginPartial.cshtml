@@ -1,0 +1,24 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    using (Html.BeginForm("Logout", "Saml", FormMethod.Post, new { id = "logoutForm", autocomplete = "off", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+    
+        <ul class="nav navbar-nav">
+            <li class="navbar-text">
+                Hello, @User.Identity.Name!
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="small">
+            @Html.ActionLink("SAML IdP Sample Log in", "Login", "Saml", routeValues: new { loginType = LoginType.SamlIdPSample }, htmlAttributes: new { id = "loginLink" })
+            @Html.ActionLink("SAML IdP AD FS Log in", "Login", "Saml", routeValues: new { loginType = LoginType.SamlIdPAdfs }, htmlAttributes: new { id = "loginLink" })
+        </li>
+        <li>@Html.ActionLink("FoxIDs Log in", "Login", "Saml", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

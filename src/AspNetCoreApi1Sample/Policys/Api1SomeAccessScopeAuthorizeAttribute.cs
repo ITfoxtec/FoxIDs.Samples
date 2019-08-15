@@ -1,5 +1,5 @@
-﻿using ITfoxtec.Identity;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using SampleHelperLibrary;
 
 namespace AspNetCoreApi1Sample.Policys
 {
@@ -14,7 +14,7 @@ namespace AspNetCoreApi1Sample.Policys
         {
             options.AddPolicy(Name, policy =>
             {
-                policy.RequireClaim(JwtClaimTypes.Scope, "aspnetcore_api1_sample:some_access");
+                policy.RequireScope("aspnetcore_api1_sample:some_access");
             });
         }
     }

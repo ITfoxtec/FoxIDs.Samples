@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SampleHelperLibrary;
-using SampleHelperLibrary.Repository;
+using FoxIDs.SampleHelperLibrary;
+using FoxIDs.SampleHelperLibrary.Repository;
 
 namespace AspNetCoreSamlSample
 {

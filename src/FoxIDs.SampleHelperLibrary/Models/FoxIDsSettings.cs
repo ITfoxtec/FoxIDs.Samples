@@ -1,6 +1,6 @@
 ﻿using UrlCombineLib;
 
-namespace SampleHelperLibrary.Models
+namespace FoxIDs.SampleHelperLibrary.Models
 {
     public class FoxIDsSettings
     {

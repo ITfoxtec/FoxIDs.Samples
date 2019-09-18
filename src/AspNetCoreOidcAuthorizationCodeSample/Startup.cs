@@ -22,8 +22,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using SampleHelperLibrary.Models;
-using SampleHelperLibrary.Repository;
+using FoxIDs.SampleHelperLibrary.Models;
+using FoxIDs.SampleHelperLibrary.Repository;
 using UrlCombineLib;
 
 namespace AspNetCoreOidcAuthorizationCodeSample

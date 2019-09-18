@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>SampleSeedTool</AssemblyName>
+    <StartupObject></StartupObject>
+    <RootNamespace>FoxIDs.SampleSeedTool</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ITfoxtec.Identity" Version="1.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="UrlCombine" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings*json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings*json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ServiceAccess\FoxIDsApiServiceAccess.nswag">
+      <Generator>NswagCodeGenerator</Generator>
+      <LastGenOutput>FoxIDsApiServiceAccess.nswag.txt</LastGenOutput>
+    </None>
+    <None Update="ServiceAccess\FoxIDsApiServiceAccess.nswag.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FoxIDsApiServiceAccess.nswag</DependentUpon>
+    </None>
+  </ItemGroup>
+
+</Project>

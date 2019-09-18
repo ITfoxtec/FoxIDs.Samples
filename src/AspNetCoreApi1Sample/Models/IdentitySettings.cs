@@ -1,4 +1,4 @@
-﻿using SampleHelperLibrary.Models;
+﻿using FoxIDs.SampleHelperLibrary.Models;
 
 namespace AspNetCoreApi1Sample.Models
 {

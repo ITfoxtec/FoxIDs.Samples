@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using SampleHelperLibrary;
+﻿using ITfoxtec.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AspNetCoreApi1Sample.Policys
 {

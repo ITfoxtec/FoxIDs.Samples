@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace SampleHelperLibrary
+namespace FoxIDs.SampleHelperLibrary
 {
 #if NET472
     public class TestCertificate

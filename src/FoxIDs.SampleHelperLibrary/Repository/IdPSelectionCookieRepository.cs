@@ -4,7 +4,7 @@ using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace SampleHelperLibrary.Repository
+namespace FoxIDs.SampleHelperLibrary.Repository
 {
     public class IdPSelectionCookieRepository
     {

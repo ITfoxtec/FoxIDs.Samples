@@ -1,4 +1,4 @@
-﻿namespace SampleHelperLibrary.Models
+﻿namespace FoxIDs.SampleHelperLibrary.Models
 {
     public enum LoginType
     {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
 using ITfoxtec.Identity.Saml2;
-using SampleHelperLibrary;
+using FoxIDs.SampleHelperLibrary;
 using AspNetCoreSamlIdPSample.Models;
 using ITfoxtec.Identity.Saml2.Util;
 using ITfoxtec.Identity.Saml2.MvcCore;

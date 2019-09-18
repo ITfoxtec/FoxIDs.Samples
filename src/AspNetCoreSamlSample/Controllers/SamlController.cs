@@ -13,8 +13,8 @@ using System.Security.Authentication;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using AspNetCoreSamlSample.Models;
-using SampleHelperLibrary.Repository;
-using SampleHelperLibrary.Models;
+using FoxIDs.SampleHelperLibrary.Repository;
+using FoxIDs.SampleHelperLibrary.Models;
 
 namespace AspNetCoreSamlSample.Controllers
 {

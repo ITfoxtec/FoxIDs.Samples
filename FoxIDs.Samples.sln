@@ -21,11 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreSamlIdPSample", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreSamlSample", "src\AspNetCoreSamlSample\AspNetCoreSamlSample.csproj", "{72F4B30F-FABB-4BDF-A180-5E7D19575878}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleHelperLibrary", "src\SampleHelperLibrary\SampleHelperLibrary.csproj", "{1511680A-4A6E-428C-9D46-5106881F3055}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoxIDs.SampleHelperLibrary", "src\FoxIDs.SampleHelperLibrary\FoxIDs.SampleHelperLibrary.csproj", "{1511680A-4A6E-428C-9D46-5106881F3055}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{B425347E-0E24-4818-8D12-24F71DB44E9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSeedTool", "tools\SampleSeedTool\SampleSeedTool.csproj", "{A7CB61EC-C445-4185-AE4E-75DA45BBE4CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoxIDs.SampleSeedTool", "tools\FoxIDs.SampleSeedTool\FoxIDs.SampleSeedTool.csproj", "{A7CB61EC-C445-4185-AE4E-75DA45BBE4CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

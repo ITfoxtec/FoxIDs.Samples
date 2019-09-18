@@ -1,4 +1,4 @@
-﻿using SampleHelperLibrary.Models;
+﻿using FoxIDs.SampleHelperLibrary.Models;
 
 namespace AspNetCoreOidcImplicitSample.Models
 {

@@ -19,10 +19,43 @@ namespace FoxIDs.SampleSeedTool
             {
                 var serviceProvider = new StartupConfigure().ConfigureServices();
 
-                await serviceProvider.GetService<SampleSeedLogic>().SeedAsync();
+                var isRunning = true;
+                while (isRunning)
+                {
+                    Console.WriteLine("Select seed action or click any key to end");
+                    Console.WriteLine("C: Create sample configuration");
+                    Console.WriteLine("D: Delete sample configuration");
 
-                Console.WriteLine("Click any key to end...");
-                Console.ReadKey();
+                    var key = Console.ReadKey();
+                    Console.WriteLine(string.Empty);
+                    Console.WriteLine(string.Empty);
+
+                    try
+                    {
+                        switch (char.ToLower(key.KeyChar))
+                        {
+                            case 'c':
+                                await serviceProvider.GetService<SampleSeedLogic>().SeedAsync();
+                                break;
+
+                            case 'd':
+                                await serviceProvider.GetService<SampleSeedLogic>().DeleteAsync();
+                                break;
+
+                            default:
+                                Console.WriteLine("Canceled");
+                                isRunning = false;
+                                break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.ToString()}");
+                    }
+
+                    Console.WriteLine(string.Empty); 
+                }
+
             }
             catch (Exception ex)
             {

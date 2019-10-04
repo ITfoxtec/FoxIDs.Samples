@@ -65,7 +65,7 @@
       "arrayBaseType": "System.Collections.ObjectModel.Collection",
       "dictionaryBaseType": "System.Collections.Generic.Dictionary",
       "classStyle": "Poco",
-      "generateDefaultValues": true,
+      "generateDefaultValues": false,
       "generateDataAnnotations": true,
       "excludedTypeNames": [],
       "excludedParameterNames": [],

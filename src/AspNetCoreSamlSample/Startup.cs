@@ -62,7 +62,7 @@ namespace AspNetCoreSamlSample
                 }
             });
 
-            services.AddSaml2();
+            services.AddSaml2("/Saml/Login");
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddHttpContextAccessor();
@@ -84,7 +84,7 @@ namespace AspNetCoreSamlSample
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            
+
             app.UseSaml2();
 
             app.UseMvc(routes =>

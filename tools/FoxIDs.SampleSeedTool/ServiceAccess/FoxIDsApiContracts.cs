@@ -22,15 +22,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("riskPasswords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<RiskPasswordItem> RiskPasswords { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static RiskPassword FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RiskPassword>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -46,15 +37,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("count", Required = Newtonsoft.Json.Required.Always)]
         public long Count { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static RiskPasswordItem FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RiskPasswordItem>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -70,15 +52,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("resources", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ResourceItem> Resources { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static Resource FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Resource>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -93,15 +66,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static ResourceName FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceName>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -114,15 +78,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ResourceCultureItem> Items { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static ResourceItem FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceItem>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -139,15 +94,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(500)]
         public string Value { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static ResourceCultureItem FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceCultureItem>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -196,15 +142,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(4000)]
         public string CssStyle { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static LoginUpParty FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoginUpParty>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -231,15 +168,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("allowCorsOrigins", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> AllowCorsOrigins { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OAuthDownParty FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownParty>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -283,15 +211,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("refreshTokenLifetimeUnlimited", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RefreshTokenLifetimeUnlimited { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OAuthDownClient FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownClient>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -301,15 +220,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("scopes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Scopes { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OAuthDownResource FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownResource>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -324,15 +234,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("scopes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Scopes { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OAuthDownResourceScope FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownResourceScope>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -348,15 +249,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("voluntaryClaims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<OAuthDownClaim> VoluntaryClaims { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OAuthDownScope FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownScope>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -368,15 +260,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(50)]
         public string Claim { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OAuthDownClaim FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownClaim>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -403,15 +286,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("allowCorsOrigins", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> AllowCorsOrigins { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OidcDownParty FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownParty>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -462,15 +336,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("requireLogoutIdTokenHint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RequireLogoutIdTokenHint { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OidcDownClient FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownClient>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -486,15 +351,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("voluntaryClaims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<OidcDownClaim> VoluntaryClaims { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OidcDownScope FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownScope>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -510,34 +366,39 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("inIdToken", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? InIdToken { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static OidcDownClaim FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownClaim>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class SamlUpParty 
+    public partial class SamlDownParty 
     {
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(30)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
         public string Name { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("allowUpPartyNames", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> AllowUpPartyNames { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("idSIssuer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(300)]
         public string IdSIssuer { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("claims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Claims { get; set; }
     
         /// <summary>Default 20 days.</summary>
         [Newtonsoft.Json.JsonProperty("metadataLifetime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Range(86400, 31536000)]
         public int? MetadataLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("subjectConfirmationLifetime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(60, 900)]
+        public int? SubjectConfirmationLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("issuedTokenLifetime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(300, 86400)]
+        public int? IssuedTokenLifetime { get; set; }
     
         /// <summary>Default SHA256.</summary>
         [Newtonsoft.Json.JsonProperty("signatureAlgorithm", Required = Newtonsoft.Json.Required.Always)]
@@ -549,13 +410,13 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("certificateValidationMode", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public SamlUpPartyCertificateValidationMode CertificateValidationMode { get; set; }
+        public SamlDownPartyCertificateValidationMode CertificateValidationMode { get; set; }
     
         /// <summary>Default NoCheck.</summary>
         [Newtonsoft.Json.JsonProperty("revocationMode", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public SamlUpPartyRevocationMode RevocationMode { get; set; }
+        public SamlDownPartyRevocationMode RevocationMode { get; set; }
     
         [Newtonsoft.Json.JsonProperty("issuer", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -566,31 +427,23 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.Required]
         public SamlBinding AuthnBinding { get; set; } = new SamlBinding();
     
-        [Newtonsoft.Json.JsonProperty("authnUrl", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.StringLength(500)]
-        public string AuthnUrl { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("keys", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<JsonWebKey> Keys { get; set; } = new System.Collections.ObjectModel.Collection<JsonWebKey>();
+        [Newtonsoft.Json.JsonProperty("acsUrls", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> AcsUrls { get; set; }
     
         [Newtonsoft.Json.JsonProperty("logoutBinding", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SamlBinding LogoutBinding { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("logoutUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("singleLogoutUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(500)]
-        public string LogoutUrl { get; set; }
+        public string SingleLogoutUrl { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
+        [Newtonsoft.Json.JsonProperty("loggedOutUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(500)]
+        public string LoggedOutUrl { get; set; }
     
-        public static SamlUpParty FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SamlUpParty>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
+        [Newtonsoft.Json.JsonProperty("keys", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<JsonWebKey> Keys { get; set; }
+    
     
     }
     
@@ -607,18 +460,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public SamlBindingResponseBinding ResponseBinding { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static SamlBinding FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SamlBinding>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
+    /// <summary>Work around until https://github.com/RicoSuter/NJsonSchema/pull/1073 is resolved.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class JsonWebKey 
     {
@@ -685,15 +530,69 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("alg", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Alg { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
-        public static JsonWebKey FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<JsonWebKey>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class SamlUpParty 
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("idSIssuer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(300)]
+        public string IdSIssuer { get; set; }
+    
+        /// <summary>Default 20 days.</summary>
+        [Newtonsoft.Json.JsonProperty("metadataLifetime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(86400, 31536000)]
+        public int? MetadataLifetime { get; set; }
+    
+        /// <summary>Default SHA256.</summary>
+        [Newtonsoft.Json.JsonProperty("signatureAlgorithm", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string SignatureAlgorithm { get; set; }
+    
+        /// <summary>Default None.</summary>
+        [Newtonsoft.Json.JsonProperty("certificateValidationMode", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SamlUpPartyCertificateValidationMode CertificateValidationMode { get; set; }
+    
+        /// <summary>Default NoCheck.</summary>
+        [Newtonsoft.Json.JsonProperty("revocationMode", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SamlUpPartyRevocationMode RevocationMode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("issuer", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(300)]
+        public string Issuer { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("authnBinding", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SamlBinding AuthnBinding { get; set; } = new SamlBinding();
+    
+        [Newtonsoft.Json.JsonProperty("authnUrl", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(500)]
+        public string AuthnUrl { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("keys", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<JsonWebKey> Keys { get; set; } = new System.Collections.ObjectModel.Collection<JsonWebKey>();
+    
+        [Newtonsoft.Json.JsonProperty("logoutBinding", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SamlBinding LogoutBinding { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("logoutUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(500)]
+        public string LogoutUrl { get; set; }
+    
     
     }
     
@@ -716,30 +615,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Data_type { get; set; }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static Tenant FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Tenant>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class IActionResult 
     {
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
-    
-        public static IActionResult FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IActionResult>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
-        }
     
     }
     
@@ -754,6 +635,62 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"never")]
         Never = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum SamlDownPartyCertificateValidationMode
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"none")]
+        None = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"peerTrust")]
+        PeerTrust = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"chainTrust")]
+        ChainTrust = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"peerOrChainTrust")]
+        PeerOrChainTrust = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"custom")]
+        Custom = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum SamlDownPartyRevocationMode
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"noCheck")]
+        NoCheck = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"online")]
+        Online = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"offline")]
+        Offline = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum SamlBindingRequestBinding
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"redirect")]
+        Redirect = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"post")]
+        Post = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum SamlBindingResponseBinding
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"redirect")]
+        Redirect = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"post")]
+        Post = 1,
     
     }
     
@@ -788,28 +725,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"offline")]
         Offline = 2,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum SamlBindingRequestBinding
-    {
-        [System.Runtime.Serialization.EnumMember(Value = @"redirect")]
-        Redirect = 0,
-    
-        [System.Runtime.Serialization.EnumMember(Value = @"post")]
-        Post = 1,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum SamlBindingResponseBinding
-    {
-        [System.Runtime.Serialization.EnumMember(Value = @"redirect")]
-        Redirect = 0,
-    
-        [System.Runtime.Serialization.EnumMember(Value = @"post")]
-        Post = 1,
     
     }
 

@@ -4,6 +4,7 @@ using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
+using UrlCombineLib;
 
 namespace FoxIDs.SampleSeedTool.SeedLogic
 {
@@ -13,8 +14,10 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
         const string aspNetCoreSamlIdPSampleUpPartyName = "aspnetcore_saml_idp_sample";
 
-        const string aspNetCoreApi1DownPartyName = "aspnetcore_api1_sample";
-        const string aspNetCoreOidcAuthCodeDownPartyName = "aspnetcore_oidcauthcode_sample";
+        const string aspNetCoreApi1SampleDownPartyName = "aspnetcore_api1_sample";
+        const string aspNetCoreOidcAuthCodeSampleDownPartyName = "aspnetcore_oidcauthcode_sample";
+        const string aspNetCoreOidcImplicitSampleDownPartyName = "aspnetcore_oidcimplicit_sample";
+        const string aspNetCoreSamlSampleDownPartyName = "aspnetcore_saml_sample";
 
         private readonly SeedSettings settings;
         private readonly FoxIDsApiClient foxIDsApiClient;
@@ -35,6 +38,8 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
             await CreateAspNetCoreApi1SampleDownPartyAsync();
             await CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync();
+            await CreateAspNetCoreOidcImplicitSampleDownPartyAsync();
+            await CreateAspNetCoreSamlSampleDownPartyAsync();
 
             Console.WriteLine(string.Empty);
             Console.WriteLine($"Sample configuration created");
@@ -45,8 +50,8 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             Console.WriteLine("Delete sample configuration");
 
             Console.WriteLine("Delete Oidc down party sample configuration");
-            var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCodeDownPartyName };
-            foreach(var name in oidcDownPartyNames)
+            var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName };
+            foreach (var name in oidcDownPartyNames)
             {
                 try
                 {
@@ -55,7 +60,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 }
                 catch (FoxIDsApiException ex)
                 {
-                    if(ex.StatusCode == StatusCodes.Status404NotFound)
+                    if (ex.StatusCode == StatusCodes.Status404NotFound)
                     {
                         Console.WriteLine($"'{name}' configuration not found");
                     }
@@ -67,12 +72,35 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             }
 
             Console.WriteLine("Delete OAuth down party sample configuration");
-            var oauthDownPartyNames = new[] { aspNetCoreApi1DownPartyName };
+            var oauthDownPartyNames = new[] { aspNetCoreApi1SampleDownPartyName };
             foreach (var name in oauthDownPartyNames)
             {
                 try
                 {
                     await foxIDsApiClient.DeleteOAuthDownPartyAsync(name);
+                    Console.WriteLine($"'{name}' configuration deleted");
+                }
+                catch (FoxIDsApiException ex)
+                {
+                    if (ex.StatusCode == StatusCodes.Status404NotFound)
+                    {
+                        Console.WriteLine($"'{name}' configuration not found");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+
+            Console.WriteLine("Delete SAML down party sample configuration");
+            var samlDownPartyNames = new[] { aspNetCoreSamlSampleDownPartyName };
+            foreach (var name in samlDownPartyNames)
+            {
+                try
+                {
+                    await foxIDsApiClient.DeleteSamlDownPartyAsync(name);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -139,7 +167,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         EnableCancelLogin = true,
                         EnableCreateUser = true,
                         LogoutConsent = LoginUpPartyLogoutConsent.IfRequered,
-                        AllowIframeOnDomains = new[] { "localhost:44344", "*.localhost:44" } 
+                        AllowIframeOnDomains = new[] { "localhost:44344", "*.localhost:44" }
                     };
 
                     await foxIDsApiClient.PostLoginUpPartyAsync(loginUpParty);
@@ -157,19 +185,15 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
         {
             var name = aspNetCoreSamlIdPSampleUpPartyName;
             Console.WriteLine($"Creating '{name}'");
+            var baseUrl = "https://localhost:44342";
 
             var samlUpParty = new SamlUpParty
             {
                 Name = name,
-                SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
-                CertificateValidationMode = SamlUpPartyCertificateValidationMode.None,
-                RevocationMode = SamlUpPartyRevocationMode.NoCheck,
                 Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlidpsample",
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Redirect, ResponseBinding = SamlBindingResponseBinding.Post },
-                AuthnUrl = "https://localhost:44342/saml/login",
-                Keys = new[] 
-                { 
-                    new JsonWebKey 
+                Keys = new[]
+                {
+                    new JsonWebKey
                     {
                         Kty = "RSA",
                         Kid = "27EB823D00B02FA7A02AA754146B6CFC60B8C301",
@@ -179,8 +203,13 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         E = "AQAB"
                     }
                 },
+                SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+                CertificateValidationMode = SamlUpPartyCertificateValidationMode.None,
+                RevocationMode = SamlUpPartyRevocationMode.NoCheck,
+                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Redirect, ResponseBinding = SamlBindingResponseBinding.Post },
+                AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
                 LogoutBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Post, ResponseBinding = SamlBindingResponseBinding.Post },
-                LogoutUrl = "https://localhost:44342/saml/logout"
+                LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout")
             };
 
             await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
@@ -190,7 +219,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
         private async Task CreateAspNetCoreApi1SampleDownPartyAsync()
         {
-            var name = aspNetCoreApi1DownPartyName;
+            var name = aspNetCoreApi1SampleDownPartyName;
             Console.WriteLine($"Creating '{name}'");
 
             var oauthDownParty = new OAuthDownParty
@@ -209,22 +238,23 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
         private async Task CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync()
         {
-            var name = aspNetCoreOidcAuthCodeDownPartyName;
+            var name = aspNetCoreOidcAuthCodeSampleDownPartyName;
             Console.WriteLine($"Creating '{name}'");
+            var baseUrl = "https://localhost:44340";
 
             var oidcDownParty = new OidcDownParty
             {
                 Name = name,
-                AllowCorsOrigins = new[] { "https://localhost:44340" },
+                AllowCorsOrigins = new[] { baseUrl },
                 AllowUpPartyNames = new[] { "login", "aspnetcore_saml_idp_sample"/*, "adfs_saml_idp"*/ },
                 Client = new OidcDownClient
                 {
                     ResourceScopes = new[]
                     {
                         // Scope to the application it self.
-                        new OAuthDownResourceScope { Resource = "aspnetcore_oidcauthcode_sample" },
+                        new OAuthDownResourceScope { Resource = name },
                         // Scope to API1.
-                        new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } },
+                        new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
                     },
                     Scopes = new[]
                     {
@@ -273,21 +303,122 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         new OidcDownClaim{ Claim = "given_name", InIdToken = true },
                     },
                     ResponseTypes = new[] { "code", "code id_token token" },
-                    RedirectUris = new[] { "https://localhost:44340/signin-oidc", "https://localhost:44340/signout-callback-oidc" },
+                    RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
                     RequireLogoutIdTokenHint = true,
-                    AuthorizationCodeLifetime = 30,
-                    IdTokenLifetime = 600,
-                    AccessTokenLifetime = 600,
-                    RefreshTokenLifetime = 900,
-                    RefreshTokenAbsoluteLifetime = 1200,
+                    AuthorizationCodeLifetime = 30, // 30 seconds 
+                    IdTokenLifetime = 600, // 10 minutes
+                    AccessTokenLifetime = 600, // 10 minutes
+                    RefreshTokenLifetime = 900, // 15 minutes
+                    RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
                     RefreshTokenUseOneTime = false,
                     RefreshTokenLifetimeUnlimited = false
                 }
             };
 
-            await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty); 
+            await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
 
             Console.WriteLine($"'{name}' created");
         }
+
+        private async Task CreateAspNetCoreOidcImplicitSampleDownPartyAsync()
+        {
+            var name = aspNetCoreOidcImplicitSampleDownPartyName;
+            Console.WriteLine($"Creating '{name}'");
+            var baseUrl = "https://localhost:44341";
+
+            var oidcDownParty = new OidcDownParty
+            {
+                Name = name,
+                AllowCorsOrigins = new[] { baseUrl },
+                AllowUpPartyNames = new[] { "login", "aspnetcore_saml_idp_sample"/*, "adfs_saml_idp"*/ },
+                Client = new OidcDownClient
+                {
+                    ResourceScopes = new[]
+                    {
+                        // Scope to the application it self.
+                        new OAuthDownResourceScope { Resource = name }
+                    },
+                    Scopes = new[]
+                    {
+                        new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
+                            {
+                                new OidcDownClaim { Claim = "name", InIdToken = true  },
+                                new OidcDownClaim { Claim = "family_name", InIdToken = true  },
+                                new OidcDownClaim { Claim = "given_name", InIdToken = true  },
+                                new OidcDownClaim { Claim = "middle_name", InIdToken = true  },
+                                new OidcDownClaim { Claim = "nickname" },
+                                new OidcDownClaim { Claim = "preferred_username" },
+                                new OidcDownClaim { Claim = "profile" },
+                                new OidcDownClaim { Claim = "picture" },
+                                new OidcDownClaim { Claim = "website" },
+                                new OidcDownClaim { Claim = "gender" },
+                                new OidcDownClaim { Claim = "birthdate" },
+                                new OidcDownClaim { Claim = "zoneinfo" },
+                                new OidcDownClaim { Claim = "locale" },
+                                new OidcDownClaim { Claim = "updated_at" }
+                            }
+                        },
+                        new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
+                            {
+                                new OidcDownClaim { Claim = "email", InIdToken = true  },
+                                new OidcDownClaim { Claim = "email_verified" }
+                            }
+                        },
+                    },
+                    ResponseTypes = new[] { "id_token token", "id_token" },
+                    RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                    RequireLogoutIdTokenHint = true,
+                    IdTokenLifetime = 3600, // 60 minutes 
+                    AccessTokenLifetime = 3600 // 60 minutes 
+                }
+            };
+
+            await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+
+            Console.WriteLine($"'{name}' created");
+        }
+
+        private async Task CreateAspNetCoreSamlSampleDownPartyAsync()
+        {
+            var name = aspNetCoreSamlSampleDownPartyName;
+            Console.WriteLine($"Creating '{name}'");
+            var baseUrl = "https://localhost:44343";
+
+            var samlUpParty = new SamlDownParty
+            {
+                Name = name,
+                Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample",
+                AllowUpPartyNames = new[] { "login", "aspnetcore_saml_idp_sample"/*, "adfs_saml_idp"*/ },
+                Keys = new[]
+                {
+                    new JsonWebKey
+                    {
+                        Kty = "RSA",
+                        Kid = "3863A8A752E5D6B812AA8A78A656E2DE6C637D12",
+                        X5c = new[] { "MIICzzCCAbegAwIBAgIJAOd44ujQLBp/MA0GCSqGSIb3DQEBCwUAMBkxFzAVBgNVBAMTDnRlc3Qtc2lnbi1jZXJ0MB4XDTE4MTAwOTA4NTMxOFoXDTE5MTAxMDA4NTMxOFowGTEXMBUGA1UEAxMOdGVzdC1zaWduLWNlcnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDCbttrAY2VkISBs/dQW9B38dvO1++Pcqqlj0darBfq8+1f+nRsn0OcQOYAhMvPhuS7qy5NLaTFm8RbH3veybYm7cJFU6xGu8SiLv6rPa5CBrSTgL/sJ+NwIDG3ZaZbayKTqgf31D1Gv8mIOWtEVHOn9ZPvfO6r0I9tLMZtJASHDTxe7niskT2PEfGe1KBTXVgJqY67KttzlydvH4zN+lwXFguBKLQqicw9iJ9BngxDAMLkOz6SIeF5WFGRPfiLD/MOZQ/skb+1H9Bl+5mbL/F0TiVs1HaQNEt3N9SO18dRyA2ZGtGfTzJbx3gQ7RwRjmNMnK8In9M0jxZZ1Rvji2XFAgMBAAGjGjAYMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgXgMA0GCSqGSIb3DQEBCwUAA4IBAQC5RtTJV7mONXWKFkmF8EnCfPbFemCZs7Usw4cicjWlPTPfneFTsSJ4NuFmpWYrf1Lr75cf9BjHZDVHDGrRTsou/wAuqSehRPlZyj35ysjrC1hNmFYKQU+WkulxE4BZIcD+3fKj+6WAPVGG0NMnKWrmie2XK0aM5nFrWST4xqk6V5+4DOT7lltmPs9eUDJ8wkIL1oP/mhsE7tKpqMk9qNCb5nZMwXhqoTnlqTw/DFDCPJV/CS20/PamGTVUUhW1I0r73QDv054ycFY0ijU3tUK2V4D3daFTBHVGlLsCUxSBJSWkTGieN+iyU5aNbCErBc0+cim79lXT6sZ8VPVJ+kdW" },
+                        X5t = "OGOop1Ll1rgSqop4plbi3mxjfRI",
+                        N = "wm7bawGNlZCEgbP3UFvQd_Hbztfvj3KqpY9HWqwX6vPtX_p0bJ9DnEDmAITLz4bku6suTS2kxZvEWx973sm2Ju3CRVOsRrvEoi7-qz2uQga0k4C_7CfjcCAxt2WmW2sik6oH99Q9Rr_JiDlrRFRzp_WT73zuq9CPbSzGbSQEhw08Xu54rJE9jxHxntSgU11YCamOuyrbc5cnbx-MzfpcFxYLgSi0KonMPYifQZ4MQwDC5Ds-kiHheVhRkT34iw_zDmUP7JG_tR_QZfuZmy_xdE4lbNR2kDRLdzfUjtfHUcgNmRrRn08yW8d4EO0cEY5jTJyvCJ_TNI8WWdUb44tlxQ",
+                        E = "AQAB"
+                    }
+                },
+                SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+                CertificateValidationMode = SamlDownPartyCertificateValidationMode.None,
+                RevocationMode = SamlDownPartyRevocationMode.NoCheck,
+                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Redirect, ResponseBinding = SamlBindingResponseBinding.Post },
+                AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },
+                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Post, ResponseBinding = SamlBindingResponseBinding.Post },
+                SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
+                LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
+                MetadataLifetime = 1728000, // 20 days
+                SubjectConfirmationLifetime = 300, // 5 minutes
+                IssuedTokenLifetime = 36000 // 10 hours
+            };
+
+            await foxIDsApiClient.PostSamlDownPartyAsync(samlUpParty);
+
+            Console.WriteLine($"'{name}' created");
+        }
+
+
     }
 }

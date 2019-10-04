@@ -1,5 +1,6 @@
 ﻿using FoxIDs.SampleSeedTool.Model;
 using FoxIDs.SampleSeedTool.ServiceAccess;
+using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;

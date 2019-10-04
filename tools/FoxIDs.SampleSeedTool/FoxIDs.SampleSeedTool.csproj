@@ -6,16 +6,24 @@
     <AssemblyName>SampleSeedTool</AssemblyName>
     <StartupObject></StartupObject>
     <RootNamespace>FoxIDs.SampleSeedTool</RootNamespace>
+    <GenerateCode>True</GenerateCode>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ITfoxtec.Identity" Version="1.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="UrlCombine" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ServiceAccess_old\**" />
+    <EmbeddedResource Remove="ServiceAccess_old\**" />
     <None Remove="appsettings*json" />
+    <None Remove="ServiceAccess_old\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,15 +34,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ServiceAccess\FoxIDsApiServiceAccess.nswag">
-      <Generator>NswagCodeGenerator</Generator>
-      <LastGenOutput>FoxIDsApiServiceAccess.nswag.txt</LastGenOutput>
-    </None>
-    <None Update="ServiceAccess\FoxIDsApiServiceAccess.nswag.txt">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>FoxIDsApiServiceAccess.nswag</DependentUpon>
-    </None>
+    <Content Remove="ServiceAccess_old\**" />
   </ItemGroup>
+  
+  <Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">
+    <Exec Command="$(NSwagExe_Core22) run ServiceAccess\nswag.json /variables:Configuration=$(Configuration)" />
+  </Target>
 
 </Project>

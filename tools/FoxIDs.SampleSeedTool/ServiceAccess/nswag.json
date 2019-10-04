@@ -9,7 +9,7 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": null,
+      "clientBaseClass": "FoxIDsApiClientBase",
       "configurationClass": null,
       "generateClientClasses": true,
       "generateClientInterfaces": false,
@@ -21,16 +21,16 @@
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "System.Net.Http.HttpClient",
-      "useHttpRequestMessageCreationMethod": false,
+      "useHttpRequestMessageCreationMethod": true,
       "useBaseUrl": true,
       "generateBaseUrlProperty": true,
       "generateSyncMethods": false,
       "exposeJsonSerializerSettings": false,
       "clientClassAccessModifier": "public",
       "typeAccessModifier": "public",
-      "generateContractsOutput": false,
-      "contractsNamespace": null,
-      "contractsOutputFilePath": null,
+      "generateContractsOutput": true,
+      "contractsNamespace": "FoxIDs.SampleSeedTool.ServiceAccess.Contracts",
+      "contractsOutputFilePath": "FoxIDsApiContracts.cs",
       "parameterDateTimeFormat": "s",
       "generateUpdateJsonSerializerSettingsMethod": true,
       "serializeTypeInformation": false,
@@ -40,7 +40,7 @@
       "additionalNamespaceUsages": [],
       "additionalContractNamespaceUsages": [],
       "generateOptionalParameters": false,
-      "generateJsonMethods": false,
+      "generateJsonMethods": true,
       "enforceFlagEnums": false,
       "parameterArrayType": "System.Collections.Generic.IEnumerable",
       "parameterDictionaryType": "System.Collections.Generic.IDictionary",
@@ -49,7 +49,7 @@
       "wrapResponses": false,
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
-      "responseClass": "SwaggerResponse",
+      "responseClass": "FoxIDsResponse",
       "namespace": "FoxIDs.SampleSeedTool.ServiceAccess",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTimeOffset",
@@ -78,13 +78,14 @@
       "inlineNamedTuples": true,
       "inlineNamedAny": false,
       "generateDtoTypes": true,
+      "generateOptionalPropertiesAsNullable": false,
       "templateDirectory": null,
       "typeNameGeneratorType": null,
       "propertyNameGeneratorType": null,
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "FoxIDsApiServiceAccess.cs"
+      "output": "FoxIDsApiClient.cs"
     }
   }
 }

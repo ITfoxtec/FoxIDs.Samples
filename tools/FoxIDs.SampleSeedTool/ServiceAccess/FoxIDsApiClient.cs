@@ -28,7 +28,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             _httpClient = httpClient; 
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
             {
-                var settings = new Newtonsoft.Json.JsonSerializerSettings();
+                var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() } };
                 UpdateJsonSerializerSettings(settings);
                 return settings;
             });

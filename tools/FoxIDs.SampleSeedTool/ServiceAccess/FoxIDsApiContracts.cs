@@ -24,12 +24,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static RiskPassword FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RiskPassword>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RiskPassword>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -48,12 +48,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static RiskPasswordItem FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RiskPasswordItem>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RiskPasswordItem>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -72,12 +72,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static Resource FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Resource>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Resource>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -95,12 +95,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static ResourceName FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceName>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceName>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -116,12 +116,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static ResourceItem FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceItem>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceItem>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -141,12 +141,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static ResourceCultureItem FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceCultureItem>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ResourceCultureItem>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -198,12 +198,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static LoginUpParty FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoginUpParty>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoginUpParty>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -233,12 +233,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OAuthDownParty FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownParty>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownParty>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -285,12 +285,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OAuthDownClient FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownClient>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownClient>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -303,12 +303,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OAuthDownResource FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownResource>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownResource>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -326,12 +326,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OAuthDownResourceScope FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownResourceScope>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownResourceScope>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -350,12 +350,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OAuthDownScope FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownScope>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownScope>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -370,12 +370,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OAuthDownClaim FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownClaim>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OAuthDownClaim>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -405,12 +405,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OidcDownParty FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownParty>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownParty>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -464,12 +464,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OidcDownClient FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownClient>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownClient>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -488,12 +488,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OidcDownScope FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownScope>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownScope>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -512,12 +512,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static OidcDownClaim FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownClaim>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<OidcDownClaim>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -584,12 +584,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static SamlUpParty FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SamlUpParty>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SamlUpParty>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -609,12 +609,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static SamlBinding FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<SamlBinding>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SamlBinding>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -687,12 +687,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static JsonWebKey FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<JsonWebKey>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<JsonWebKey>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -718,12 +718,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static Tenant FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Tenant>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Tenant>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }
@@ -733,12 +733,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     {
         public string ToJson() 
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
         public static IActionResult FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IActionResult>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<IActionResult>(data, new Newtonsoft.Json.JsonConverter[] { new Newtonsoft.Json.Converters.StringEnumConverter() });
         }
     
     }

@@ -1,6 +1,7 @@
 ﻿using FoxIDs.SampleSeedTool.Model;
 using FoxIDs.SampleSeedTool.ServiceAccess;
 using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
+using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
@@ -92,7 +93,6 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     }
                 }
             }
-
 
             Console.WriteLine("Delete SAML down party sample configuration");
             var samlDownPartyNames = new[] { aspNetCoreSamlSampleDownPartyName };
@@ -317,6 +317,13 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
             await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
 
+            var secret = RandomGenerator.Generate(32);
+            await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+            {
+                PartyName = oidcDownParty.Name,
+                Secret = secret,
+            });
+            Console.WriteLine($"'{name}' client secret is: {secret}");
             Console.WriteLine($"'{name}' created");
         }
 

@@ -145,10 +145,49 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
     }
     
+    /// <summary>OAuth 2.0 client secret response.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class OAuthClientSecretResponse 
+    {
+        /// <summary>Secret name.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(71)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
+        public string Name { get; set; }
+    
+        /// <summary>Secret info.</summary>
+        [Newtonsoft.Json.JsonProperty("info", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(3)]
+        public string Info { get; set; }
+    
+    
+    }
+    
+    /// <summary>OAuth 2.0 client secret request.</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class OAuthClientSecretRequest 
+    {
+        /// <summary>OAuth 2.0 or OIDC party name.</summary>
+        [Newtonsoft.Json.JsonProperty("partyName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
+        public string PartyName { get; set; }
+    
+        /// <summary>Secret.</summary>
+        [Newtonsoft.Json.JsonProperty("secret", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(300)]
+        public string Secret { get; set; }
+    
+    
+    }
+    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class OAuthDownParty 
     {
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(30)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
         public string Name { get; set; }
@@ -266,7 +305,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class OidcDownParty 
     {
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(30)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
         public string Name { get; set; }
@@ -274,7 +314,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("allowUpPartyNames", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> AllowUpPartyNames { get; set; }
     
-        /// <summary>Oidc down client.</summary>
+        /// <summary>OIDC down client.</summary>
         [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public OidcDownClient Client { get; set; }
     
@@ -372,7 +412,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class SamlDownParty 
     {
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(30)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
         public string Name { get; set; }

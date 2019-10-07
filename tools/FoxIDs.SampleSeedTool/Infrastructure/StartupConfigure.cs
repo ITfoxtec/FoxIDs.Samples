@@ -24,7 +24,6 @@ namespace FoxIDs.SampleSeedTool.Infrastructure
             services = new ServiceCollection();
             services.AddLogging(opt =>
             {
-                opt.AddConsole();
                 opt.AddDebug();
             });
 
@@ -44,7 +43,7 @@ namespace FoxIDs.SampleSeedTool.Infrastructure
 
         private static void AddLogic(ServiceCollection services)
         {
-            services.AddTransient<AccessLogic>();
+            services.AddSingleton<AccessLogic>();
         }
 
         private static void AddInfrastructure(ServiceCollection services)

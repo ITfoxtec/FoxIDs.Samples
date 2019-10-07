@@ -20,7 +20,7 @@ namespace FoxIDs.SampleSeedTool.Logic
 
         public async Task<string> GetAccessTokenAsync()
         {
-            if (cacheExpiresAt < DateTimeOffset.UtcNow.AddSeconds(5).ToUnixTimeSeconds())
+            if (cacheExpiresAt < DateTimeOffset.UtcNow.AddSeconds(-5).ToUnixTimeSeconds())
             {
                 Console.WriteLine("Getting sample seed client access token.");
                 (var accessToken, var expiresIn) = await tokenHelper.GetAccessTokenWithClientCredentialsAsync(settings.ClientId, settings.ClientSecret, settings.RedirectUri, "foxids_api:foxids_tenant");

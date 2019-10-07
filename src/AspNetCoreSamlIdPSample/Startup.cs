@@ -8,8 +8,9 @@ using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
 using ITfoxtec.Identity.Saml2;
 using FoxIDs.SampleHelperLibrary;
 using AspNetCoreSamlIdPSample.Models;
-using ITfoxtec.Identity.Saml2.Util;
-using ITfoxtec.Identity.Saml2.MvcCore;
+using ITfoxtec.Identity.Saml2.Schemas.Metadata;
+using System;
+using System.Linq;
 
 namespace AspNetCoreSamlIdPSample
 {
@@ -41,7 +42,19 @@ namespace AspNetCoreSamlIdPSample
             {
                 foreach(var rp in settings.RelyingParties)
                 {
-                    rp.SignatureValidationCertificate = CertificateUtil.Load(AppEnvironment.MapToPhysicalFilePath(rp.SignatureValidationCertificateFile));
+                    var entityDescriptor = new EntityDescriptor();
+                    entityDescriptor.ReadSPSsoDescriptorFromUrl(new Uri(rp.SpMetadata));
+                    if (entityDescriptor.SPSsoDescriptor != null)
+                    {
+                        rp.Issuer = entityDescriptor.EntityId;
+                        rp.SingleSignOnDestination = entityDescriptor.SPSsoDescriptor.AssertionConsumerServices.First().Location;
+                        rp.SingleLogoutResponseDestination = entityDescriptor.SPSsoDescriptor.SingleLogoutServices.First().ResponseLocation;
+                        rp.SignatureValidationCertificate = entityDescriptor.SPSsoDescriptor.SigningCertificates.First();
+                    }
+                    else
+                    {
+                        throw new Exception("IdPSsoDescriptor not loaded from metadata.");
+                    }
                 }
             });
 

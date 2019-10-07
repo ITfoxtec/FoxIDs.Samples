@@ -7,7 +7,6 @@ using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -22,10 +21,6 @@ namespace FoxIDs.SampleSeedTool.Infrastructure
         public IServiceProvider ConfigureServices()
         {
             services = new ServiceCollection();
-            services.AddLogging(opt =>
-            {
-                opt.AddDebug();
-            });
 
             AddConfiguration();
             AddInfrastructure(services);

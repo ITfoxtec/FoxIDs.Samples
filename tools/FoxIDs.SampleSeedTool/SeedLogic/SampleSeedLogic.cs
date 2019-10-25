@@ -203,12 +203,12 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         E = "AQAB"
                     }
                 },
-                SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
-                CertificateValidationMode = SamlUpPartyCertificateValidationMode.None,
-                RevocationMode = SamlUpPartyRevocationMode.NoCheck,
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Redirect, ResponseBinding = SamlBindingResponseBinding.Post },
+                //SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+                //CertificateValidationMode = X509CertificateValidationMode.None,
+                //RevocationMode = X509RevocationMode.NoCheck,
+                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingType.Redirect, ResponseBinding = SamlBindingType.Post },
                 AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
-                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Post, ResponseBinding = SamlBindingResponseBinding.Post },
+                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingType.Post, ResponseBinding = SamlBindingType.Post },
                 LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout")
             };
 
@@ -409,11 +409,11 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     }
                 },
                 SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
-                CertificateValidationMode = SamlDownPartyCertificateValidationMode.None,
-                RevocationMode = SamlDownPartyRevocationMode.NoCheck,
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Redirect, ResponseBinding = SamlBindingResponseBinding.Post },
+                CertificateValidationMode = X509CertificateValidationMode.None,
+                RevocationMode = X509RevocationMode.NoCheck,
+                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingType.Redirect, ResponseBinding = SamlBindingType.Post },
                 AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },
-                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingRequestBinding.Post, ResponseBinding = SamlBindingResponseBinding.Post },
+                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingType.Post, ResponseBinding = SamlBindingType.Post },
                 SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
                 LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
                 MetadataLifetime = 1728000, // 20 days

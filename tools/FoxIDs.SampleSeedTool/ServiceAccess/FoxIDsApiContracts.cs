@@ -693,12 +693,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
     
     }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class IActionResult 
-    {
-    
-    }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial class FoxIDsApiException : System.Exception

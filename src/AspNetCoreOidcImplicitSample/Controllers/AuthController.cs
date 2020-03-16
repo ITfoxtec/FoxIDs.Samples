@@ -20,6 +20,7 @@ namespace AspNetCoreOidcImplicitSample.Controllers
             return Challenge(authenticationProperties, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
+        [ValidateAntiForgeryToken]
         public IActionResult Logout()
         {
             var callbackUrl = Url.Action(nameof(HomeController.Index), "Home", values: null, protocol: Request.Scheme);

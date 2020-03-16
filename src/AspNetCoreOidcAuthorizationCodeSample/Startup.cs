@@ -77,7 +77,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     {
                         var utcNow = DateTimeOffset.UtcNow;
 
-                        if (context.Properties.ExpiresUtc < utcNow.AddMinutes(-2))
+                        if (context.Properties.ExpiresUtc < utcNow.AddMinutes(-10))
                         {
                             var tokenResponse = await RefreshTokens(context, identitySettings);
 
@@ -186,8 +186,8 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     var result = await response.Content.ReadAsStringAsync();
                     var tokenResponse = result.ToObject<TokenResponse>();
                     tokenResponse.Validate(true);
-                    if (tokenResponse.AccessToken.IsNullOrEmpty()) throw new ArgumentNullException(nameof(tokenResponse.AccessToken), response.GetTypeName());
-                    if (tokenResponse.ExpiresIn <= 0) throw new ArgumentNullException(nameof(tokenResponse.ExpiresIn), response.GetTypeName());
+                    if (tokenResponse.AccessToken.IsNullOrEmpty()) throw new ArgumentNullException(nameof(tokenResponse.AccessToken), tokenResponse.GetTypeName());
+                    if (tokenResponse.ExpiresIn <= 0) throw new ArgumentNullException(nameof(tokenResponse.ExpiresIn), tokenResponse.GetTypeName());
 
                     var oidcDiscoveryKeySet = await oidcDiscoveryHandler.GetOidcDiscoveryKeysAsync();
                     (var newPrincipal, var newSecurityToken) = JwtHandler.ValidateToken(tokenResponse.IdToken, oidcDiscovery.Issuer, oidcDiscoveryKeySet.Keys, identitySettings.ClientId);

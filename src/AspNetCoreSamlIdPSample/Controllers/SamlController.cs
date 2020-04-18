@@ -8,12 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Linq;
-using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
-using ITfoxtec.Identity.Saml2.Util;
 using Microsoft.Extensions.Options;
 using AspNetCoreSamlIdPSample.Models;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
+using Microsoft.IdentityModel.Tokens.Saml2;
 
 namespace AspNetCoreSamlIdPSample.Controllers
 {

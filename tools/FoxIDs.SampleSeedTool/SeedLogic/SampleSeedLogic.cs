@@ -167,7 +167,6 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         EnableCancelLogin = true,
                         EnableCreateUser = true,
                         LogoutConsent = LoginUpPartyLogoutConsent.IfRequered,
-                        AllowIframeOnDomains = new[] { "localhost:44344", "*.localhost:44" }
                     };
 
                     await foxIDsApiClient.PostLoginUpPartyAsync(loginUpParty);

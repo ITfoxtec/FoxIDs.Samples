@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>SampleSeedTool</AssemblyName>
     <StartupObject></StartupObject>
     <RootNamespace>FoxIDs.SampleSeedTool</RootNamespace>
@@ -11,16 +11,15 @@
 
   <ItemGroup>
     <PackageReference Include="ITfoxtec.Identity" Version="1.1.7" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.0.24" />
-    <PackageReference Include="NSwag.MSBuild" Version="13.1.2">
+    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.1.12" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.4.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="UrlCombine" Version="2.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Compile Remove="ServiceAccess_old\**" />
     <EmbeddedResource Remove="ServiceAccess_old\**" />
     <None Remove="appsettings*json" />
@@ -36,10 +35,6 @@
 
   <ItemGroup>
     <Content Remove="ServiceAccess_old\**" />
-  </ItemGroup>
-  
-  <Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">
-    <Exec Command="$(NSwagExe_Core22) run ServiceAccess\nswag.json /variables:Configuration=$(Configuration)" />
-  </Target>
+  </ItemGroup>-->
 
 </Project>

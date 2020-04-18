@@ -6,7 +6,6 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace FoxIDs.SampleHelperLibrary
 {
-#if NET472
     public class TestCertificate
     {
         public static X509Certificate2 GetSelfSignedCertificate(string path, string cn)
@@ -23,35 +22,30 @@ namespace FoxIDs.SampleHelperLibrary
 
         private static void CreateSelfSignedCertificate(string path, string cn)
         {
-            // Used in .NET Framework
-            var cspParameters = new CspParameters(
-                /* PROV_RSA_AES */ 24,
-                "Microsoft Enhanced RSA and AES Cryptographic Provider",
-                Guid.NewGuid().ToString());
-
-            using (RSA rsa = new RSACryptoServiceProvider(2048, cspParameters))
+            using (var rsa = RSA.Create(2048))
             {
                 var certRequest = new CertificateRequest(
-                    $"CN={cn}",
+                    $"CN={cn}, O=FoxIDs",
                     rsa,
                     HashAlgorithmName.SHA256,
                     RSASignaturePadding.Pkcs1);
 
-                // Explicitly not a CA.
                 certRequest.CertificateExtensions.Add(
                     new X509BasicConstraintsExtension(false, false, 0, false));
 
                 certRequest.CertificateExtensions.Add(
+                    new X509SubjectKeyIdentifierExtension(certRequest.PublicKey, false));
+
+                certRequest.CertificateExtensions.Add(
                     new X509KeyUsageExtension(
-                        X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment | X509KeyUsageFlags.NonRepudiation,
+                        X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment | X509KeyUsageFlags.DataEncipherment | X509KeyUsageFlags.KeyAgreement,
                         false));
 
                 var now = DateTimeOffset.UtcNow;
-                using (var cert = certRequest.CreateSelfSigned(now.AddDays(-1), now.AddDays(365)))
-                {
-                    File.WriteAllBytes(PfxFile(path, cn), cert.Export(X509ContentType.Pfx));
-                    File.WriteAllBytes(CrtFile(path, cn), cert.Export(X509ContentType.Cert));
-                }
+                var cert = certRequest.CreateSelfSigned(now.AddDays(-1), now.AddDays(365));
+
+                File.WriteAllBytes(PfxFile(path, cn), cert.Export(X509ContentType.Pfx));
+                File.WriteAllBytes(CrtFile(path, cn), cert.Export(X509ContentType.Cert));
             }
         }
 
@@ -64,5 +58,4 @@ namespace FoxIDs.SampleHelperLibrary
             return Path.Combine(path, $"{cn}.crt");
         }
     }
-#endif
 }

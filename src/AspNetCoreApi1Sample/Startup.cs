@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AspNetCoreApi1Sample.Models;
 using AspNetCoreApi1Sample.Policys;
@@ -6,11 +7,9 @@ using ITfoxtec.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.Hosting;
 
 namespace AspNetCoreApi1Sample
 {
@@ -28,13 +27,12 @@ namespace AspNetCoreApi1Sample
         {
             var identitySettings = services.BindConfig<IdentitySettings>(Configuration, nameof(IdentitySettings));
 
-            services.AddMvc()
-               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-               .AddJsonOptions(options =>
-               {
-                   options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                   options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-               });
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -65,7 +63,7 @@ namespace AspNetCoreApi1Sample
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -78,9 +76,15 @@ namespace AspNetCoreApi1Sample
 
             app.UseHttpsRedirection();
 
-            app.UseAuthentication();
+            app.UseRouting();
 
-            app.UseMvc();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

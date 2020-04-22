@@ -17,6 +17,16 @@ namespace BlazorOidcPkceSample
 
             builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            builder.Services.AddOidcAuthentication(options =>
+            {
+                // Configure your authentication provider options here.
+                // For more information, see https://aka.ms/blazor-standalone-auth
+                options.ProviderOptions.Authority = "https://localhost:44330/testcorp/dev/blazor_oidcauthcodepkce_sample(login)/";
+                options.ProviderOptions.ClientId = "blazor_oidcauthcodepkce_sample";
+                options.ProviderOptions.DefaultScopes.Add("aspnetcore_api1_sample:some_access");
+                options.ProviderOptions.ResponseType = "code";
+            });
+
             await builder.Build().RunAsync();
         }
     }

@@ -16,8 +16,11 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
         const string aspNetCoreSamlIdPSampleUpPartyName = "aspnetcore_saml_idp_sample";
 
         const string aspNetCoreApi1SampleDownPartyName = "aspnetcore_api1_sample";
+
         const string aspNetCoreOidcAuthCodeSampleDownPartyName = "aspnetcore_oidcauthcode_sample";
         const string aspNetCoreOidcImplicitSampleDownPartyName = "aspnetcore_oidcimplicit_sample";
+        const string blazorOidcAuthCodePkceSampleDownPartyName = "blazor_oidcauthcodepkce_sample";
+
         const string aspNetCoreSamlSampleDownPartyName = "aspnetcore_saml_sample";
 
         private readonly SeedSettings settings;
@@ -38,8 +41,11 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             await CreateAspNetCoreSamlIdPSampleUpPartyAsync();
 
             await CreateAspNetCoreApi1SampleDownPartyAsync();
+
             await CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync();
             await CreateAspNetCoreOidcImplicitSampleDownPartyAsync();
+            await CreateBlazorOidcAuthCodePkceSampleDownPartyAsync();
+
             await CreateAspNetCoreSamlSampleDownPartyAsync();
 
             Console.WriteLine(string.Empty);
@@ -51,7 +57,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             Console.WriteLine("Delete sample configuration");
 
             Console.WriteLine("Delete Oidc down party sample configuration");
-            var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName };
+            var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName, blazorOidcAuthCodePkceSampleDownPartyName };
             foreach (var name in oidcDownPartyNames)
             {
                 try
@@ -381,6 +387,99 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
             await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
 
+            Console.WriteLine($"'{name}' created");
+        }
+
+        private async Task CreateBlazorOidcAuthCodePkceSampleDownPartyAsync()
+        {
+            var name = blazorOidcAuthCodePkceSampleDownPartyName;
+            Console.WriteLine($"Creating '{name}'");
+            var baseUrl = "https://localhost:44345";
+
+            var oidcDownParty = new OidcDownParty
+            {
+                Name = name,
+                AllowCorsOrigins = new[] { baseUrl },
+                AllowUpPartyNames = new[] { "login", "aspnetcore_saml_idp_sample" },
+                Client = new OidcDownClient
+                {
+                    ResourceScopes = new[]
+                    {
+                        // Scope to the application it self.
+                        new OAuthDownResourceScope { Resource = name },
+                        // Scope to API1.
+                        new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
+                    },
+                    Scopes = new[]
+                    {
+                        new OidcDownScope { Scope = "offline_access" },
+                        new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
+                            {
+                                new OidcDownClaim { Claim = "name", InIdToken = true  },
+                                new OidcDownClaim { Claim = "family_name", InIdToken = true  },
+                                new OidcDownClaim { Claim = "given_name", InIdToken = true  },
+                                new OidcDownClaim { Claim = "middle_name", InIdToken = true  },
+                                new OidcDownClaim { Claim = "nickname" },
+                                new OidcDownClaim { Claim = "preferred_username" },
+                                new OidcDownClaim { Claim = "profile" },
+                                new OidcDownClaim { Claim = "picture" },
+                                new OidcDownClaim { Claim = "website" },
+                                new OidcDownClaim { Claim = "gender" },
+                                new OidcDownClaim { Claim = "birthdate" },
+                                new OidcDownClaim { Claim = "zoneinfo" },
+                                new OidcDownClaim { Claim = "locale" },
+                                new OidcDownClaim { Claim = "updated_at" }
+                            }
+                        },
+                        new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
+                            {
+                                new OidcDownClaim { Claim = "email", InIdToken = true  },
+                                new OidcDownClaim { Claim = "email_verified" }
+                            }
+                        },
+                        new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
+                            {
+                                new OidcDownClaim { Claim = "address", InIdToken = true  }
+                            }
+                        },
+                        new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
+                            {
+                                new OidcDownClaim { Claim = "phone_number", InIdToken = true  },
+                                new OidcDownClaim { Claim = "phone_number_verified" },
+                            }
+                        },
+                    },
+                    Claims = new[]
+                    {
+                        new OidcDownClaim{ Claim = "email", InIdToken = true },
+                        new OidcDownClaim{ Claim = "name", InIdToken = true },
+                        new OidcDownClaim{ Claim = "family_name", InIdToken = true },
+                        new OidcDownClaim{ Claim = "given_name", InIdToken = true },
+                        new OidcDownClaim{ Claim = "role", InIdToken = true },
+                    },
+                    ResponseTypes = new[] { "code" },
+                    RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback"), UrlCombine.Combine(baseUrl, "authentication/logout-callback") },
+                    EnablePkce = true,
+                    RequireLogoutIdTokenHint = true,
+                    AuthorizationCodeLifetime = 30, // 30 seconds 
+                    IdTokenLifetime = 600, // 10 minutes
+                    AccessTokenLifetime = 600, // 10 minutes
+                    RefreshTokenLifetime = 900, // 15 minutes
+                    RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
+                    RefreshTokenUseOneTime = false,
+                    RefreshTokenLifetimeUnlimited = false
+                }
+            };
+
+            await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+
+            var secret = RandomGenerator.Generate(32);
+            await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+            {
+                PartyName = oidcDownParty.Name,
+                Secret = secret,
+            });
+            Console.WriteLine($"'{name}' client secret is: {secret}");
             Console.WriteLine($"'{name}' created");
         }
 

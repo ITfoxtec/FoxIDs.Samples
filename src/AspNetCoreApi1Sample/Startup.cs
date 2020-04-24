@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 
 namespace AspNetCoreApi1Sample
 {
@@ -26,6 +27,8 @@ namespace AspNetCoreApi1Sample
         public void ConfigureServices(IServiceCollection services)
         {
             var identitySettings = services.BindConfig<IdentitySettings>(Configuration, nameof(IdentitySettings));
+
+            services.AddCors();
 
             services.AddControllers()
                 .AddJsonOptions(options =>
@@ -77,6 +80,14 @@ namespace AspNetCoreApi1Sample
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder =>
+            {
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization);
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

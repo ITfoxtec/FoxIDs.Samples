@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,7 +16,7 @@ namespace BlazorOidcPkceSample
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            
             builder.Services.AddOidcAuthentication(options =>
             {
                 // Configure your authentication provider options here.
@@ -26,6 +26,9 @@ namespace BlazorOidcPkceSample
                 options.ProviderOptions.DefaultScopes.Add("aspnetcore_api1_sample:some_access");
                 options.ProviderOptions.ResponseType = "code";
             });
+
+            //builder.Services.AddOidcAuthentication(options =>
+            //    builder.Configuration.get.Bind("IdentitySettings", options);
 
             await builder.Build().RunAsync();
         }

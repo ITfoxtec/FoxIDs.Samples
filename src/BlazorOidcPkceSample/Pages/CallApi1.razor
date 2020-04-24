@@ -1,0 +1,46 @@
+@page "/callapi1"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.Extensions.Configuration
+@inject HttpClient Http
+@inject IAccessTokenProvider AuthenticationService
+@inject IConfiguration Configuration
+@attribute [Authorize]
+
+<h1>Call AspNetCoreApi1Sample</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (api1Result == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3>Result</h3>
+    <pre>@api1Result</pre>
+}
+
+@code {
+    private string api1Result;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var tokenResult = await AuthenticationService.RequestAccessToken();
+
+        if (tokenResult.TryGetToken(out var token))
+        {
+            var aspNetCoreApi1SampleUrl = Configuration["AppSettings:AspNetCoreApi1SampleUrl"];
+
+            var response = await Http.GetAsync(aspNetCoreApi1SampleUrl, token.Value, "1234");
+            if (response.IsSuccessStatusCode)
+            {
+                api1Result = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                throw new Exception($"Unable to call API. Api url='{aspNetCoreApi1SampleUrl}', StatusCode='{response.StatusCode}'");
+            }
+        }
+    }
+}

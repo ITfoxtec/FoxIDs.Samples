@@ -31,7 +31,7 @@ else
 
         if (tokenResult.TryGetToken(out var token))
         {
-            // Automatically adding access token currently do not work
+            // Hack: Automatically adding access token currently do not work
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
 
             try

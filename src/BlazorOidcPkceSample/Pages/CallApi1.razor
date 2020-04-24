@@ -1,11 +1,12 @@
 @page "/callapi1"
+@using System.Net.Http.Headers;
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Microsoft.Extensions.Configuration
-@inject HttpClient Http
-@inject IAccessTokenProvider AuthenticationService
-@inject IConfiguration Configuration
 @attribute [Authorize]
+@inject HttpClient httpClient
+@inject IConfiguration Configuration
+@inject IAccessTokenProvider AuthenticationService
 
 <h1>Call AspNetCoreApi1Sample</h1>
 
@@ -30,16 +31,17 @@ else
 
         if (tokenResult.TryGetToken(out var token))
         {
-            var aspNetCoreApi1SampleUrl = Configuration["AppSettings:AspNetCoreApi1SampleUrl"];
+            // Automatically adding access token currently do not work
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
 
-            var response = await Http.GetAsync(aspNetCoreApi1SampleUrl, token.Value, "1234");
-            if (response.IsSuccessStatusCode)
+            try
             {
-                api1Result = await response.Content.ReadAsStringAsync();
+                var aspNetCoreApi1SampleUrl = Configuration["AppSettings:AspNetCoreApi1SampleUrl"];
+                api1Result = await httpClient.GetStringAsync(aspNetCoreApi1SampleUrl, "1234");
             }
-            else
+            catch (AccessTokenNotAvailableException exception)
             {
-                throw new Exception($"Unable to call API. Api url='{aspNetCoreApi1SampleUrl}', StatusCode='{response.StatusCode}'");
+                exception.Redirect();
             }
         }
     }

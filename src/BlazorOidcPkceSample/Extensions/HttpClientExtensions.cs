@@ -1,25 +1,15 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace System.Net.Http
+namespace BlazorOidcPkceSample
 {
     public static class HttpClientExtensions
-    {        
-        public static Task<HttpResponseMessage> GetAsync(this HttpClient client, string requestUri, string token)
-        {
-            client.SetToken(token);
-            return client.GetAsync(requestUri);
-        }
+    {
 
-        public static Task<HttpResponseMessage> GetAsync(this HttpClient client, string requestUri, string token, string id)
+        public static Task<string> GetStringAsync(this HttpClient client, string requestUri, string id)
         {
-            client.SetToken(token);
-            return client.GetAsync($"{requestUri}{(requestUri.EndsWith("/", StringComparison.InvariantCultureIgnoreCase) ? "" : "/")}{id}");
-        }
-
-        private static void SetToken(this HttpClient client, string token)
-        {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            return client.GetStringAsync($"{requestUri}{(requestUri.EndsWith("/", StringComparison.InvariantCultureIgnoreCase) ? "" : "/")}{id}");
         }
     }
 }

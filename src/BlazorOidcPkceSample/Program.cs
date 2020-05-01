@@ -16,8 +16,15 @@ namespace BlazorOidcPkceSample
             builder.RootComponents.Add<App>("app");
 
             var httpClientLogicalName = "BlazorOidcPkceSample.ServerAPI";
-            builder.Services.AddHttpClient(httpClientLogicalName, client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
-                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+            builder.Services.AddHttpClient(httpClientLogicalName, client => client.BaseAddress = new Uri(builder.Configuration["AppSettings:AuthorizedApi1Url"]))
+                .AddHttpMessageHandler(sp =>
+                {
+                    var handler = sp.GetService<AuthorizationMessageHandler>()
+                        .ConfigureHandler(
+                            authorizedUrls: new[] { builder.Configuration["AppSettings:AuthorizedApi1Url"] },
+                            scopes: new[] { builder.Configuration["AppSettings:Api1Scope"] });
+                    return handler;
+                });
 
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(httpClientLogicalName));
@@ -27,7 +34,7 @@ namespace BlazorOidcPkceSample
                 // Configure your authentication provider options here.
                 // For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("IdentitySettings", options.ProviderOptions);
-                options.ProviderOptions.DefaultScopes.Add("aspnetcore_api1_sample:some_access");
+                options.ProviderOptions.DefaultScopes.Add(builder.Configuration["AppSettings:Api1Scope"]);
                 options.ProviderOptions.ResponseType = "code";
             });
 

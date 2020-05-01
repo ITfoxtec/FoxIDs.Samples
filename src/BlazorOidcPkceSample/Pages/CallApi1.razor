@@ -1,5 +1,4 @@
 @page "/callapi1"
-@using System.Net.Http.Headers;
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Microsoft.Extensions.Configuration
@@ -27,22 +26,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var tokenResult = await AuthenticationService.RequestAccessToken();
-
-        if (tokenResult.TryGetToken(out var token))
+        try
         {
-            // Hack: Automatically adding access token currently do not work
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
-
-            try
-            {
-                var aspNetCoreApi1SampleUrl = Configuration["AppSettings:AspNetCoreApi1SampleUrl"];
-                api1Result = await httpClient.GetStringAsync(aspNetCoreApi1SampleUrl, "1234");
-            }
-            catch (AccessTokenNotAvailableException exception)
-            {
-                exception.Redirect();
-            }
+            var aspNetCoreApi1SampleMethod = Configuration["AppSettings:AspNetCoreApi1SampleMethod"];
+            api1Result = await httpClient.GetStringAsync(aspNetCoreApi1SampleMethod, "1234");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
         }
     }
 }

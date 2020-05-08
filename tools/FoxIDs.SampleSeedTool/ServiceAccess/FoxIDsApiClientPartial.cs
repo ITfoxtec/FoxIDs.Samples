@@ -1,5 +1,5 @@
 ﻿using FoxIDs.SampleSeedTool.Logic;
-using FoxIDs.SampleSeedTool.Model;
+using FoxIDs.SampleSeedTool.Models;
 using System.Net.Http;
 using System.Text;
 
@@ -9,7 +9,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
     {
         public FoxIDsApiClient(SeedSettings settings, IHttpClientFactory httpClientFactory, AccessLogic accessLogic) : this(httpClientFactory.CreateClient())
         {
-            BaseUrl = settings.FoxIDsApiEndpoint;
+            BaseUrl = settings.FoxIDsConsolApiEndpoint;
             Settings = settings;
             AccessLogic = accessLogic;
         }

@@ -19,7 +19,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.4.2.0 (NJsonSchema v10.1.11.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class FoxIDsApiClient : FoxIDsApiClientBase
     {
-        private string _baseUrl = "https://localhost:44331";
+        private string _baseUrl = "https://localhost:44331/api";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
     

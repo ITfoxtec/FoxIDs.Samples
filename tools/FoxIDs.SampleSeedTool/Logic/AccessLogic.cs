@@ -1,5 +1,5 @@
 ﻿using ITfoxtec.Identity.Helpers;
-using FoxIDs.SampleSeedTool.Model;
+using FoxIDs.SampleSeedTool.Models;
 using System;
 using System.Threading.Tasks;
 

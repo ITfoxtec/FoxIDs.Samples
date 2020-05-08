@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using UrlCombineLib;
 
-namespace FoxIDs.SampleSeedTool.Model
+namespace FoxIDs.SampleSeedTool.Models
 {
     public class SeedSettings
     {
@@ -50,10 +50,6 @@ namespace FoxIDs.SampleSeedTool.Model
         /// FoxIDs api endpoint.
         /// </summary>
         [Required]
-        public string FoxIDsApiEndpoint { get; set; }
-        ///// <summary>
-        ///// FoxIDs track api endpoint.
-        ///// </summary>
-        //public string FoxIDsTenantTrackApiEndpoint => UrlCombine.Combine(FoxIDsApiEndpoint, Tenant, Track);
+        public string FoxIDsConsolApiEndpoint { get; set; }
     }
 }

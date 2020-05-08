@@ -1,5 +1,5 @@
 ﻿using FoxIDs.SampleSeedTool.Logic;
-using FoxIDs.SampleSeedTool.Model;
+using FoxIDs.SampleSeedTool.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;

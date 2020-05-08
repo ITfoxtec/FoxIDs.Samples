@@ -1,4 +1,4 @@
-﻿using FoxIDs.SampleSeedTool.Model;
+﻿using FoxIDs.SampleSeedTool.Models;
 using FoxIDs.SampleSeedTool.ServiceAccess;
 using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
 using ITfoxtec.Identity.Util;

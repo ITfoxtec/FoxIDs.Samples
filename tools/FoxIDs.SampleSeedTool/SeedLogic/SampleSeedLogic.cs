@@ -322,7 +322,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
             await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
 
-            var secret = RandomGenerator.Generate(32);
+            var secret = "KnhiOHuUz1zolY5k4B_r2M3iGkpkJmsmPwQ0RwS5KjM";
             await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
             {
                 PartyName = oidcDownParty.Name,

@@ -211,9 +211,9 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 //SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                 //CertificateValidationMode = X509CertificateValidationMode.None,
                 //RevocationMode = X509RevocationMode.NoCheck,
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingType.Redirect, ResponseBinding = SamlBindingType.Post },
+                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
                 AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
-                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingType.Post, ResponseBinding = SamlBindingType.Post },
+                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
                 LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout")
             };
 
@@ -326,7 +326,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
             {
                 PartyName = oidcDownParty.Name,
-                Secret = secret,
+                Secrets = new string[] { secret },
             });
             Console.WriteLine($"'{name}' client secret is: {secret}");
             Console.WriteLine($"'{name}' created");
@@ -477,7 +477,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
             {
                 PartyName = oidcDownParty.Name,
-                Secret = secret,
+                Secrets = new string[] { secret },
             });
             Console.WriteLine($"'{name}' client secret is: {secret}");
             Console.WriteLine($"'{name}' created");
@@ -509,9 +509,9 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                 CertificateValidationMode = X509CertificateValidationMode.None,
                 RevocationMode = X509RevocationMode.NoCheck,
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingType.Redirect, ResponseBinding = SamlBindingType.Post },
+                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
                 AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },
-                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingType.Post, ResponseBinding = SamlBindingType.Post },
+                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
                 SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
                 LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
                 MetadataLifetime = 1728000, // 20 days

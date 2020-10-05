@@ -3,4 +3,4 @@ The repository contains samples for FoxIDs showing login and logout with OAuth 2
 
 > FoxIDs [documentation](https://www.itfoxtec.com/FoxIDs) and a guid about how to configure the [samples](https://www.itfoxtec.com/FoxIDs/samples) in FoxIDs.
 
-> FoxIDs GitHub repository [https://github.com/ITfoxtec/FoxIDs](https://github.com/ITfoxtec/FoxIDs).
+> FoxIDs GitHub repository [https://github.com/ITfoxtec/FoxIDs](https://github.com/ITfoxtec/FoxIDs)

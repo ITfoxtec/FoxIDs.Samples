@@ -4429,22 +4429,22 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get track keys.</summary>
+        /// <summary>Get track keys contained.</summary>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<TrackKeys> GetTrackKeyAsync()
+        public System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyContainedAsync()
         {
-            return GetTrackKeyAsync(System.Threading.CancellationToken.None);
+            return GetTrackKeyContainedAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get track keys.</summary>
+        /// <summary>Get track keys contained.</summary>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<TrackKeys> GetTrackKeyAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyContainedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKey");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKeyContained");
     
             var client_ = _httpClient;
             try
@@ -4492,7 +4492,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         else
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<TrackKeys>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<TrackKeyItemsContained>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -4508,7 +4508,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                             throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(TrackKeys);
+                        return default(TrackKeyItemsContained);
                     }
                     finally
                     {
@@ -4522,24 +4522,24 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Update track key.</summary>
+        /// <summary>Update track key contained.</summary>
         /// <param name="body">Track key.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<TrackKeys> PutTrackKeyAsync(TrackKeyRequest body)
+        public System.Threading.Tasks.Task<TrackKeyItemsContained> PutTrackKeyContainedAsync(TrackKeyItemContainedRequest body)
         {
-            return PutTrackKeyAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackKeyContainedAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Update track key.</summary>
+        /// <summary>Update track key contained.</summary>
         /// <param name="body">Track key.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<TrackKeys> PutTrackKeyAsync(TrackKeyRequest body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<TrackKeyItemsContained> PutTrackKeyContainedAsync(TrackKeyItemContainedRequest body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKey");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKeyContained");
     
             var client_ = _httpClient;
             try
@@ -4590,7 +4590,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         else
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<TrackKeys>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<TrackKeyItemsContained>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -4606,7 +4606,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                             throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(TrackKeys);
+                        return default(TrackKeyItemsContained);
                     }
                     finally
                     {
@@ -4620,22 +4620,22 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete secondary track key.</summary>
+        /// <summary>Delete secondary track key contained.</summary>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task DeleteTrackKeyAsync()
+        public System.Threading.Tasks.Task DeleteTrackKeyContainedAsync()
         {
-            return DeleteTrackKeyAsync(System.Threading.CancellationToken.None);
+            return DeleteTrackKeyContainedAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete secondary track key.</summary>
+        /// <summary>Delete secondary track key contained.</summary>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task DeleteTrackKeyAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteTrackKeyContainedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKey");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKeyContained");
     
             var client_ = _httpClient;
             try
@@ -4709,24 +4709,24 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Swap track key.</summary>
+        /// <summary>Swap track key contained.</summary>
         /// <param name="body">Track to swap.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<Track> PostTrackKeySwapAsync(TrackKeySwap body)
+        public System.Threading.Tasks.Task<Track> PostTrackKeyContainedSwapAsync(TrackKeyItemContainedSwap body)
         {
-            return PostTrackKeySwapAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackKeyContainedSwapAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Swap track key.</summary>
+        /// <summary>Swap track key contained.</summary>
         /// <param name="body">Track to swap.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<Track> PostTrackKeySwapAsync(TrackKeySwap body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Track> PostTrackKeyContainedSwapAsync(TrackKeyItemContainedSwap body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKeySwap");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKeyContainedSwap");
     
             var client_ = _httpClient;
             try
@@ -4794,6 +4794,197 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         }
             
                         return default(Track);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get track key type.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyTypeAsync()
+        {
+            return GetTrackKeyTypeAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get track key type.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyTypeAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKeyType");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<TrackKeyItemsContained>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(TrackKeyItemsContained);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Update track key type.</summary>
+        /// <param name="body">Track key.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<TrackKey> PutTrackKeyTypeAsync(TrackKey body)
+        {
+            return PutTrackKeyTypeAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Update track key type.</summary>
+        /// <param name="body">Track key.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<TrackKey> PutTrackKeyTypeAsync(TrackKey body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackKeyType");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<TrackKey>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(TrackKey);
                     }
                     finally
                     {

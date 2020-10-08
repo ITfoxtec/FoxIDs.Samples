@@ -183,8 +183,20 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.Range(30, 10800)]
         public int SequenceLifetime { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("maxFailingLogins", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(2, 20)]
+        public int MaxFailingLogins { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("failingLoginCountLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(900, 345600)]
+        public int FailingLoginCountLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("failingLoginObservationPeriod", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(60, 14400)]
+        public int FailingLoginObservationPeriod { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("passwordLength", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(4, 20)]
+        [System.ComponentModel.DataAnnotations.Range(4, 50)]
         public int PasswordLength { get; set; }
     
         [Newtonsoft.Json.JsonProperty("checkPasswordComplexity", Required = Newtonsoft.Json.Required.Always)]
@@ -221,7 +233,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     {
         [Newtonsoft.Json.JsonProperty("claim", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.StringLength(50)]
+        [System.ComponentModel.DataAnnotations.StringLength(80)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w:\-.+]*$")]
         public string Claim { get; set; }
     
@@ -239,6 +251,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(60)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w:\-.+@]*$")]
         public string Email { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("changePassword", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ChangePassword { get; set; }
     
         [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -840,7 +855,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         [Newtonsoft.Json.JsonProperty("administratorPassword", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.StringLength(300)]
+        [System.ComponentModel.DataAnnotations.StringLength(50)]
         public string AdministratorPassword { get; set; }
     
         [Newtonsoft.Json.JsonProperty("controlClientBaseUri", Required = Newtonsoft.Json.Required.Always)]
@@ -858,13 +873,59 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.21.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class TrackKeyItemsContained 
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("primaryKey", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public JsonWebKey PrimaryKey { get; set; } = new JsonWebKey();
+    
+        [Newtonsoft.Json.JsonProperty("secondaryKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public JsonWebKey SecondaryKey { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.21.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class TrackKeyItemContainedRequest 
+    {
+        [Newtonsoft.Json.JsonProperty("isPrimary", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsPrimary { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("createSelfSigned", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool CreateSelfSigned { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public JsonWebKey Key { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.21.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class TrackKeyItemContainedSwap 
+    {
+        [Newtonsoft.Json.JsonProperty("swapKeys", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool SwapKeys { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.21.0 (Newtonsoft.Json v12.0.0.0)")]
     public enum TrackKeyType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Contained")]
         Contained = 0,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"KeyVault")]
-        KeyVault = 1,
+        [System.Runtime.Serialization.EnumMember(Value = @"KeyVaultRenewSelfSigned")]
+        KeyVaultRenewSelfSigned = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"KeyVaultUpload")]
+        KeyVaultUpload = 2,
     
     }
     
@@ -875,62 +936,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public TrackKeyType Type { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public JsonWebKey Key { get; set; } = new JsonWebKey();
-    
-        [Newtonsoft.Json.JsonProperty("externalName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ExternalName { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.21.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class TrackKeys 
-    {
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.StringLength(30)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w-_]*$")]
-        public string Name { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("primaryKey", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public TrackKey PrimaryKey { get; set; } = new TrackKey();
-    
-        [Newtonsoft.Json.JsonProperty("secondaryKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public TrackKey SecondaryKey { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.21.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class TrackKeyRequest 
-    {
-        [Newtonsoft.Json.JsonProperty("isPrimary", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsPrimary { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public TrackKeyType Type { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public JsonWebKey Key { get; set; } = new JsonWebKey();
-    
-        [Newtonsoft.Json.JsonProperty("externalName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ExternalName { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.21.0 (Newtonsoft.Json v12.0.0.0)")]
-    public partial class TrackKeySwap 
-    {
-        [Newtonsoft.Json.JsonProperty("swapKeys", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SwapKeys { get; set; }
     
     
     }
@@ -961,8 +966,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.StringLength(300)]
+        [System.ComponentModel.DataAnnotations.StringLength(50)]
         public string Password { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("changePassword", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ChangePassword { get; set; }
     
         [Newtonsoft.Json.JsonProperty("claims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ClaimAndValues> Claims { get; set; }
@@ -978,6 +986,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(60)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w:\-.+@]*$")]
         public string Email { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("changePassword", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ChangePassword { get; set; }
     
         [Newtonsoft.Json.JsonProperty("claims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<ClaimAndValues> Claims { get; set; }

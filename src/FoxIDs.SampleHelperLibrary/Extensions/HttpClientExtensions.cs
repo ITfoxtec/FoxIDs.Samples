@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace System.Net.Http
         {
             client.SetToken(token);
             var request = new HttpRequestMessage(HttpMethod.Post, requestUri);
-            request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, "application/json");
+            request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, MediaTypeNames.Application.Json);
             return client.SendAsync(request);
         }
 
@@ -37,7 +38,7 @@ namespace System.Net.Http
         {
             client.SetToken(token);
             var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
-            request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, "application/json");
+            request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, MediaTypeNames.Application.Json);
             return client.SendAsync(request);
         }
 
@@ -45,7 +46,7 @@ namespace System.Net.Http
         {
             client.SetToken(token);
             var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri);
-            request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, "application/json");
+            request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, MediaTypeNames.Application.Json);
             return client.SendAsync(request);
         }
 

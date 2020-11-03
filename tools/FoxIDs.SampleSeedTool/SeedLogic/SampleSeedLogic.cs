@@ -309,6 +309,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     },
                     ResponseTypes = new[] { "code", "code id_token token" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                    RequirePkce = true,
                     RequireLogoutIdTokenHint = true,
                     AuthorizationCodeLifetime = 30, // 30 seconds 
                     IdTokenLifetime = 600, // 10 minutes
@@ -379,6 +380,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     },
                     ResponseTypes = new[] { "id_token token", "id_token" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                    RequirePkce = false,
                     RequireLogoutIdTokenHint = true,
                     IdTokenLifetime = 3600, // 60 minutes 
                     AccessTokenLifetime = 3600 // 60 minutes 
@@ -459,7 +461,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     },
                     ResponseTypes = new[] { "code" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback"), UrlCombine.Combine(baseUrl, "authentication/logout-callback") },
-                    EnablePkce = true,
+                    RequirePkce = true,
                     RequireLogoutIdTokenHint = true,
                     AuthorizationCodeLifetime = 30, // 30 seconds 
                     IdTokenLifetime = 600, // 10 minutes

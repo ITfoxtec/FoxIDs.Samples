@@ -1,5 +1,5 @@
 ﻿using FoxIDs.SampleSeedTool.Logic;
-using FoxIDs.SampleSeedTool.Model;
+using FoxIDs.SampleSeedTool.Models;
 using FoxIDs.SampleSeedTool.SeedLogic;
 using FoxIDs.SampleSeedTool.ServiceAccess;
 using ITfoxtec.Identity;

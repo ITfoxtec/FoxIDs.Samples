@@ -1,4 +1,4 @@
-﻿using FoxIDs.SampleSeedTool.Model;
+﻿using FoxIDs.SampleSeedTool.Models;
 using FoxIDs.SampleSeedTool.ServiceAccess;
 using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
 using ITfoxtec.Identity.Util;
@@ -211,9 +211,9 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 //SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                 //CertificateValidationMode = X509CertificateValidationMode.None,
                 //RevocationMode = X509RevocationMode.NoCheck,
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingType.Redirect, ResponseBinding = SamlBindingType.Post },
+                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
                 AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
-                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingType.Post, ResponseBinding = SamlBindingType.Post },
+                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
                 LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout")
             };
 
@@ -307,8 +307,9 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         new OidcDownClaim{ Claim = "family_name", InIdToken = true },
                         new OidcDownClaim{ Claim = "given_name", InIdToken = true },
                     },
-                    ResponseTypes = new[] { "code", "code id_token token" },
+                    ResponseTypes = new[] { "code" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                    RequirePkce = true,
                     RequireLogoutIdTokenHint = true,
                     AuthorizationCodeLifetime = 30, // 30 seconds 
                     IdTokenLifetime = 600, // 10 minutes
@@ -322,11 +323,11 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
             await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
 
-            var secret = RandomGenerator.Generate(32);
+            var secret = "KnhiOHuUz1zolY5k4B_r2M3iGkpkJmsmPwQ0RwS5KjM";
             await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
             {
                 PartyName = oidcDownParty.Name,
-                Secret = secret,
+                Secrets = new string[] { secret },
             });
             Console.WriteLine($"'{name}' client secret is: {secret}");
             Console.WriteLine($"'{name}' created");
@@ -379,6 +380,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     },
                     ResponseTypes = new[] { "id_token token", "id_token" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                    RequirePkce = false,
                     RequireLogoutIdTokenHint = true,
                     IdTokenLifetime = 3600, // 60 minutes 
                     AccessTokenLifetime = 3600 // 60 minutes 
@@ -459,7 +461,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     },
                     ResponseTypes = new[] { "code" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback"), UrlCombine.Combine(baseUrl, "authentication/logout-callback") },
-                    EnablePkce = true,
+                    RequirePkce = true,
                     RequireLogoutIdTokenHint = true,
                     AuthorizationCodeLifetime = 30, // 30 seconds 
                     IdTokenLifetime = 600, // 10 minutes
@@ -477,7 +479,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
             {
                 PartyName = oidcDownParty.Name,
-                Secret = secret,
+                Secrets = new string[] { secret },
             });
             Console.WriteLine($"'{name}' client secret is: {secret}");
             Console.WriteLine($"'{name}' created");
@@ -509,9 +511,9 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                 CertificateValidationMode = X509CertificateValidationMode.None,
                 RevocationMode = X509RevocationMode.NoCheck,
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingType.Redirect, ResponseBinding = SamlBindingType.Post },
+                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
                 AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },
-                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingType.Post, ResponseBinding = SamlBindingType.Post },
+                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
                 SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
                 LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
                 MetadataLifetime = 1728000, // 20 days

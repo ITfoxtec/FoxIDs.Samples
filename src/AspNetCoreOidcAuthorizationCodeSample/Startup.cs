@@ -149,9 +149,16 @@ namespace AspNetCoreOidcAuthorizationCodeSample
 
                         await Task.FromResult(string.Empty);
                     };
+                    options.Events.OnTokenResponseReceived = async (context) =>
+                    {
+                        if(!context.TokenEndpointResponse.Error.IsNullOrEmpty())
+                        {
+                            throw new Exception($"Token response error. {context.TokenEndpointResponse.Error}, {context.TokenEndpointResponse.ErrorDescription} ");
+                        }
+                        await Task.FromResult(string.Empty);
+                    };
                     options.Events.OnRemoteFailure = async (context) =>
                     {
-
                         await Task.FromResult(string.Empty);
                     };
                 });

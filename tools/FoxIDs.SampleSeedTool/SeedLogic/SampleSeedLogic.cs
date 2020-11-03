@@ -307,7 +307,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         new OidcDownClaim{ Claim = "family_name", InIdToken = true },
                         new OidcDownClaim{ Claim = "given_name", InIdToken = true },
                     },
-                    ResponseTypes = new[] { "code", "code id_token token" },
+                    ResponseTypes = new[] { "code" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
                     RequirePkce = true,
                     RequireLogoutIdTokenHint = true,

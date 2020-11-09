@@ -56,7 +56,6 @@ namespace AspNetCoreApi1Sample
                             await Task.FromResult(string.Empty);
                         }
                     };
-
                 });
 
             services.AddAuthorization(options =>

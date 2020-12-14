@@ -19,7 +19,7 @@ namespace AspNetCoreSamlSample.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.PublicCertificate = saml2Config.SigningCertificate.ToJsonWebKeyAsync().ToJsonIndented();
+            ViewBag.PublicCertificate = saml2Config.SigningCertificate.ToMSJsonWebKeyAsync().ToJsonIndented();
 
             return View();
         }

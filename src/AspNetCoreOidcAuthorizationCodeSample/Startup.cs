@@ -113,7 +113,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     options.ClientId = identitySettings.ClientId;
                     options.ClientSecret = identitySettings.ClientSecret;
 
-                    options.ResponseType = "code";
+                    options.ResponseType = OpenIdConnectResponseType.Code;
 
                     options.SaveTokens = true;
                     options.UseTokenLifetime = true;

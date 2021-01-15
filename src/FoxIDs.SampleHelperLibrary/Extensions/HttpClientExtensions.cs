@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ITfoxtec.Identity;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http.Headers;
 using System.Net.Mime;
@@ -58,7 +59,7 @@ namespace System.Net.Http
 
         private static void SetToken(this HttpClient client, string token)
         {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(IdentityConstants.TokenTypes.Bearer, token);
         }
     }
 }

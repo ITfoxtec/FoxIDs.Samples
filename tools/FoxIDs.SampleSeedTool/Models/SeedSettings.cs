@@ -16,7 +16,7 @@ namespace FoxIDs.SampleSeedTool.Models
         public string ClientSecret { get; set; }
 
         /// <summary>
-        /// Sample seed tool redirect uri.
+        /// Sample seed tool redirect Uri.
         /// </summary>
         [Required]
         public string RedirectUri { get; set; }
@@ -47,7 +47,7 @@ namespace FoxIDs.SampleSeedTool.Models
         public string Authority => UrlCombine.Combine(FoxIDsEndpoint, Tenant, "master", DownParty);
 
         /// <summary>
-        /// FoxIDs api endpoint.
+        /// FoxIDs API endpoint.
         /// </summary>
         [Required]
         public string FoxIDsConsolApiEndpoint { get; set; }

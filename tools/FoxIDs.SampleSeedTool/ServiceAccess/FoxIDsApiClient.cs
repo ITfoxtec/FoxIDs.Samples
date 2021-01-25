@@ -595,8 +595,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Filter down party.</summary>
-        /// <param name="filterName">Filter down party name.</param>
+        /// <summary>Filter down-party.</summary>
+        /// <param name="filterName">Filter down-party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DownParty>> GetFilterDownPartyAsync(string filterName)
@@ -605,8 +605,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Filter down party.</summary>
-        /// <param name="filterName">Filter down party name.</param>
+        /// <summary>Filter down-party.</summary>
+        /// <param name="filterName">Filter down-party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DownParty>> GetFilterDownPartyAsync(string filterName, System.Threading.CancellationToken cancellationToken)
@@ -895,8 +895,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Filter up party.</summary>
-        /// <param name="filterName">Filter up party name.</param>
+        /// <summary>Filter up-party.</summary>
+        /// <param name="filterName">Filter up-party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Track>> GetFilterTrackAsync(string filterName)
@@ -905,8 +905,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Filter up party.</summary>
-        /// <param name="filterName">Filter up party name.</param>
+        /// <summary>Filter up-party.</summary>
+        /// <param name="filterName">Filter up-party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Track>> GetFilterTrackAsync(string filterName, System.Threading.CancellationToken cancellationToken)
@@ -995,8 +995,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Filter up party.</summary>
-        /// <param name="filterName">Filter up party name.</param>
+        /// <summary>Filter up-party.</summary>
+        /// <param name="filterName">Filter up-party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UpParty>> GetFilterUpPartyAsync(string filterName)
@@ -1005,8 +1005,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Filter up party.</summary>
-        /// <param name="filterName">Filter up party name.</param>
+        /// <summary>Filter up-party.</summary>
+        /// <param name="filterName">Filter up-party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UpParty>> GetFilterUpPartyAsync(string filterName, System.Threading.CancellationToken cancellationToken)
@@ -1095,7 +1095,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Filter up party.</summary>
+        /// <summary>Filter up-party.</summary>
         /// <param name="filterEmail">Filter user email.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1105,7 +1105,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Filter up party.</summary>
+        /// <summary>Filter up-party.</summary>
         /// <param name="filterEmail">Filter user email.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1195,7 +1195,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get Login up party.</summary>
+        /// <summary>Get Login up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1205,7 +1205,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get Login up party.</summary>
+        /// <summary>Get Login up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1295,8 +1295,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create Login up party.</summary>
-        /// <param name="body">Login up party.</param>
+        /// <summary>Create Login up-party.</summary>
+        /// <param name="body">Login up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<LoginUpParty> PostLoginUpPartyAsync(LoginUpParty body)
@@ -1305,8 +1305,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create Login up party.</summary>
-        /// <param name="body">Login up party.</param>
+        /// <summary>Create Login up-party.</summary>
+        /// <param name="body">Login up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<LoginUpParty> PostLoginUpPartyAsync(LoginUpParty body, System.Threading.CancellationToken cancellationToken)
@@ -1393,8 +1393,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Update Login up party.</summary>
-        /// <param name="body">Login up party.</param>
+        /// <summary>Update Login up-party.</summary>
+        /// <param name="body">Login up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<LoginUpParty> PutLoginUpPartyAsync(LoginUpParty body)
@@ -1403,8 +1403,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Update Login up party.</summary>
-        /// <param name="body">Login up party.</param>
+        /// <summary>Update Login up-party.</summary>
+        /// <param name="body">Login up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<LoginUpParty> PutLoginUpPartyAsync(LoginUpParty body, System.Threading.CancellationToken cancellationToken)
@@ -1491,7 +1491,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete Login up party.</summary>
+        /// <summary>Delete Login up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1501,7 +1501,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete Login up party.</summary>
+        /// <summary>Delete Login up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1587,7 +1587,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get OAuth 2.0 client secrets for down party.</summary>
+        /// <summary>Get OAuth 2.0 client secrets for down-party.</summary>
         /// <param name="partyName">OAuth 2.0 party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1597,7 +1597,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get OAuth 2.0 client secrets for down party.</summary>
+        /// <summary>Get OAuth 2.0 client secrets for down-party.</summary>
         /// <param name="partyName">OAuth 2.0 party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1687,8 +1687,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create OAuth 2.0 client secret for down party.</summary>
-        /// <param name="body">OAuth 2.0 client secret for down party.</param>
+        /// <summary>Create OAuth 2.0 client secret for down-party.</summary>
+        /// <param name="body">OAuth 2.0 client secret for down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<OAuthDownParty> PostOAuthClientSecretDownPartyAsync(OAuthClientSecretRequest body)
@@ -1697,8 +1697,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create OAuth 2.0 client secret for down party.</summary>
-        /// <param name="body">OAuth 2.0 client secret for down party.</param>
+        /// <summary>Create OAuth 2.0 client secret for down-party.</summary>
+        /// <param name="body">OAuth 2.0 client secret for down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<OAuthDownParty> PostOAuthClientSecretDownPartyAsync(OAuthClientSecretRequest body, System.Threading.CancellationToken cancellationToken)
@@ -1785,7 +1785,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete OAuth 2.0 client secret for down party.</summary>
+        /// <summary>Delete OAuth 2.0 client secret for down-party.</summary>
         /// <param name="name">Party name and secret id.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1795,7 +1795,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete OAuth 2.0 client secret for down party.</summary>
+        /// <summary>Delete OAuth 2.0 client secret for down-party.</summary>
         /// <param name="name">Party name and secret id.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1881,7 +1881,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get OAuth 2.0 down party.</summary>
+        /// <summary>Get OAuth 2.0 down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1891,7 +1891,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get OAuth 2.0 down party.</summary>
+        /// <summary>Get OAuth 2.0 down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -1981,8 +1981,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create OAuth 2.0 down party.</summary>
-        /// <param name="body">OAuth 2.0 down party.</param>
+        /// <summary>Create OAuth 2.0 down-party.</summary>
+        /// <param name="body">OAuth 2.0 down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<OAuthDownParty> PostOAuthDownPartyAsync(OAuthDownParty body)
@@ -1991,8 +1991,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create OAuth 2.0 down party.</summary>
-        /// <param name="body">OAuth 2.0 down party.</param>
+        /// <summary>Create OAuth 2.0 down-party.</summary>
+        /// <param name="body">OAuth 2.0 down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<OAuthDownParty> PostOAuthDownPartyAsync(OAuthDownParty body, System.Threading.CancellationToken cancellationToken)
@@ -2079,8 +2079,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Update OAuth 2.0 down party.</summary>
-        /// <param name="body">OAuth 2.0 down party.</param>
+        /// <summary>Update OAuth 2.0 down-party.</summary>
+        /// <param name="body">OAuth 2.0 down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<OAuthDownParty> PutOAuthDownPartyAsync(OAuthDownParty body)
@@ -2089,8 +2089,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Update OAuth 2.0 down party.</summary>
-        /// <param name="body">OAuth 2.0 down party.</param>
+        /// <summary>Update OAuth 2.0 down-party.</summary>
+        /// <param name="body">OAuth 2.0 down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<OAuthDownParty> PutOAuthDownPartyAsync(OAuthDownParty body, System.Threading.CancellationToken cancellationToken)
@@ -2177,7 +2177,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete OAuth 2.0 down party.</summary>
+        /// <summary>Delete OAuth 2.0 down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2187,7 +2187,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete OAuth 2.0 down party.</summary>
+        /// <summary>Delete OAuth 2.0 down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2273,7 +2273,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get OIDC client secrets for down party.</summary>
+        /// <summary>Get OIDC client secrets for down-party.</summary>
         /// <param name="partyName">OIDC party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2283,7 +2283,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get OIDC client secrets for down party.</summary>
+        /// <summary>Get OIDC client secrets for down-party.</summary>
         /// <param name="partyName">OIDC party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2373,8 +2373,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create OIDC client secret for down party.</summary>
-        /// <param name="body">OIDC client secret for down party.</param>
+        /// <summary>Create OIDC client secret for down-party.</summary>
+        /// <param name="body">OIDC client secret for down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<OidcDownParty> PostOidcClientSecretDownPartyAsync(OAuthClientSecretRequest body)
@@ -2383,8 +2383,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create OIDC client secret for down party.</summary>
-        /// <param name="body">OIDC client secret for down party.</param>
+        /// <summary>Create OIDC client secret for down-party.</summary>
+        /// <param name="body">OIDC client secret for down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<OidcDownParty> PostOidcClientSecretDownPartyAsync(OAuthClientSecretRequest body, System.Threading.CancellationToken cancellationToken)
@@ -2471,7 +2471,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete OIDC client secret for down party.</summary>
+        /// <summary>Delete OIDC client secret for down-party.</summary>
         /// <param name="name">Party name and secret id.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2481,7 +2481,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete OIDC client secret for down party.</summary>
+        /// <summary>Delete OIDC client secret for down-party.</summary>
         /// <param name="name">Party name and secret id.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2567,7 +2567,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get OIDC down party.</summary>
+        /// <summary>Get OIDC down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2577,7 +2577,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get OIDC down party.</summary>
+        /// <summary>Get OIDC down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2667,8 +2667,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create OIDC down party.</summary>
-        /// <param name="body">OIDC down party.</param>
+        /// <summary>Create OIDC down-party.</summary>
+        /// <param name="body">OIDC down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<OidcDownParty> PostOidcDownPartyAsync(OidcDownParty body)
@@ -2677,8 +2677,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create OIDC down party.</summary>
-        /// <param name="body">OIDC down party.</param>
+        /// <summary>Create OIDC down-party.</summary>
+        /// <param name="body">OIDC down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<OidcDownParty> PostOidcDownPartyAsync(OidcDownParty body, System.Threading.CancellationToken cancellationToken)
@@ -2765,8 +2765,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Update OIDC down party.</summary>
-        /// <param name="body">OIDC down party.</param>
+        /// <summary>Update OIDC down-party.</summary>
+        /// <param name="body">OIDC down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<OidcDownParty> PutOidcDownPartyAsync(OidcDownParty body)
@@ -2775,8 +2775,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Update OIDC down party.</summary>
-        /// <param name="body">OIDC down party.</param>
+        /// <summary>Update OIDC down-party.</summary>
+        /// <param name="body">OIDC down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<OidcDownParty> PutOidcDownPartyAsync(OidcDownParty body, System.Threading.CancellationToken cancellationToken)
@@ -2863,7 +2863,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete OIDC down party.</summary>
+        /// <summary>Delete OIDC down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2873,7 +2873,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete OIDC down party.</summary>
+        /// <summary>Delete OIDC down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2959,7 +2959,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get Saml down party.</summary>
+        /// <summary>Get Saml down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -2969,7 +2969,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get Saml down party.</summary>
+        /// <summary>Get Saml down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3059,8 +3059,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create Saml down party.</summary>
-        /// <param name="body">Saml down party.</param>
+        /// <summary>Create Saml down-party.</summary>
+        /// <param name="body">Saml down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(SamlDownParty body)
@@ -3069,8 +3069,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create Saml down party.</summary>
-        /// <param name="body">Saml down party.</param>
+        /// <summary>Create Saml down-party.</summary>
+        /// <param name="body">Saml down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(SamlDownParty body, System.Threading.CancellationToken cancellationToken)
@@ -3157,8 +3157,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Downdate Saml down party.</summary>
-        /// <param name="body">Saml down party.</param>
+        /// <summary>Downdate Saml down-party.</summary>
+        /// <param name="body">Saml down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SamlDownParty> PutSamlDownPartyAsync(SamlDownParty body)
@@ -3167,8 +3167,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Downdate Saml down party.</summary>
-        /// <param name="body">Saml down party.</param>
+        /// <summary>Downdate Saml down-party.</summary>
+        /// <param name="body">Saml down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SamlDownParty> PutSamlDownPartyAsync(SamlDownParty body, System.Threading.CancellationToken cancellationToken)
@@ -3255,7 +3255,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete Saml down party.</summary>
+        /// <summary>Delete Saml down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3265,7 +3265,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete Saml down party.</summary>
+        /// <summary>Delete Saml down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3351,7 +3351,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get Saml up party.</summary>
+        /// <summary>Get Saml up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3361,7 +3361,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get Saml up party.</summary>
+        /// <summary>Get Saml up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3451,8 +3451,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create Saml up party.</summary>
-        /// <param name="body">Saml up party.</param>
+        /// <summary>Create Saml up-party.</summary>
+        /// <param name="body">Saml up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(SamlUpParty body)
@@ -3461,8 +3461,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create Saml up party.</summary>
-        /// <param name="body">Saml up party.</param>
+        /// <summary>Create Saml up-party.</summary>
+        /// <param name="body">Saml up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(SamlUpParty body, System.Threading.CancellationToken cancellationToken)
@@ -3549,8 +3549,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Update Saml up party.</summary>
-        /// <param name="body">Saml up party.</param>
+        /// <summary>Update Saml up-party.</summary>
+        /// <param name="body">Saml up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SamlUpParty> PutSamlUpPartyAsync(SamlUpParty body)
@@ -3559,8 +3559,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Update Saml up party.</summary>
-        /// <param name="body">Saml up party.</param>
+        /// <summary>Update Saml up-party.</summary>
+        /// <param name="body">Saml up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SamlUpParty> PutSamlUpPartyAsync(SamlUpParty body, System.Threading.CancellationToken cancellationToken)
@@ -3647,7 +3647,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete Saml up party.</summary>
+        /// <summary>Delete Saml up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3657,7 +3657,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete Saml up party.</summary>
+        /// <summary>Delete Saml up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3915,10 +3915,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "204") 
+                        if (status_ == "409") 
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new FoxIDsApiException("Conflict", (int)response_.StatusCode, responseText_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4209,10 +4209,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "204") 
+                        if (status_ == "409") 
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new FoxIDsApiException("Conflict", (int)response_.StatusCode, responseText_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4781,10 +4781,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "204") 
+                        if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -5292,6 +5292,292 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
+        /// <summary>Get track send email.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ResourceItem> GetTrackSendEmailAsync()
+        {
+            return GetTrackSendEmailAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get track send email.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ResourceItem> GetTrackSendEmailAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackSendEmail");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ResourceItem>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "204") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Success", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ResourceItem);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Update track send email.</summary>
+        /// <param name="body">Send email.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<TrackResourceItem> PutTrackSendEmailAsync(SendEmail body)
+        {
+            return PutTrackSendEmailAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Update track send email.</summary>
+        /// <param name="body">Send email.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<TrackResourceItem> PutTrackSendEmailAsync(SendEmail body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackSendEmail");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<TrackResourceItem>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(TrackResourceItem);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Delete track send email.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task DeleteTrackSendEmailAsync()
+        {
+            return DeleteTrackSendEmailAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Delete track send email.</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task DeleteTrackSendEmailAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackSendEmail");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
         /// <summary>Get user.</summary>
         /// <param name="email">User email.</param>
         /// <returns>Success</returns>
@@ -5464,10 +5750,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "204") 
+                        if (status_ == "409") 
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", (int)response_.StatusCode, responseText_, headers_, null);
+                            throw new FoxIDsApiException("Conflict", (int)response_.StatusCode, responseText_, headers_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")

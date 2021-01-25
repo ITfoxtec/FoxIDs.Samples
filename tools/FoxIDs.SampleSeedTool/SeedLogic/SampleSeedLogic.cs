@@ -172,7 +172,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         SessionAbsoluteLifetime = 43200,
                         EnableCancelLogin = true,
                         EnableCreateUser = true,
-                        LogoutConsent = LoginUpPartyLogoutConsent.IfRequered,
+                        LogoutConsent = LoginUpPartyLogoutConsent.IfRequired,
                     };
 
                     await foxIDsApiClient.PostLoginUpPartyAsync(loginUpParty);

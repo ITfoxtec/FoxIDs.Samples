@@ -56,7 +56,6 @@ namespace AspNetCoreApi1Sample
                             await Task.FromResult(string.Empty);
                         }
                     };
-
                 });
 
             services.AddAuthorization(options =>
@@ -68,11 +67,7 @@ namespace AspNetCoreApi1Sample
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
+            if (!env.IsDevelopment())
             {
                 app.UseHsts();
             }

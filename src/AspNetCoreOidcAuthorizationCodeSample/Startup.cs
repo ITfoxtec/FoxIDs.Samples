@@ -113,12 +113,13 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     options.ClientId = identitySettings.ClientId;
                     options.ClientSecret = identitySettings.ClientSecret;
 
-                    options.ResponseType = "code";
+                    options.ResponseType = OpenIdConnectResponseType.Code;
 
                     options.SaveTokens = true;
                     options.UseTokenLifetime = true;
 
-                    options.Scope.Add("aspnetcore_oidcauthcode_sample");
+                    // Scope to the application it self.
+                    //options.Scope.Add("aspnetcore_oidcauthcode_sample");
                     options.Scope.Add("aspnetcore_api1_sample:some_access");
                     options.Scope.Add("offline_access");
                     options.Scope.Add("profile");

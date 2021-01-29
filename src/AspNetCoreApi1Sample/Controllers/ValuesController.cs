@@ -6,7 +6,7 @@ namespace AspNetCoreApi1Sample.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Api1SomeAccessScopeAuthorizeAttribute]
+    [Api1SomeAccessScopeAuthorize]
     public class ValuesController : ControllerBase
     {
         // GET api/values

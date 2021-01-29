@@ -257,7 +257,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     ResourceScopes = new[]
                     {
                         // Scope to the application it self.
-                        new OAuthDownResourceScope { Resource = name },
+                        //new OAuthDownResourceScope { Resource = name },
                         // Scope to API1.
                         new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
                     },
@@ -408,7 +408,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     ResourceScopes = new[]
                     {
                         // Scope to the application it self.
-                        new OAuthDownResourceScope { Resource = name },
+                        //new OAuthDownResourceScope { Resource = name },
                         // Scope to API1.
                         new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
                     },

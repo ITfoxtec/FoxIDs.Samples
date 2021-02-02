@@ -10,7 +10,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ITfoxtec.Identity" Version="1.2.4" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="ITfoxtec.Identity" Version="1.2.4" />
 		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.1.21" />
 		<PackageReference Include="NSwag.MSBuild" Version="13.6.1">
 			<PrivateAssets>all</PrivateAssets>

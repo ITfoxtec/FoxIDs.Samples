@@ -4,6 +4,7 @@ using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
 using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UrlCombineLib;
 
@@ -214,7 +215,8 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
                 AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
                 LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
-                LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout")
+                LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout"),
+                Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname }
             };
 
             await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
@@ -516,6 +518,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
                 SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
                 LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
+                Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname },
                 MetadataLifetime = 1728000, // 20 days
                 SubjectConfirmationLifetime = 300, // 5 minutes
                 IssuedTokenLifetime = 36000 // 10 hours

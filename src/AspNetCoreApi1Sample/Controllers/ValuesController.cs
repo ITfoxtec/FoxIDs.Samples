@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AspNetCoreApi1Sample.Policys;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,11 @@ namespace AspNetCoreApi1Sample.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
+            foreach (var claim in User.Claims)
+            {
+                Console.WriteLine($"claim '{claim.Type}' = '{claim.Value}'");
+            }
+
             return $"value is '{id}' for user '{User.Identity.Name}'";
         }
 

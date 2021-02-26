@@ -146,6 +146,10 @@ namespace AspNetCoreOidcImplicitSample
             {
                 case LoginType.FoxIDsLogin:
                     return settings.FoxIDsLoginUpParty;
+                case LoginType.AlternativeFoxIDs:
+                    return settings.AlternativeFoxIDsUpParty;
+                case LoginType.IdentityServer:
+                    return settings.IdentityServerUpParty;
                 case LoginType.SamlIdPSample:
                     return settings.SamlIdPSampleUpParty;
                 case LoginType.SamlIdPAdfs:

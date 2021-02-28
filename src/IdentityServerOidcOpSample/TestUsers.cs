@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using IdentityServer4;
 
-namespace IdentityServer.UI
+namespace IdentityServer
 {
     public class TestUsers
     {

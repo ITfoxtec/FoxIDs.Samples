@@ -3,6 +3,8 @@
     public enum LoginType
     {
         FoxIDsLogin,
+        AlternativeFoxIDs,
+        IdentityServer,
         SamlIdPSample,
         SamlIdPAdfs,
     }

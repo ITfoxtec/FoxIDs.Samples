@@ -1,0 +1,76 @@
+﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+
+
+using IdentityServer4;
+using IdentityServer4.Models;
+using IdentityServerOidcOpSample.Models;
+using System.Collections.Generic;
+
+namespace IdentityServer
+{
+    public class Config
+    {
+        private readonly IdentitySettings settings;
+
+        public Config(IdentitySettings settings)
+        {
+            this.settings = settings;
+        }
+
+        public IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            yield return new IdentityResources.OpenId();
+            yield return new IdentityResources.Profile();
+            yield return new IdentityResources.Email();
+        }
+
+        public IEnumerable<ApiResource> GetApiResources()
+        {
+            yield return new ApiResource("foxids_identityserver.api", "FoxIDs API")
+            {
+                UserClaims = new[] { "email", "email_verified", "family_name", "given_name", "name", "role" },
+
+                Scopes = new List<string>
+                {
+                    "foxids_identityserver.api.access"
+                }
+            };
+        }        
+
+        public IEnumerable<ApiScope> GetApiScopes()
+        {
+            yield return new ApiScope("foxids_identityserver.api.access", "FoxIDs API scope") ;
+        }
+
+        public IEnumerable<Client> GetClients()
+        {
+            foreach (var clientSettings in settings.OidcClients)
+            {
+                yield return new Client
+                {
+                    ClientId = clientSettings.ClientId,
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    ClientSecrets =
+                    {
+                        new Secret(clientSettings.ClientSecret.Sha256())
+                    },
+
+                    RequirePkce = true,
+
+                    RedirectUris = { clientSettings.RedirectUrl },
+                    PostLogoutRedirectUris = { clientSettings.PostLogoutRedirectUrl },                
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "foxids_identityserver.api.access"
+                    }
+                };
+            }
+        }
+    }
+}

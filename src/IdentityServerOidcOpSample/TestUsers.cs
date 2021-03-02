@@ -11,7 +11,7 @@ using IdentityServer4;
 
 namespace IdentityServer
 {
-    public class TestUsers
+    public static class TestUsers
     {
         public static List<TestUser> Users
         {

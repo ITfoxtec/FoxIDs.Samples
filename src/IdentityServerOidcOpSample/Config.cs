@@ -4,48 +4,73 @@
 
 using IdentityServer4;
 using IdentityServer4.Models;
+using IdentityServerOidcOpSample.Models;
 using System.Collections.Generic;
 
 namespace IdentityServer
 {
-    public static class Config
+    public class Config
     {
-        public static IEnumerable<IdentityResource> IdentityResources =>
-            new IdentityResource[]
-            { 
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
-            };
+        private readonly IdentitySettings settings;
 
-        public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[]
-            { };
+        public Config(IdentitySettings settings)
+        {
+            this.settings = settings;
+        }
 
-        public static IEnumerable<Client> Clients =>
-            new Client[]
+        public IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            yield return new IdentityResources.OpenId();
+            yield return new IdentityResources.Profile();
+            yield return new IdentityResources.Email();
+        }
+
+        public IEnumerable<ApiResource> GetApiResources()
+        {
+            yield return new ApiResource("foxids_identityserver.api", "FoxIDs API")
             {
-                new Client
+                UserClaims = new[] { "email", "email_verified", "family_name", "given_name", "name", "role" },
+
+                Scopes = new List<string>
                 {
-                    ClientId = "foxids_identityserver",
+                    "foxids_identityserver.api.access"
+                }
+            };
+        }        
+
+        public IEnumerable<ApiScope> GetApiScopes()
+        {
+            yield return new ApiScope("foxids_identityserver.api.access", "FoxIDs API scope") ;
+        }
+
+        public IEnumerable<Client> GetClients()
+        {
+            foreach (var clientSettings in settings.OidcClients)
+            {
+                yield return new Client
+                {
+                    ClientId = clientSettings.ClientId,
 
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets =
                     {
-                        new Secret("2tqjW-KwiGaR4KRt0IJ8KAJYw3pyPTK8S_dr_YE5nbw".Sha256())
+                        new Secret(clientSettings.ClientSecret.Sha256())
                     },
 
-                    // where to redirect to after login
-                    RedirectUris = { "https://localhost:5002/signin-oidc" },
+                    RequirePkce = true,
 
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
+                    RedirectUris = { clientSettings.RedirectUrl },
+                    PostLogoutRedirectUris = { clientSettings.PostLogoutRedirectUrl },                
 
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "foxids_identityserver.api.access"
                     }
-                }
-            };
+                };
+            }
+        }
     }
 }

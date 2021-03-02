@@ -2,8 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServerOidcOpSample.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -11,34 +13,38 @@ namespace IdentityServer
 {
     public class Startup
     {
-        public IWebHostEnvironment Environment { get; }
-
-        public Startup(IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
-            Environment = environment;
+            Configuration = configuration;
         }
+
+        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            var settings = services.BindConfig<IdentitySettings>(Configuration, nameof(IdentitySettings));
+            var config = new Config(settings);
 
             var builder = services.AddIdentityServer(options =>
             {
                 // To configure Identity Server to use the standard when emitting scopes into a JWT token.
                 options.EmitScopesAsSpaceDelimitedStringInJwt = true;
             })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients)
+                .AddInMemoryIdentityResources(config.GetIdentityResources())
+                .AddInMemoryApiResources(config.GetApiResources())
+                .AddInMemoryApiScopes(config.GetApiScopes())
+                .AddInMemoryClients(config.GetClients())
                 .AddTestUsers(TestUsers.Users);
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
+
+            services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (Environment.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

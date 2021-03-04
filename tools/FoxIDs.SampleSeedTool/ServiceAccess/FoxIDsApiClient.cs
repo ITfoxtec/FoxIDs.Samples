@@ -3139,7 +3139,423 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get Saml down-party.</summary>
+        /// <summary>Get OIDC up-party.</summary>
+        /// <param name="name">Party name.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<OidcUpParty> GetOidcUpPartyAsync(string name)
+        {
+            return GetOidcUpPartyAsync(name, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get OIDC up-party.</summary>
+        /// <param name="name">Party name.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<OidcUpParty> GetOidcUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!OidcUpParty?");
+            if (name != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("name") + "=").Append(System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<OidcUpParty>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(OidcUpParty);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Create OIDC up-party.</summary>
+        /// <param name="body">OIDC up-party.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<OidcUpParty> PostOidcUpPartyAsync(OidcUpParty body)
+        {
+            return PostOidcUpPartyAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Create OIDC up-party.</summary>
+        /// <param name="body">OIDC up-party.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<OidcUpParty> PostOidcUpPartyAsync(OidcUpParty body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!OidcUpParty");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "201") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<OidcUpParty>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "409") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Conflict", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(OidcUpParty);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Update OIDC up-party.</summary>
+        /// <param name="body">OIDC up-party.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<OidcUpParty> PutOidcUpPartyAsync(OidcUpParty body)
+        {
+            return PutOidcUpPartyAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Update OIDC up-party.</summary>
+        /// <param name="body">OIDC up-party.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<OidcUpParty> PutOidcUpPartyAsync(OidcUpParty body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!OidcUpParty");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<OidcUpParty>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(OidcUpParty);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Delete OIDC up-party.</summary>
+        /// <param name="name">Party name.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task DeleteOidcUpPartyAsync(string name)
+        {
+            return DeleteOidcUpPartyAsync(name, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Delete OIDC up-party.</summary>
+        /// <param name="name">Party name.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task DeleteOidcUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!OidcUpParty?");
+            if (name != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("name") + "=").Append(System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "401") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "403") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get SAML 2.0 down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3149,7 +3565,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get Saml down-party.</summary>
+        /// <summary>Get SAML 2.0 down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3245,8 +3661,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create Saml down-party.</summary>
-        /// <param name="body">Saml down-party.</param>
+        /// <summary>Create SAML 2.0 down-party.</summary>
+        /// <param name="body">SAML 2.0 down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(SamlDownParty body)
@@ -3255,8 +3671,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create Saml down-party.</summary>
-        /// <param name="body">Saml down-party.</param>
+        /// <summary>Create SAML 2.0 down-party.</summary>
+        /// <param name="body">SAML 2.0 down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(SamlDownParty body, System.Threading.CancellationToken cancellationToken)
@@ -3349,8 +3765,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Downdate Saml down-party.</summary>
-        /// <param name="body">Saml down-party.</param>
+        /// <summary>Update SAML 2.0 down-party.</summary>
+        /// <param name="body">SAML 2.0 down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SamlDownParty> PutSamlDownPartyAsync(SamlDownParty body)
@@ -3359,8 +3775,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Downdate Saml down-party.</summary>
-        /// <param name="body">Saml down-party.</param>
+        /// <summary>Update SAML 2.0 down-party.</summary>
+        /// <param name="body">SAML 2.0 down-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SamlDownParty> PutSamlDownPartyAsync(SamlDownParty body, System.Threading.CancellationToken cancellationToken)
@@ -3453,7 +3869,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete Saml down-party.</summary>
+        /// <summary>Delete SAML 2.0 down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3463,7 +3879,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete Saml down-party.</summary>
+        /// <summary>Delete SAML 2.0 down-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3555,7 +3971,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Get Saml up-party.</summary>
+        /// <summary>Get SAML 2.0 up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3565,7 +3981,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get Saml up-party.</summary>
+        /// <summary>Get SAML 2.0 up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3661,8 +4077,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Create Saml up-party.</summary>
-        /// <param name="body">Saml up-party.</param>
+        /// <summary>Create SAML 2.0 up-party.</summary>
+        /// <param name="body">SAML 2.0 up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(SamlUpParty body)
@@ -3671,8 +4087,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create Saml up-party.</summary>
-        /// <param name="body">Saml up-party.</param>
+        /// <summary>Create SAML 2.0 up-party.</summary>
+        /// <param name="body">SAML 2.0 up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(SamlUpParty body, System.Threading.CancellationToken cancellationToken)
@@ -3765,8 +4181,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Update Saml up-party.</summary>
-        /// <param name="body">Saml up-party.</param>
+        /// <summary>Update SAML 2.0 up-party.</summary>
+        /// <param name="body">SAML 2.0 up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<SamlUpParty> PutSamlUpPartyAsync(SamlUpParty body)
@@ -3775,8 +4191,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Update Saml up-party.</summary>
-        /// <param name="body">Saml up-party.</param>
+        /// <summary>Update SAML 2.0 up-party.</summary>
+        /// <param name="body">SAML 2.0 up-party.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<SamlUpParty> PutSamlUpPartyAsync(SamlUpParty body, System.Threading.CancellationToken cancellationToken)
@@ -3869,7 +4285,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
             }
         }
     
-        /// <summary>Delete Saml up-party.</summary>
+        /// <summary>Delete SAML 2.0 up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
@@ -3879,7 +4295,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete Saml up-party.</summary>
+        /// <summary>Delete SAML 2.0 up-party.</summary>
         /// <param name="name">Party name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>

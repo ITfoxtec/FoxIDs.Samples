@@ -27,20 +27,22 @@ namespace IdentityServer
 
         public IEnumerable<ApiResource> GetApiResources()
         {
-            yield return new ApiResource("foxids_identityserver.api", "FoxIDs API")
-            {
-                UserClaims = new[] { "email", "email_verified", "family_name", "given_name", "name", "role" },
+            return new ApiResource[] { };
+            //yield return new ApiResource("some.api", "Some API")
+            //{
+            //    UserClaims = new[] { "email", "email_verified", "family_name", "given_name", "name", "role" },
 
-                Scopes = new List<string>
-                {
-                    "foxids_identityserver.api.access"
-                }
-            };
-        }        
+            //    Scopes = new List<string>
+            //    {
+            //        "some.api.access"
+            //    }
+            //};
+        }
 
         public IEnumerable<ApiScope> GetApiScopes()
         {
-            yield return new ApiScope("foxids_identityserver.api.access", "FoxIDs API scope") ;
+            return new ApiScope[] { };
+            //yield return new ApiScope("some.api.access", "Some API scope") ;
         }
 
         public IEnumerable<Client> GetClients()
@@ -58,6 +60,7 @@ namespace IdentityServer
                     },
 
                     RequirePkce = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
 
                     RedirectUris = { clientSettings.RedirectUrl },
                     PostLogoutRedirectUris = { clientSettings.PostLogoutRedirectUrl },                
@@ -67,7 +70,7 @@ namespace IdentityServer
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "foxids_identityserver.api.access"
+                        //"some.api.access"
                     }
                 };
             }

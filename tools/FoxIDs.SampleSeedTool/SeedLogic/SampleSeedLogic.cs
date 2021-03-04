@@ -1,9 +1,11 @@
 ﻿using FoxIDs.SampleSeedTool.Models;
 using FoxIDs.SampleSeedTool.ServiceAccess;
 using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
+using ITfoxtec.Identity;
 using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using UrlCombineLib;
@@ -15,6 +17,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
         const string loginName = "login";
 
         const string aspNetCoreSamlIdPSampleUpPartyName = "aspnetcore_saml_idp_sample";
+        const string identityserverOidcOpUpPartyName = "identityserver_oidc_op_sample";
 
         const string aspNetCoreApi1SampleDownPartyName = "aspnetcore_api1_sample";
 
@@ -40,6 +43,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             await CreateLoginUpPartyIfNotExistsAsync();
 
             await CreateAspNetCoreSamlIdPSampleUpPartyAsync();
+            await CreateIdentityserverOidcOpUpPartyAsync();
 
             await CreateAspNetCoreApi1SampleDownPartyAsync();
 
@@ -145,6 +149,28 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 }
             }
 
+            Console.WriteLine("Delete OIDC up party sample configuration");
+            var oidcUpPartyNames = new[] { identityserverOidcOpUpPartyName };
+            foreach (var name in oidcUpPartyNames)
+            {
+                try
+                {
+                    await foxIDsApiClient.DeleteOidcUpPartyAsync(name);
+                    Console.WriteLine($"'{name}' configuration deleted");
+                }
+                catch (FoxIDsApiException ex)
+                {
+                    if (ex.StatusCode == StatusCodes.Status404NotFound)
+                    {
+                        Console.WriteLine($"'{name}' configuration not found");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
             Console.WriteLine(string.Empty);
             Console.WriteLine($"Sample configuration deleted");
         }
@@ -194,7 +220,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             var baseUrl = "https://localhost:44342";
 
             var samlUpParty = new SamlUpParty
-            {
+            {                
                 Name = name,
                 Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlidpsample",
                 Keys = new[]
@@ -220,6 +246,46 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             };
 
             await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
+
+            Console.WriteLine($"'{name}' created");
+        }
+
+        private async Task CreateIdentityserverOidcOpUpPartyAsync()
+        {
+            var name = identityserverOidcOpUpPartyName;
+            Console.WriteLine($"Creating '{name}'");
+            var baseUrl = "https://localhost:44346";
+
+            var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JsonWebKey>();
+
+            var oidcUpParty = new OidcUpParty
+            {
+                Name = name,
+                Authority = baseUrl,
+                UpdateState = PartyUpdateStates.Manual,
+                Issuer = baseUrl,
+                Keys = new JsonWebKey[] { key },
+
+                Client = new OidcUpClient
+                {
+                    AuthorizeUrl = $"{baseUrl}/connect/authorize",
+                    TokenUrl = $"{baseUrl}/connect/token",
+                    EndSessionUrl = $"{baseUrl}/connect/endsession",
+
+                    ResponseType = IdentityConstants.ResponseTypes.Code,
+                    EnablePkce = true,
+                    ClientSecret = "2tqjW-KwiGaR4KRt0IJ8KAJYw3pyPTK8S_dr_YE5nbw",
+
+                    Scopes = new string[] { "profile", "email" },
+                    Claims = new string[] { "access_token", "email", "email_verified", "family_name", "given_name", "name", "role" },
+
+                    UseIdTokenClaims = true,
+
+                    ResponseMode = IdentityConstants.ResponseModes.FormPost
+                }
+            };
+
+            await foxIDsApiClient.PostOidcUpPartyAsync(oidcUpParty);
 
             Console.WriteLine($"'{name}' created");
         }
@@ -253,7 +319,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             {
                 Name = name,
                 AllowCorsOrigins = new[] { baseUrl },
-                AllowUpPartyNames = new[] { "login", "aspnetcore_saml_idp_sample"/*, "adfs_saml_idp"*/ },
+                AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
                 Client = new OidcDownClient
                 {
                     ResourceScopes = new[]
@@ -345,7 +411,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             {
                 Name = name,
                 AllowCorsOrigins = new[] { baseUrl },
-                AllowUpPartyNames = new[] { "login", "aspnetcore_saml_idp_sample"/*, "adfs_saml_idp"*/ },
+                AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
                 Client = new OidcDownClient
                 {
                     ResourceScopes = new[]
@@ -404,7 +470,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             {
                 Name = name,
                 AllowCorsOrigins = new[] { baseUrl },
-                AllowUpPartyNames = new[] { "login", "aspnetcore_saml_idp_sample" },
+                AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
                 Client = new OidcDownClient
                 {
                     ResourceScopes = new[]
@@ -497,7 +563,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             {
                 Name = name,
                 Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample",
-                AllowUpPartyNames = new[] { "login", "aspnetcore_saml_idp_sample"/*, "adfs_saml_idp"*/ },
+                AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
                 Keys = new[]
                 {
                     new JsonWebKey

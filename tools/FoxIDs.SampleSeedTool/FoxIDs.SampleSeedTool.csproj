@@ -27,6 +27,12 @@
 		</Content>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="identityserver-tempkey.jwk">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 	<Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">
 		<Exec Command="$(NSwagExe_Core31) run ServiceAccess\nswag.json /variables:Configuration=$(Configuration)" />
 	</Target>

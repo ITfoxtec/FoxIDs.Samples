@@ -242,7 +242,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
                 LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
                 LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout"),
-                Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname }
+                Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role }
             };
 
             await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
@@ -277,7 +277,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     ClientSecret = "2tqjW-KwiGaR4KRt0IJ8KAJYw3pyPTK8S_dr_YE5nbw",
 
                     Scopes = new string[] { "profile", "email" },
-                    Claims = new string[] { "access_token", "email", "email_verified", "family_name", "given_name", "name", "role" },
+                    Claims = new string[] { "access_token", JwtClaimTypes.Email, JwtClaimTypes.EmailVerified, JwtClaimTypes.FamilyName, JwtClaimTypes.GivenName, JwtClaimTypes.Name, JwtClaimTypes.Role },
 
                     UseIdTokenClaims = true,
 
@@ -334,46 +334,47 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         new OidcDownScope { Scope = "offline_access" },
                         new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "family_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "given_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "middle_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "nickname" },
-                                new OidcDownClaim { Claim = "preferred_username" },
-                                new OidcDownClaim { Claim = "profile" },
-                                new OidcDownClaim { Claim = "picture" },
-                                new OidcDownClaim { Claim = "website" },
-                                new OidcDownClaim { Claim = "gender" },
-                                new OidcDownClaim { Claim = "birthdate" },
-                                new OidcDownClaim { Claim = "zoneinfo" },
-                                new OidcDownClaim { Claim = "locale" },
-                                new OidcDownClaim { Claim = "updated_at" }
+                                new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
+                                new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Profile },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Picture },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Website },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Gender },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Locale },
+                                new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
                             }
                         },
                         new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "email", InIdToken = true  },
-                                new OidcDownClaim { Claim = "email_verified" }
+                                new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
                             }
                         },
                         new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "address", InIdToken = true  }
+                                new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
                             }
                         },
                         new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "phone_number", InIdToken = true  },
-                                new OidcDownClaim { Claim = "phone_number_verified" },
+                                new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
                             }
                         },
                     },
                     Claims = new[]
                     {
-                        new OidcDownClaim{ Claim = "email", InIdToken = true },
-                        new OidcDownClaim{ Claim = "name", InIdToken = true },
-                        new OidcDownClaim{ Claim = "family_name", InIdToken = true },
-                        new OidcDownClaim{ Claim = "given_name", InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
                     },
                     ResponseTypes = new[] { "code" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
@@ -423,28 +424,32 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     {
                         new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "family_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "given_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "middle_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "nickname" },
-                                new OidcDownClaim { Claim = "preferred_username" },
-                                new OidcDownClaim { Claim = "profile" },
-                                new OidcDownClaim { Claim = "picture" },
-                                new OidcDownClaim { Claim = "website" },
-                                new OidcDownClaim { Claim = "gender" },
-                                new OidcDownClaim { Claim = "birthdate" },
-                                new OidcDownClaim { Claim = "zoneinfo" },
-                                new OidcDownClaim { Claim = "locale" },
-                                new OidcDownClaim { Claim = "updated_at" }
+                                new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
+                                new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Profile },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Picture },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Website },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Gender },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Locale },
+                                new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
                             }
                         },
                         new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "email", InIdToken = true  },
-                                new OidcDownClaim { Claim = "email_verified" }
+                                new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
                             }
                         },
+                    },
+                    Claims = new[]
+                    {
+                        new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
                     },
                     ResponseTypes = new[] { "id_token token", "id_token" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
@@ -485,47 +490,47 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         new OidcDownScope { Scope = "offline_access" },
                         new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "family_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "given_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "middle_name", InIdToken = true  },
-                                new OidcDownClaim { Claim = "nickname" },
-                                new OidcDownClaim { Claim = "preferred_username" },
-                                new OidcDownClaim { Claim = "profile" },
-                                new OidcDownClaim { Claim = "picture" },
-                                new OidcDownClaim { Claim = "website" },
-                                new OidcDownClaim { Claim = "gender" },
-                                new OidcDownClaim { Claim = "birthdate" },
-                                new OidcDownClaim { Claim = "zoneinfo" },
-                                new OidcDownClaim { Claim = "locale" },
-                                new OidcDownClaim { Claim = "updated_at" }
+                                new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
+                                new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Profile },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Picture },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Website },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Gender },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
+                                new OidcDownClaim { Claim = JwtClaimTypes.Locale },
+                                new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
                             }
                         },
                         new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "email", InIdToken = true  },
-                                new OidcDownClaim { Claim = "email_verified" }
+                                new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
                             }
                         },
                         new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "address", InIdToken = true  }
+                                new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
                             }
                         },
                         new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
                             {
-                                new OidcDownClaim { Claim = "phone_number", InIdToken = true  },
-                                new OidcDownClaim { Claim = "phone_number_verified" },
+                                new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
+                                new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
                             }
                         },
                     },
                     Claims = new[]
                     {
-                        new OidcDownClaim{ Claim = "email", InIdToken = true },
-                        new OidcDownClaim{ Claim = "name", InIdToken = true },
-                        new OidcDownClaim{ Claim = "family_name", InIdToken = true },
-                        new OidcDownClaim{ Claim = "given_name", InIdToken = true },
-                        new OidcDownClaim{ Claim = "role", InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
+                        new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
                     },
                     ResponseTypes = new[] { "code" },
                     RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback"), UrlCombine.Combine(baseUrl, "authentication/logout-callback") },
@@ -584,7 +589,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
                 SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
                 LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
-                Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname },
+                Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role },
                 MetadataLifetime = 1728000, // 20 days
                 SubjectConfirmationLifetime = 300, // 5 minutes
                 IssuedTokenLifetime = 36000 // 10 hours

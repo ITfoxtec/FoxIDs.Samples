@@ -270,7 +270,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         TokenUrl = $"{baseUrl}/connect/token",
                         EndSessionUrl = $"{baseUrl}/connect/endsession",
 
-                        // A less secure configuration to enable testing
+                        // A less secure configuration to enable local testing
                         ResponseType = IdentityConstants.ResponseTypes.IdToken,
 
                         // A more secure configuration

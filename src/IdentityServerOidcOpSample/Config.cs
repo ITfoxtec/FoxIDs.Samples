@@ -53,7 +53,7 @@ namespace IdentityServer
                 {
                     ClientId = clientSettings.ClientId,
 
-                    // A less secure configuration to enable testing
+                    // A less secure configuration to enable local testing
                     AllowedGrantTypes = GrantTypes.Implicit,
 
                     // A more secure configuration

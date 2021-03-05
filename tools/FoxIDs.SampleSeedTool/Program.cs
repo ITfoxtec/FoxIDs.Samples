@@ -23,7 +23,7 @@ namespace FoxIDs.SampleSeedTool
                 while (isRunning)
                 {
                     Console.WriteLine("Select seed action or click any key to end");
-                    Console.WriteLine("C: Create sample configuration");
+                    Console.WriteLine("C: Create sample configuration (omitting existing parties)");
                     Console.WriteLine("D: Delete sample configuration");
 
                     var key = Console.ReadKey();

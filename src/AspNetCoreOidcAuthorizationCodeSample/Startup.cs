@@ -262,8 +262,8 @@ namespace AspNetCoreOidcAuthorizationCodeSample
             {
                 case LoginType.FoxIDsLogin:
                     return settings.FoxIDsLoginUpParty;
-                case LoginType.AlternativeFoxIDs:
-                    return settings.AlternativeFoxIDsUpParty;
+                case LoginType.ParallelFoxIDs:
+                    return settings.ParallelFoxIDsUpParty;
                 case LoginType.IdentityServer:
                     return settings.IdentityServerUpParty;
                 case LoginType.SamlIdPSample:

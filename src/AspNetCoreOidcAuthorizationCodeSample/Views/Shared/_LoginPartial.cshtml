@@ -20,7 +20,7 @@ else
             @Html.ActionLink("SAML IdP AD FS Log in", "Login", "Auth", routeValues: new { loginType = LoginType.SamlIdPAdfs }, htmlAttributes: new { id = "loginLink" })
         </li>
         <li class="small">
-            @Html.ActionLink("OIDC alternative FoxIDs Log in", "Login", "Auth", routeValues: new { loginType = LoginType.AlternativeFoxIDs }, htmlAttributes: new { id = "loginLink" })
+            @Html.ActionLink("OIDC parallel FoxIDs Log in", "Login", "Auth", routeValues: new { loginType = LoginType.ParallelFoxIDs }, htmlAttributes: new { id = "loginLink" })
             @Html.ActionLink("OIDC IdentityServer Log in", "Login", "Auth", routeValues: new { loginType = LoginType.IdentityServer }, htmlAttributes: new { id = "loginLink" })
         </li>
         <li>@Html.ActionLink("FoxIDs Log in", "Login", "Auth", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>

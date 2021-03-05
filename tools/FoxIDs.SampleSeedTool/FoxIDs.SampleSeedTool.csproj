@@ -11,7 +11,7 @@
 
 	<ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="ITfoxtec.Identity" Version="2.0.28" />
+    <PackageReference Include="ITfoxtec.Identity" Version="2.0.36" />
 		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.1.21" />
 		<PackageReference Include="NSwag.MSBuild" Version="13.6.1">
 			<PrivateAssets>all</PrivateAssets>
@@ -25,6 +25,12 @@
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="identityserver-tempkey.jwk">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">

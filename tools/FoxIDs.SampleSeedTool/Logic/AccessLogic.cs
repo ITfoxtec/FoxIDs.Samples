@@ -22,11 +22,11 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             if (cacheExpiresAt < DateTimeOffset.UtcNow.AddSeconds(-5).ToUnixTimeSeconds())
             {
-                Console.WriteLine("Getting sample seed client access token.");
+                Console.WriteLine("\t\tGetting sample seed client access token.");
                 (var accessToken, var expiresIn) = await tokenHelper.GetAccessTokenWithClientCredentialsAsync(settings.ClientId, settings.ClientSecret, settings.RedirectUri, "foxids_control_api:foxids:tenant");
                 accessTokenCache = accessToken;
                 cacheExpiresAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + expiresIn;
-                Console.WriteLine($"Access token {accessToken.Substring(0, 40)}...");
+                Console.WriteLine($"\t\tAccess token: {accessToken.Substring(0, 40)}...");
             }
             return accessTokenCache;
         }

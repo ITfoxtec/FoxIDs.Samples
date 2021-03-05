@@ -16,12 +16,12 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <li class="small">
-            @Html.ActionLink("SAML IdP Sample Log in", "Login", "Auth", routeValues: new { loginType = LoginType.SamlIdPSample }, htmlAttributes: new { id = "loginLink" })
-            @Html.ActionLink("SAML IdP AD FS Log in", "Login", "Auth", routeValues: new { loginType = LoginType.SamlIdPAdfs }, htmlAttributes: new { id = "loginLink" })
+            @Html.ActionLink("SAML IdP Sample Log in", "Login", "Saml", routeValues: new { loginType = LoginType.SamlIdPSample }, htmlAttributes: new { id = "loginLink" })
+            @Html.ActionLink("SAML IdP AD FS Log in", "Login", "Saml", routeValues: new { loginType = LoginType.SamlIdPAdfs }, htmlAttributes: new { id = "loginLink" })
         </li>
         <li class="small">
-            @Html.ActionLink("OIDC parallel FoxIDs Log in", "Login", "Auth", routeValues: new { loginType = LoginType.ParallelFoxIDs }, htmlAttributes: new { id = "loginLink" })
-            @Html.ActionLink("OIDC IdentityServer Log in", "Login", "Auth", routeValues: new { loginType = LoginType.IdentityServer }, htmlAttributes: new { id = "loginLink" })
+            @Html.ActionLink("OIDC parallel FoxIDs Log in", "Login", "Saml", routeValues: new { loginType = LoginType.ParallelFoxIDs }, htmlAttributes: new { id = "loginLink" })
+            @Html.ActionLink("OIDC IdentityServer Log in", "Login", "Saml", routeValues: new { loginType = LoginType.IdentityServer }, htmlAttributes: new { id = "loginLink" })
         </li>
         <li>@Html.ActionLink("FoxIDs Log in", "Login", "Saml", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>

@@ -211,6 +211,10 @@ namespace AspNetCoreSamlSample.Controllers
             {
                 case LoginType.FoxIDsLogin:
                     return settings.FoxIDsLoginUpParty;
+                case LoginType.ParallelFoxIDs:
+                    return settings.ParallelFoxIDsUpParty;
+                case LoginType.IdentityServer:
+                    return settings.IdentityServerUpParty;
                 case LoginType.SamlIdPSample:
                     return settings.SamlIdPSampleUpParty;
                 case LoginType.SamlIdPAdfs:

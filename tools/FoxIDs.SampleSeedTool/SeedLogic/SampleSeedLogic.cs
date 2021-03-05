@@ -40,7 +40,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
         {
             Console.WriteLine("Create sample configuration");
 
-            await CreateLoginUpPartyIfNotExistsAsync();
+            await CreateLoginUpPartyAsync();
 
             await CreateAspNetCoreSamlIdPSampleUpPartyAsync();
             await CreateIdentityserverOidcOpUpPartyAsync();
@@ -175,402 +175,431 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             Console.WriteLine($"Sample configuration deleted");
         }
 
-        private async Task CreateLoginUpPartyIfNotExistsAsync()
+        private async Task CreateLoginUpPartyAsync()
         {
-            var name = loginName;
-            Console.WriteLine($"Check if '{name}' exists");
-
-            try
+            Func<string, Task> getAction = async (name) =>
             {
                 _ = await foxIDsApiClient.GetLoginUpPartyAsync(name);
+            };
 
-                Console.WriteLine($"'{name}' exists");
-            }
-            catch (FoxIDsApiException ex)
+            Func<string, Task> postAction = async (name) =>
             {
-                if (ex.StatusCode == StatusCodes.Status404NotFound)
+                var loginUpParty = new LoginUpParty
                 {
-                    Console.WriteLine($"Do not exist, creating '{name}'");
+                    Name = name,
+                    SessionLifetime = 3600,
+                    SessionAbsoluteLifetime = 43200,
+                    EnableCancelLogin = true,
+                    EnableCreateUser = true,
+                    LogoutConsent = LoginUpPartyLogoutConsent.IfRequired,
+                };
 
-                    var loginUpParty = new LoginUpParty
-                    {
-                        Name = name,
-                        SessionLifetime = 3600,
-                        SessionAbsoluteLifetime = 43200,
-                        EnableCancelLogin = true,
-                        EnableCreateUser = true,
-                        LogoutConsent = LoginUpPartyLogoutConsent.IfRequired,
-                    };
+                await foxIDsApiClient.PostLoginUpPartyAsync(loginUpParty);
+            };
 
-                    await foxIDsApiClient.PostLoginUpPartyAsync(loginUpParty);
-
-                    Console.WriteLine($"'{name}' created");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await CreateIfNotExistsAsync(loginName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreSamlIdPSampleUpPartyAsync()
         {
-            var name = aspNetCoreSamlIdPSampleUpPartyName;
-            Console.WriteLine($"Creating '{name}'");
-            var baseUrl = "https://localhost:44342";
-
-            var samlUpParty = new SamlUpParty
-            {                
-                Name = name,
-                Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlidpsample",
-                Keys = new[]
-                {
-                    new JsonWebKey
-                    {
-                        Kty = "RSA",
-                        Kid = "27EB823D00B02FA7A02AA754146B6CFC60B8C301",
-                        X5c = new[] { "MIICzzCCAbegAwIBAgIJANht5lyL71T0MA0GCSqGSIb3DQEBCwUAMBkxFzAVBgNVBAMTDnRlc3Qtc2lnbi1jZXJ0MB4XDTE4MTAxMTE1MDEyMVoXDTE5MTAxMjE1MDEyMVowGTEXMBUGA1UEAxMOdGVzdC1zaWduLWNlcnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDUf6b4mtamR7DvTdtz6fdtEe+aXHpzXqvTrjf3SbN5Hol+kAvrIGVXcnJJSfO6N9yC/s8fPE4crVJKwceGkeykzt/j0UHRafmX7e7zzCPO8nd8pVSwZtflogNVdYbrIPTIHLP/eOrPt4Im2PHU0Q561frZjIDgqaoGmtpTLof/0z3GoD52hesZyeE3mW9Q0/+TngLne52rmDe9gmebtmckM7wJw9DXbaJhI24KZPn25PRYnPJMuyBh2EFjJ6qjIAQodpaMstdH6eGJyTan9J/yI6yPhYZ3jl4UngwZ7OpSiGB7m335SYIpPRGxZSdN/tGGdVPV1TIyBU6QFD5mn259AgMBAAGjGjAYMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgXgMA0GCSqGSIb3DQEBCwUAA4IBAQCCYJoiq4sVqTyJ5md4VJIvT3Ezoo6MUDxPmC+bcdT+4j0rYPJr69Fv7celEcS7NEnDK3JQXU2bJ1HAAExBz53bqZphlFnuDFQcJU2lYGaOamDUN/v2aEM/g/Zrlbs4/V4WsCETUkcq7FwmtVia58AZSOtBEqpS7OpdEq4WUmWPRqpjDn+Ne1n921qIKMDtczqOCGc/BREbFUjy49gY/+a57WUxXPhL0gWrGHBwSLIJHp/m9sG7wFA6a2wnvgycrAMYFZ50iGe6IcSzktRdQXd5lTeVtl4JgftwIplIqWyuTYoHwTX+xo2qMSMCF38w31j6BASAmXJniKWeK8aeQ9o7" },
-                        X5t = "J-uCPQCwL6egKqdUFGts_GC4wwE",
-                        N = "1H-m-JrWpkew703bc-n3bRHvmlx6c16r064390mzeR6JfpAL6yBlV3JySUnzujfcgv7PHzxOHK1SSsHHhpHspM7f49FB0Wn5l-3u88wjzvJ3fKVUsGbX5aIDVXWG6yD0yByz_3jqz7eCJtjx1NEOetX62YyA4KmqBpraUy6H_9M9xqA-doXrGcnhN5lvUNP_k54C53udq5g3vYJnm7ZnJDO8CcPQ122iYSNuCmT59uT0WJzyTLsgYdhBYyeqoyAEKHaWjLLXR-nhick2p_Sf8iOsj4WGd45eFJ4MGezqUohge5t9-UmCKT0RsWUnTf7RhnVT1dUyMgVOkBQ-Zp9ufQ",
-                        E = "AQAB"
-                    }
-                },
-                //SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
-                //CertificateValidationMode = X509CertificateValidationMode.None,
-                //RevocationMode = X509RevocationMode.NoCheck,
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
-                AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
-                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
-                LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout"),
-                Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role }
+            Func<string, Task> getAction = async (name) =>
+            {
+                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name);
             };
 
-            await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
+            Func<string, Task> postAction = async (name) =>
+            {
+                var baseUrl = "https://localhost:44342";
 
-            Console.WriteLine($"'{name}' created");
+                var samlUpParty = new SamlUpParty
+                {
+                    Name = name,
+                    Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlidpsample",
+                    Keys = new[]
+                    {
+                        new JsonWebKey
+                        {
+                            Kty = "RSA",
+                            Kid = "27EB823D00B02FA7A02AA754146B6CFC60B8C301",
+                            X5c = new[] { "MIICzzCCAbegAwIBAgIJANht5lyL71T0MA0GCSqGSIb3DQEBCwUAMBkxFzAVBgNVBAMTDnRlc3Qtc2lnbi1jZXJ0MB4XDTE4MTAxMTE1MDEyMVoXDTE5MTAxMjE1MDEyMVowGTEXMBUGA1UEAxMOdGVzdC1zaWduLWNlcnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDUf6b4mtamR7DvTdtz6fdtEe+aXHpzXqvTrjf3SbN5Hol+kAvrIGVXcnJJSfO6N9yC/s8fPE4crVJKwceGkeykzt/j0UHRafmX7e7zzCPO8nd8pVSwZtflogNVdYbrIPTIHLP/eOrPt4Im2PHU0Q561frZjIDgqaoGmtpTLof/0z3GoD52hesZyeE3mW9Q0/+TngLne52rmDe9gmebtmckM7wJw9DXbaJhI24KZPn25PRYnPJMuyBh2EFjJ6qjIAQodpaMstdH6eGJyTan9J/yI6yPhYZ3jl4UngwZ7OpSiGB7m335SYIpPRGxZSdN/tGGdVPV1TIyBU6QFD5mn259AgMBAAGjGjAYMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgXgMA0GCSqGSIb3DQEBCwUAA4IBAQCCYJoiq4sVqTyJ5md4VJIvT3Ezoo6MUDxPmC+bcdT+4j0rYPJr69Fv7celEcS7NEnDK3JQXU2bJ1HAAExBz53bqZphlFnuDFQcJU2lYGaOamDUN/v2aEM/g/Zrlbs4/V4WsCETUkcq7FwmtVia58AZSOtBEqpS7OpdEq4WUmWPRqpjDn+Ne1n921qIKMDtczqOCGc/BREbFUjy49gY/+a57WUxXPhL0gWrGHBwSLIJHp/m9sG7wFA6a2wnvgycrAMYFZ50iGe6IcSzktRdQXd5lTeVtl4JgftwIplIqWyuTYoHwTX+xo2qMSMCF38w31j6BASAmXJniKWeK8aeQ9o7" },
+                            X5t = "J-uCPQCwL6egKqdUFGts_GC4wwE",
+                            N = "1H-m-JrWpkew703bc-n3bRHvmlx6c16r064390mzeR6JfpAL6yBlV3JySUnzujfcgv7PHzxOHK1SSsHHhpHspM7f49FB0Wn5l-3u88wjzvJ3fKVUsGbX5aIDVXWG6yD0yByz_3jqz7eCJtjx1NEOetX62YyA4KmqBpraUy6H_9M9xqA-doXrGcnhN5lvUNP_k54C53udq5g3vYJnm7ZnJDO8CcPQ122iYSNuCmT59uT0WJzyTLsgYdhBYyeqoyAEKHaWjLLXR-nhick2p_Sf8iOsj4WGd45eFJ4MGezqUohge5t9-UmCKT0RsWUnTf7RhnVT1dUyMgVOkBQ-Zp9ufQ",
+                            E = "AQAB"
+                        }
+                    },
+                    //SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+                    //CertificateValidationMode = X509CertificateValidationMode.None,
+                    //RevocationMode = X509RevocationMode.NoCheck,
+                    AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
+                    AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
+                    LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
+                    LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout"),
+                    Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role }
+                };
+
+                await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
+            };
+
+            await CreateIfNotExistsAsync(aspNetCoreSamlIdPSampleUpPartyName, getAction, postAction);
         }
 
         private async Task CreateIdentityserverOidcOpUpPartyAsync()
         {
-            var name = identityserverOidcOpUpPartyName;
-            Console.WriteLine($"Creating '{name}'");
-            var baseUrl = "https://localhost:44346";
-
-            var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JsonWebKey>();
-
-            var oidcUpParty = new OidcUpParty
+            Func<string, Task> getAction = async (name) =>
             {
-                Name = name,
-                Authority = baseUrl,
-                UpdateState = PartyUpdateStates.Manual,
-                Issuer = baseUrl,
-                Keys = new JsonWebKey[] { key },
-
-                Client = new OidcUpClient
-                {
-                    AuthorizeUrl = $"{baseUrl}/connect/authorize",
-                    TokenUrl = $"{baseUrl}/connect/token",
-                    EndSessionUrl = $"{baseUrl}/connect/endsession",
-
-                    ResponseType = IdentityConstants.ResponseTypes.Code,
-                    EnablePkce = true,
-                    ClientSecret = "2tqjW-KwiGaR4KRt0IJ8KAJYw3pyPTK8S_dr_YE5nbw",
-
-                    Scopes = new string[] { "profile", "email" },
-                    Claims = new string[] { "access_token", JwtClaimTypes.Email, JwtClaimTypes.EmailVerified, JwtClaimTypes.FamilyName, JwtClaimTypes.GivenName, JwtClaimTypes.Name, JwtClaimTypes.Role },
-
-                    UseIdTokenClaims = true,
-
-                    ResponseMode = IdentityConstants.ResponseModes.FormPost
-                }
+                _ = await foxIDsApiClient.GetOidcUpPartyAsync(name);
             };
 
-            await foxIDsApiClient.PostOidcUpPartyAsync(oidcUpParty);
+            Func<string, Task> postAction = async (name) =>
+            {
+                var baseUrl = "https://localhost:44346";
 
-            Console.WriteLine($"'{name}' created");
+                var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JsonWebKey>();
+
+                var oidcUpParty = new OidcUpParty
+                {
+                    Name = name,
+                    Authority = baseUrl,
+                    UpdateState = PartyUpdateStates.Manual,
+                    Issuer = baseUrl,
+                    Keys = new JsonWebKey[] { key },
+
+                    Client = new OidcUpClient
+                    {
+                        AuthorizeUrl = $"{baseUrl}/connect/authorize",
+                        TokenUrl = $"{baseUrl}/connect/token",
+                        EndSessionUrl = $"{baseUrl}/connect/endsession",
+
+                        ResponseType = IdentityConstants.ResponseTypes.Code,
+                        EnablePkce = true,
+                        ClientSecret = "2tqjW-KwiGaR4KRt0IJ8KAJYw3pyPTK8S_dr_YE5nbw",
+
+                        Scopes = new string[] { "profile", "email" },
+                        Claims = new string[] { "access_token", JwtClaimTypes.Email, JwtClaimTypes.EmailVerified, JwtClaimTypes.FamilyName, JwtClaimTypes.GivenName, JwtClaimTypes.Name, JwtClaimTypes.Role },
+
+                        UseIdTokenClaims = true,
+
+                        ResponseMode = IdentityConstants.ResponseModes.FormPost
+                    }
+                };
+
+                await foxIDsApiClient.PostOidcUpPartyAsync(oidcUpParty);
+            };
+
+            await CreateIfNotExistsAsync(identityserverOidcOpUpPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreApi1SampleDownPartyAsync()
         {
-            var name = aspNetCoreApi1SampleDownPartyName;
-            Console.WriteLine($"Creating '{name}'");
-
-            var oauthDownParty = new OAuthDownParty
+            Func<string, Task> getAction = async (name) =>
             {
-                Name = name,
-                Resource = new OAuthDownResource
-                {
-                    Scopes = new[] { "admin", "some_access" }
-                }
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
             };
 
-            await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+            Func<string, Task> postAction = async (name) =>
+            {
+                var oauthDownParty = new OAuthDownParty
+                {
+                    Name = name,
+                    Resource = new OAuthDownResource
+                    {
+                        Scopes = new[] { "admin", "some_access" }
+                    }
+                };
 
-            Console.WriteLine($"'{name}' created");
+                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+            };
+
+            await CreateIfNotExistsAsync(aspNetCoreApi1SampleDownPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync()
         {
-            var name = aspNetCoreOidcAuthCodeSampleDownPartyName;
-            Console.WriteLine($"Creating '{name}'");
-            var baseUrl = "https://localhost:44340";
-
-            var oidcDownParty = new OidcDownParty
+            Func<string, Task> getAction = async (name) =>
             {
-                Name = name,
-                AllowCorsOrigins = new[] { baseUrl },
-                AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
-                Client = new OidcDownClient
-                {
-                    ResourceScopes = new[]
-                    {
-                        // Scope to the application it self.
-                        //new OAuthDownResourceScope { Resource = name },
-                        // Scope to API1.
-                        new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
-                    },
-                    Scopes = new[]
-                    {
-                        new OidcDownScope { Scope = "offline_access" },
-                        new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
-                                new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Profile },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Picture },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Website },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Gender },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Locale },
-                                new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                            }
-                        },
-                        new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                            }
-                        },
-                        new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
-                            }
-                        },
-                        new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
-                            }
-                        },
-                    },
-                    Claims = new[]
-                    {
-                        new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
-                        new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
-                        new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
-                        new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
-                        new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                    },
-                    ResponseTypes = new[] { "code" },
-                    RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
-                    RequirePkce = true,
-                    RequireLogoutIdTokenHint = true,
-                    AuthorizationCodeLifetime = 30, // 30 seconds 
-                    IdTokenLifetime = 600, // 10 minutes
-                    AccessTokenLifetime = 600, // 10 minutes
-                    RefreshTokenLifetime = 900, // 15 minutes
-                    RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
-                    RefreshTokenUseOneTime = false,
-                    RefreshTokenLifetimeUnlimited = false
-                }
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
             };
 
-            await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
-
-            var secret = "KnhiOHuUz1zolY5k4B_r2M3iGkpkJmsmPwQ0RwS5KjM";
-            await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+            Func<string, Task> postAction = async (name) =>
             {
-                PartyName = oidcDownParty.Name,
-                Secrets = new string[] { secret },
-            });
-            Console.WriteLine($"'{name}' client secret is: {secret}");
-            Console.WriteLine($"'{name}' created");
+                var baseUrl = "https://localhost:44340";
+
+                var oidcDownParty = new OidcDownParty
+                {
+                    Name = name,
+                    AllowCorsOrigins = new[] { baseUrl },
+                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    Client = new OidcDownClient
+                    {
+                        ResourceScopes = new[]
+                        {
+                            // Scope to the application it self.
+                            //new OAuthDownResourceScope { Resource = name },
+                            // Scope to API1.
+                            new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
+                        },
+                        Scopes = new[]
+                        {
+                            new OidcDownScope { Scope = "offline_access" },
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Profile },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Picture },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Website },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Gender },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Locale },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
+                                }
+                            },
+                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
+                                }
+                            },
+                            new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
+                                }
+                            },
+                            new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
+                                }
+                            },
+                        },
+                        Claims = new[]
+                        {
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
+                        },
+                        ResponseTypes = new[] { "code" },
+                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                        RequirePkce = true,
+                        RequireLogoutIdTokenHint = true,
+                        AuthorizationCodeLifetime = 30, // 30 seconds 
+                        IdTokenLifetime = 600, // 10 minutes
+                        AccessTokenLifetime = 600, // 10 minutes
+                        RefreshTokenLifetime = 900, // 15 minutes
+                        RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
+                        RefreshTokenUseOneTime = false,
+                        RefreshTokenLifetimeUnlimited = false
+                    }
+                };
+
+                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+
+                var secret = "KnhiOHuUz1zolY5k4B_r2M3iGkpkJmsmPwQ0RwS5KjM";
+                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                {
+                    PartyName = oidcDownParty.Name,
+                    Secrets = new string[] { secret },
+                });
+                Console.WriteLine($"\t'{name}' client secret is: {secret}");
+            };
+
+            await CreateIfNotExistsAsync(aspNetCoreOidcAuthCodeSampleDownPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreOidcImplicitSampleDownPartyAsync()
         {
-            var name = aspNetCoreOidcImplicitSampleDownPartyName;
-            Console.WriteLine($"Creating '{name}'");
-            var baseUrl = "https://localhost:44341";
-
-            var oidcDownParty = new OidcDownParty
+            Func<string, Task> getAction = async (name) =>
             {
-                Name = name,
-                AllowCorsOrigins = new[] { baseUrl },
-                AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
-                Client = new OidcDownClient
-                {
-                    ResourceScopes = new[]
-                    {
-                        // Scope to the application it self.
-                        new OAuthDownResourceScope { Resource = name }
-                    },
-                    Scopes = new[]
-                    {
-                        new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
-                                new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Profile },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Picture },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Website },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Gender },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Locale },
-                                new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                            }
-                        },
-                        new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                            }
-                        },
-                    },
-                    Claims = new[]
-                    {
-                        new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                    },
-                    ResponseTypes = new[] { "id_token token", "id_token" },
-                    RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
-                    RequirePkce = false,
-                    RequireLogoutIdTokenHint = true,
-                    IdTokenLifetime = 3600, // 60 minutes 
-                    AccessTokenLifetime = 3600 // 60 minutes 
-                }
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
             };
 
-            await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+            Func<string, Task> postAction = async (name) =>
+            {
+                var baseUrl = "https://localhost:44341";
 
-            Console.WriteLine($"'{name}' created");
+                var oidcDownParty = new OidcDownParty
+                {
+                    Name = name,
+                    AllowCorsOrigins = new[] { baseUrl },
+                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    Client = new OidcDownClient
+                    {
+                        ResourceScopes = new[]
+                        {
+                            // Scope to the application it self.
+                            new OAuthDownResourceScope { Resource = name }
+                        },
+                        Scopes = new[]
+                        {
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Profile },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Picture },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Website },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Gender },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Locale },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
+                                }
+                            },
+                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
+                                }
+                            },
+                        },
+                        Claims = new[]
+                        {
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
+                        },
+                        ResponseTypes = new[] { "id_token token", "id_token" },
+                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                        RequirePkce = false,
+                        RequireLogoutIdTokenHint = true,
+                        IdTokenLifetime = 3600, // 60 minutes 
+                        AccessTokenLifetime = 3600 // 60 minutes 
+                    }
+                };
+
+                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+            };
+
+            await CreateIfNotExistsAsync(aspNetCoreOidcImplicitSampleDownPartyName, getAction, postAction);
         }
 
         private async Task CreateBlazorOidcAuthCodePkceSampleDownPartyAsync()
         {
-            var name = blazorOidcAuthCodePkceSampleDownPartyName;
-            Console.WriteLine($"Creating '{name}'");
-            var baseUrl = "https://localhost:44345";
-
-            var oidcDownParty = new OidcDownParty
+            Func<string, Task> getAction = async (name) =>
             {
-                Name = name,
-                AllowCorsOrigins = new[] { baseUrl },
-                AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
-                Client = new OidcDownClient
-                {
-                    ResourceScopes = new[]
-                    {
-                        // Scope to the application it self.
-                        //new OAuthDownResourceScope { Resource = name },
-                        // Scope to API1.
-                        new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
-                    },
-                    Scopes = new[]
-                    {
-                        new OidcDownScope { Scope = "offline_access" },
-                        new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
-                                new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Profile },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Picture },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Website },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Gender },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
-                                new OidcDownClaim { Claim = JwtClaimTypes.Locale },
-                                new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                            }
-                        },
-                        new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                            }
-                        },
-                        new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
-                            }
-                        },
-                        new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
-                            {
-                                new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
-                                new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
-                            }
-                        },
-                    },
-                    Claims = new[]
-                    {
-                        new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
-                        new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
-                        new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
-                        new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
-                        new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                    },
-                    ResponseTypes = new[] { "code" },
-                    RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback"), UrlCombine.Combine(baseUrl, "authentication/logout-callback") },
-                    RequirePkce = true,
-                    RequireLogoutIdTokenHint = true,
-                    AuthorizationCodeLifetime = 30, // 30 seconds 
-                    IdTokenLifetime = 600, // 10 minutes
-                    AccessTokenLifetime = 600, // 10 minutes
-                    RefreshTokenLifetime = 900, // 15 minutes
-                    RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
-                    RefreshTokenUseOneTime = false,
-                    RefreshTokenLifetimeUnlimited = false
-                }
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
             };
 
-            await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
-
-            var secret = RandomGenerator.Generate(32);
-            await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+            Func<string, Task> postAction = async (name) =>
             {
-                PartyName = oidcDownParty.Name,
-                Secrets = new string[] { secret },
-            });
-            Console.WriteLine($"'{name}' client secret is: {secret}");
-            Console.WriteLine($"'{name}' created");
+                var baseUrl = "https://localhost:44345";
+
+                var oidcDownParty = new OidcDownParty
+                {
+                    Name = name,
+                    AllowCorsOrigins = new[] { baseUrl },
+                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    Client = new OidcDownClient
+                    {
+                        ResourceScopes = new[]
+                        {
+                            // Scope to the application it self.
+                            //new OAuthDownResourceScope { Resource = name },
+                            // Scope to API1.
+                            new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
+                        },
+                        Scopes = new[]
+                        {
+                            new OidcDownScope { Scope = "offline_access" },
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Profile },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Picture },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Website },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Gender },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Locale },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
+                                }
+                            },
+                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
+                                }
+                            },
+                            new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
+                                }
+                            },
+                            new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
+                                }
+                            },
+                        },
+                        Claims = new[]
+                        {
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
+                        },
+                        ResponseTypes = new[] { "code" },
+                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback"), UrlCombine.Combine(baseUrl, "authentication/logout-callback") },
+                        RequirePkce = true,
+                        RequireLogoutIdTokenHint = true,
+                        AuthorizationCodeLifetime = 30, // 30 seconds 
+                        IdTokenLifetime = 600, // 10 minutes
+                        AccessTokenLifetime = 600, // 10 minutes
+                        RefreshTokenLifetime = 900, // 15 minutes
+                        RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
+                        RefreshTokenUseOneTime = false,
+                        RefreshTokenLifetimeUnlimited = false
+                    }
+                };
+
+                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+
+                var secret = RandomGenerator.Generate(32);
+                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                {
+                    PartyName = oidcDownParty.Name,
+                    Secrets = new string[] { secret },
+                });
+                Console.WriteLine($"\t'{name}' client secret is: {secret}");
+            };
+
+            await CreateIfNotExistsAsync(blazorOidcAuthCodePkceSampleDownPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreSamlSampleDownPartyAsync()
         {
-            var name = aspNetCoreSamlSampleDownPartyName;
-            Console.WriteLine($"Creating '{name}'");
-            var baseUrl = "https://localhost:44343";
-
-            var samlUpParty = new SamlDownParty
+            Func<string, Task> getAction = async (name) =>
             {
-                Name = name,
-                Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample",
-                AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
-                Keys = new[]
+                _ = await foxIDsApiClient.GetSamlDownPartyAsync(name);
+            };
+
+            Func<string, Task> postAction = async (name) =>
+            {
+                var baseUrl = "https://localhost:44343";
+
+                var samlUpParty = new SamlDownParty
                 {
+                    Name = name,
+                    Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample",
+                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    Keys = new[]
+                    {
                     new JsonWebKey
                     {
                         Kty = "RSA",
@@ -581,25 +610,49 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         E = "AQAB"
                     }
                 },
-                SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
-                CertificateValidationMode = X509CertificateValidationMode.None,
-                RevocationMode = X509RevocationMode.NoCheck,
-                AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
-                AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },
-                LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
-                SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
-                LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
-                Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role },
-                MetadataLifetime = 1728000, // 20 days
-                SubjectConfirmationLifetime = 300, // 5 minutes
-                IssuedTokenLifetime = 36000 // 10 hours
+                    SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+                    CertificateValidationMode = X509CertificateValidationMode.None,
+                    RevocationMode = X509RevocationMode.NoCheck,
+                    AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
+                    AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },
+                    LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
+                    SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
+                    LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
+                    Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role },
+                    MetadataLifetime = 1728000, // 20 days
+                    SubjectConfirmationLifetime = 300, // 5 minutes
+                    IssuedTokenLifetime = 36000 // 10 hours
+                };
+
+                await foxIDsApiClient.PostSamlDownPartyAsync(samlUpParty);
             };
 
-            await foxIDsApiClient.PostSamlDownPartyAsync(samlUpParty);
-
-            Console.WriteLine($"'{name}' created");
+            await CreateIfNotExistsAsync(aspNetCoreSamlSampleDownPartyName, getAction, postAction);
         }
 
+        private async Task CreateIfNotExistsAsync(string name, Func<string, Task> getActionAsync, Func<string, Task> postActionAsync)
+        {
+            Console.WriteLine($"Creating '{name}'");
 
+            try
+            {
+                await getActionAsync(name);
+
+                Console.WriteLine($"\t'{name}' already exists");
+            }
+            catch (FoxIDsApiException ex)
+            {
+                if (ex.StatusCode == StatusCodes.Status404NotFound)
+                {
+                    await postActionAsync(name);
+
+                    Console.WriteLine($"\t'{name}' created");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
     }
 }

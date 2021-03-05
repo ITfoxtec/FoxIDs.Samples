@@ -270,9 +270,13 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                         TokenUrl = $"{baseUrl}/connect/token",
                         EndSessionUrl = $"{baseUrl}/connect/endsession",
 
-                        ResponseType = IdentityConstants.ResponseTypes.Code,
-                        EnablePkce = true,
-                        ClientSecret = "2tqjW-KwiGaR4KRt0IJ8KAJYw3pyPTK8S_dr_YE5nbw",
+                        // A less secure configuration to enable testing
+                        ResponseType = IdentityConstants.ResponseTypes.IdToken,
+
+                        // A more secure configuration
+                        //ResponseType = IdentityConstants.ResponseTypes.Code,
+                        //EnablePkce = true,
+                        //ClientSecret = "2tqjW-KwiGaR4KRt0IJ8KAJYw3pyPTK8S_dr_YE5nbw",
 
                         Scopes = new string[] { "profile", "email" },
                         Claims = new string[] { "access_token", JwtClaimTypes.Email, JwtClaimTypes.EmailVerified, JwtClaimTypes.FamilyName, JwtClaimTypes.GivenName, JwtClaimTypes.Name, JwtClaimTypes.Role },

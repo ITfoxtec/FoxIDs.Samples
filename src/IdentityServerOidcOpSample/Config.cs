@@ -53,13 +53,17 @@ namespace IdentityServer
                 {
                     ClientId = clientSettings.ClientId,
 
-                    AllowedGrantTypes = GrantTypes.Code,
-                    ClientSecrets =
-                    {
-                        new Secret(clientSettings.ClientSecret.Sha256())
-                    },
+                    // A less secure configuration to enable testing
+                    AllowedGrantTypes = GrantTypes.Implicit,
 
-                    RequirePkce = true,
+                    // A more secure configuration
+                    //AllowedGrantTypes = GrantTypes.Code,
+                    //RequirePkce = true,
+                    //ClientSecrets =
+                    //{
+                    //    new Secret(clientSettings.ClientSecret.Sha256())
+                    //},
+
                     AlwaysIncludeUserClaimsInIdToken = true,
 
                     RedirectUris = { clientSettings.RedirectUrl },

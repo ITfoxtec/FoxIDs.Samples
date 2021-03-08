@@ -261,7 +261,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     Name = name,
                     Authority = baseUrl,
                     UpdateState = PartyUpdateStates.Manual,
-                    Issuer = baseUrl,
+                    Issuers = new string[] { baseUrl },
                     Keys = new JsonWebKey[] { key },
 
                     Client = new OidcUpClient

@@ -5,6 +5,7 @@
         FoxIDsLogin,
         ParallelFoxIDs,
         IdentityServer,
+        AzureAd,
         SamlIdPSample,
         SamlIdPAdfs,
     }

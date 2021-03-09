@@ -266,6 +266,8 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     return settings.ParallelFoxIDsUpParty;
                 case LoginType.IdentityServer:
                     return settings.IdentityServerUpParty;
+                case LoginType.AzureAd:
+                    return settings.AzureAdUpParty;
                 case LoginType.SamlIdPSample:
                     return settings.SamlIdPSampleUpParty;
                 case LoginType.SamlIdPAdfs:

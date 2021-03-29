@@ -4,21 +4,26 @@ using AspNetCoreSamlIdPSample.Models;
 using ITfoxtec.Identity.Saml2;
 using Microsoft.Extensions.Options;
 using ITfoxtec.Identity;
+using FoxIDs.SampleHelperLibrary.Repository;
+using System.Threading.Tasks;
 
 namespace AspNetCoreSamlIdPSample.Controllers
 {
     public class HomeController : Controller
     {
         private readonly Saml2Configuration saml2Config;
+        private readonly IdPSessionCookieRepository idPSessionCookieRepository;
 
-        public HomeController(IOptionsMonitor<Saml2Configuration> configAccessor)
+        public HomeController(IOptionsMonitor<Saml2Configuration> configAccessor, IdPSessionCookieRepository idPSessionCookieRepository)
         {
             saml2Config = configAccessor.CurrentValue;
+            this.idPSessionCookieRepository = idPSessionCookieRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.PublicCertificate = saml2Config.SigningCertificate.ToMSJsonWebKeyAsync().ToJsonIndented();
+            ViewBag.PublicCertificate = (await saml2Config.SigningCertificate.ToMSJsonWebKeyAsync()).ToJsonIndented();
+            ViewBag.Session = await idPSessionCookieRepository.GetAsync();
 
             return View();
         }

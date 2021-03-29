@@ -5,6 +5,7 @@ using System.Security.Claims;
 using ITfoxtec.Identity.Saml2;
 using Microsoft.Extensions.Options;
 using ITfoxtec.Identity;
+using System.Threading.Tasks;
 
 namespace AspNetCoreSamlSample.Controllers
 {
@@ -17,9 +18,9 @@ namespace AspNetCoreSamlSample.Controllers
             saml2Config = configAccessor.CurrentValue;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.PublicCertificate = saml2Config.SigningCertificate.ToMSJsonWebKeyAsync().ToJsonIndented();
+            ViewBag.PublicCertificate = (await saml2Config.SigningCertificate.ToMSJsonWebKeyAsync()).ToJsonIndented();
 
             return View();
         }

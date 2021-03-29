@@ -11,3 +11,24 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12">
+        <h2>The user session</h2>
+        <a asp-area="" asp-controller="Home" asp-action="Index">Refresh</a>
+        <p>
+            @{
+                var session = ViewBag.Session as IdPSession;
+            }
+            @if (session != null)
+            {
+                <strong>NameIdentifier</strong> 
+                <br /> 
+                <span style="padding-left: 10px">@session.NameIdentifier</span> 
+                <br />
+                <strong>UPN</strong> <br /> <span style="padding-left: 10px">@session.Upn</span> <br />
+                <strong>Email</strong> <br /> <span style="padding-left: 10px">@session.Email</span> <br />
+                <strong>SessionIndex</strong> <br /> <span style="padding-left: 10px">@session.SessionIndex</span> <br />
+            }
+        </p>
+    </div>
+</div>

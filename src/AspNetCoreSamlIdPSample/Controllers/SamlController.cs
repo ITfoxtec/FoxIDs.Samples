@@ -91,6 +91,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
                 {
                     session = new IdPSession
                     {
+                        RelyingPartyIssuer = relyingParty.Issuer,
                         NameIdentifier = "12345",
                         Upn = "12345@email.test",
                         Email = "some@email.test",
@@ -119,6 +120,18 @@ namespace AspNetCoreSamlIdPSample.Controllers
         [Route("Logout")]
         public async Task<IActionResult> Logout()
         {
+            if (new Saml2PostBinding().IsRequest(Request.ToGenericHttpRequest()))
+            {
+                return await LogoutInternal();
+            }
+            else
+            {
+                return SingleLogoutResponseInternal();
+            }
+        }
+
+        private async Task<IActionResult> LogoutInternal()
+        {
             var requestBinding = new Saml2PostBinding();
             var relyingParty = ValidateRelyingParty(ReadRelyingPartyFromLogoutRequest(requestBinding));
 
@@ -139,6 +152,36 @@ namespace AspNetCoreSamlIdPSample.Controllers
             }
         }
 
+        private IActionResult SingleLogoutResponseInternal()
+        {
+            var responseBinding = new Saml2PostBinding();
+            var relyingParty = ValidateRelyingParty(ReadRelyingPartyFromLogoutResponse(responseBinding));
+
+            var saml2LogoutResponse = new Saml2LogoutResponse(saml2Config);
+            saml2LogoutResponse.SignatureValidationCertificates = new X509Certificate2[] { relyingParty.SignatureValidationCertificate };
+            responseBinding.Unbind(Request.ToGenericHttpRequest(), saml2LogoutResponse);
+
+            return Redirect(Url.Content("~/"));
+        }
+
+        [Route("SingleLogout")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SingleLogout()
+        {
+            var session = await idPSessionCookieRepository.GetAsync();
+            var relyingParty = ValidateRelyingParty(session.RelyingPartyIssuer);
+
+            var binding = new Saml2PostBinding();
+            var saml2LogoutRequest = new Saml2LogoutRequest(saml2Config, User)
+            {
+                Destination = relyingParty.SingleLogoutDestination
+            };
+
+            await idPSessionCookieRepository.DeleteAsync();         
+
+            return binding.Bind(saml2LogoutRequest).ToActionResult();
+        }
+
         private string ReadRelyingPartyFromLoginRequest<T>(Saml2Binding<T> binding)
         {
             return binding.ReadSamlRequest(Request.ToGenericHttpRequest(), new Saml2AuthnRequest(saml2Config))?.Issuer;
@@ -147,6 +190,11 @@ namespace AspNetCoreSamlIdPSample.Controllers
         private string ReadRelyingPartyFromLogoutRequest<T>(Saml2Binding<T> binding)
         {
             return binding.ReadSamlRequest(Request.ToGenericHttpRequest(), new Saml2LogoutRequest(saml2Config))?.Issuer;
+        }
+
+        private string ReadRelyingPartyFromLogoutResponse<T>(Saml2Binding<T> binding)
+        {
+            return binding.ReadSamlResponse(Request.ToGenericHttpRequest(), new Saml2LogoutResponse(saml2Config))?.Issuer;
         }
 
         private IActionResult LoginResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, RelyingParty relyingParty, string sessionIndex = null, IEnumerable<Claim> claims = null)

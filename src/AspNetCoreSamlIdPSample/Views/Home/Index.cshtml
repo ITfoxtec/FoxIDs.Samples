@@ -14,13 +14,29 @@
 <div class="row">
     <div class="col-md-12">
         <h2>The user session</h2>
-        <a asp-area="" asp-controller="Home" asp-action="Index">Refresh</a>
-        <p>
-            @{
-                var session = ViewBag.Session as IdPSession;
-            }
-            @if (session != null)
+        @{
+            var session = ViewBag.Session as IdPSession;
+        }
+        <div>
+            @using (Html.BeginForm("SingleLogout", "Saml", FormMethod.Post, new { id = "singleLogoutForm", autocomplete = "off" }))
             {
+                @Html.AntiForgeryToken()
+                <div class="form-group button-group">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Refresh</a>
+                    @if (session != null)
+                    {
+                        <input type="submit" value="Single Logout" class="btn btn-primary" />
+                    }
+                    else
+                    {
+                        <input type="submit" value="Single Logout" class="btn btn-primary" disabled="disabled" />
+                    }
+                </div>
+            }
+        </div>
+        @if (session != null)
+        {
+            <p>
                 <strong>NameIdentifier</strong> 
                 <br /> 
                 <span style="padding-left: 10px">@session.NameIdentifier</span> 
@@ -28,7 +44,7 @@
                 <strong>UPN</strong> <br /> <span style="padding-left: 10px">@session.Upn</span> <br />
                 <strong>Email</strong> <br /> <span style="padding-left: 10px">@session.Email</span> <br />
                 <strong>SessionIndex</strong> <br /> <span style="padding-left: 10px">@session.SessionIndex</span> <br />
-            }
-        </p>
+            </p>
+        }
     </div>
 </div>

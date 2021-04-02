@@ -3,7 +3,7 @@
 
 
 
-namespace IdentityServer.UI
+namespace IdentityServerOidcOpSample.UI
 {
     public class RedirectViewModel
     {

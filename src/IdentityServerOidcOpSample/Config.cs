@@ -7,7 +7,7 @@ using IdentityServer4.Models;
 using IdentityServerOidcOpSample.Models;
 using System.Collections.Generic;
 
-namespace IdentityServer
+namespace IdentityServerOidcOpSample
 {
     public class Config
     {
@@ -68,6 +68,8 @@ namespace IdentityServer
 
                     RedirectUris = { clientSettings.RedirectUrl },
                     PostLogoutRedirectUris = { clientSettings.PostLogoutRedirectUrl },                
+                    FrontChannelLogoutUri = clientSettings.FrontChannelLogoutUri,
+                    FrontChannelLogoutSessionRequired = true,
 
                     AllowedScopes = new List<string>
                     {

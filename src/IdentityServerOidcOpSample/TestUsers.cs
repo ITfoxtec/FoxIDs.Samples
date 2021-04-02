@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using IdentityServer4;
 
-namespace IdentityServer
+namespace IdentityServerOidcOpSample
 {
     public static class TestUsers
     {

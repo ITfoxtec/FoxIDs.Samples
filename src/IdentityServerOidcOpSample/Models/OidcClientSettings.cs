@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace IdentityServerOidcOpSample.Models
+﻿namespace IdentityServerOidcOpSample.Models
 {
     public class OidcClientSettings
     {
@@ -11,5 +6,6 @@ namespace IdentityServerOidcOpSample.Models
         public string ClientSecret { get; set; }
         public string RedirectUrl { get; set; }
         public string PostLogoutRedirectUrl { get; set; }
+        public string FrontChannelLogoutUri { get; set; }
     }
 }

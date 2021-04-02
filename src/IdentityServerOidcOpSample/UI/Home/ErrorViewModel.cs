@@ -4,7 +4,7 @@
 
 using IdentityServer4.Models;
 
-namespace IdentityServer.UI
+namespace IdentityServerOidcOpSample.UI
 {
     public class ErrorViewModel
     {

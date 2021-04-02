@@ -4,7 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace IdentityServer.UI
+namespace IdentityServerOidcOpSample.UI
 {
     public class LoginInputModel
     {

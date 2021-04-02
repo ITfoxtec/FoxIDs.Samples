@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using FoxIDs.SampleHelperLibrary.Models;
+using System.Linq;
+using ITfoxtec.Identity;
+using System.Threading.Tasks;
 
 namespace AspNetCoreOidcAuthorizationCodeSample.Controllers
 {
@@ -25,6 +28,24 @@ namespace AspNetCoreOidcAuthorizationCodeSample.Controllers
             var callbackUrl = Url.Action(nameof(HomeController.Index), "Home", values: null, protocol: Request.Scheme);
             return SignOut(new AuthenticationProperties { RedirectUri = callbackUrl },
                 CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> FrontChannelLogout([FromQuery(Name = JwtClaimTypes.Issuer)] string issuer, [FromQuery(Name = JwtClaimTypes.SessionId)] string sessionId)
+        {
+            if(User.Identity.IsAuthenticated)
+            {
+                var sessionIdClaim = User.Claims.Where(c => c.Type == JwtClaimTypes.SessionId && c.Value == sessionId).FirstOrDefault();
+                if (sessionIdClaim != null && sessionIdClaim.Issuer == issuer)
+                {
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                }
+                else
+                {
+                    return BadRequest("Invalid issuer and session ID.");
+                }
+            }
+
+            return Ok();
         }
     }
 }

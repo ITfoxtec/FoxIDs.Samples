@@ -34,8 +34,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample.Controllers
         {
             if(User.Identity.IsAuthenticated)
             {
-                var sessionIdClaim = User.Claims.Where(c => c.Type == JwtClaimTypes.SessionId && c.Value == sessionId).FirstOrDefault();
-                if (sessionIdClaim != null && sessionIdClaim.Issuer == issuer)
+                if (User.Claims.Where(c => c.Type == JwtClaimTypes.SessionId && c.Issuer == issuer && c.Value == sessionId).Any())
                 {
                     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 }

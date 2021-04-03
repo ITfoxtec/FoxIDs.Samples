@@ -310,21 +310,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
         public string Name { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("sessionLifetime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(0, 43200)]
-        public int? SessionLifetime { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("sessionAbsoluteLifetime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(0, 172800)]
-        public int? SessionAbsoluteLifetime { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("persistentSessionAbsoluteLifetime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(0, 31536000)]
-        public int? PersistentSessionAbsoluteLifetime { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("persistentSessionLifetimeUnlimited", Required = Newtonsoft.Json.Required.Always)]
-        public bool PersistentSessionLifetimeUnlimited { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("enableCancelLogin", Required = Newtonsoft.Json.Required.Always)]
         public bool EnableCancelLogin { get; set; }
     
@@ -345,6 +330,21 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("cssStyle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(4000)]
         public string CssStyle { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sessionLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 43200)]
+        public int SessionLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sessionAbsoluteLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 172800)]
+        public int SessionAbsoluteLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("persistentSessionAbsoluteLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 31536000)]
+        public int PersistentSessionAbsoluteLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("persistentSessionLifetimeUnlimited", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool PersistentSessionLifetimeUnlimited { get; set; }
     
     
     }
@@ -446,6 +446,13 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("postLogoutRedirectUri", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(500)]
         public string PostLogoutRedirectUri { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("frontChannelLogoutUri", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(500)]
+        public string FrontChannelLogoutUri { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("frontChannelLogoutSessionRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool FrontChannelLogoutSessionRequired { get; set; }
     
         [Newtonsoft.Json.JsonProperty("requirePkce", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool RequirePkce { get; set; }
@@ -566,6 +573,13 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(500)]
         public string PostLogoutRedirectUri { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("frontChannelLogoutUri", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(500)]
+        public string FrontChannelLogoutUri { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("frontChannelLogoutSessionRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool FrontChannelLogoutSessionRequired { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("requirePkce", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool RequirePkce { get; set; }
     
@@ -597,6 +611,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     
         [Newtonsoft.Json.JsonProperty("requireLogoutIdTokenHint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RequireLogoutIdTokenHint { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("responseMode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
+        public string ResponseMode { get; set; }
     
     
     }
@@ -789,6 +807,21 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("oidcDiscoveryUpdateRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Range(86400, 31536000)]
         public int? OidcDiscoveryUpdateRate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sessionLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 43200)]
+        public int SessionLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sessionAbsoluteLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 172800)]
+        public int SessionAbsoluteLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("persistentSessionAbsoluteLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 31536000)]
+        public int PersistentSessionAbsoluteLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("persistentSessionLifetimeUnlimited", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool PersistentSessionLifetimeUnlimited { get; set; }
     
         [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -1034,6 +1067,25 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("logoutUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(500)]
         public string LogoutUrl { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("singleLogoutResponseUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(500)]
+        public string SingleLogoutResponseUrl { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sessionLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 43200)]
+        public int SessionLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("sessionAbsoluteLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 172800)]
+        public int SessionAbsoluteLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("persistentSessionAbsoluteLifetime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Range(0, 31536000)]
+        public int PersistentSessionAbsoluteLifetime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("persistentSessionLifetimeUnlimited", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool PersistentSessionLifetimeUnlimited { get; set; }
     
     
     }

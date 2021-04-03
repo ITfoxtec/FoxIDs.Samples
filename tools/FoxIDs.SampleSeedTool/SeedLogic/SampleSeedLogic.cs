@@ -581,14 +581,6 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 };
 
                 await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
-
-                var secret = RandomGenerator.Generate(32);
-                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
-                {
-                    PartyName = oidcDownParty.Name,
-                    Secrets = new string[] { secret },
-                });
-                Console.WriteLine($"\t'{name}' client secret is: {secret}");
             };
 
             await CreateIfNotExistsAsync(blazorOidcAuthCodePkceSampleDownPartyName, getAction, postAction);

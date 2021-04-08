@@ -13,6 +13,11 @@ using Microsoft.Extensions.Options;
 using AspNetCoreSamlIdPSample.Models;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using Microsoft.IdentityModel.Tokens.Saml2;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using FoxIDs.SampleHelperLibrary.Repository;
+using ITfoxtec.Identity;
+using FoxIDs.SampleHelperLibrary.Models;
 
 namespace AspNetCoreSamlIdPSample.Controllers
 {
@@ -23,11 +28,15 @@ namespace AspNetCoreSamlIdPSample.Controllers
         const string relayStateReturnUrl = "ReturnUrl";
         private readonly Saml2Configuration saml2Config;
         private readonly Settings settings;
+        private readonly ILogger<SamlController> logger;
+        private readonly IdPSessionCookieRepository idPSessionCookieRepository;
 
-        public SamlController(IOptionsMonitor<Settings> settingsAccessor, IOptionsMonitor<Saml2Configuration> configAccessor)
+        public SamlController(ILogger<SamlController> logger, IOptionsMonitor<Settings> settingsAccessor, IOptionsMonitor<Saml2Configuration> configAccessor, IdPSessionCookieRepository idPSessionCookieRepository)
         {
             saml2Config = configAccessor.CurrentValue;
             settings = settingsAccessor.CurrentValue;
+            this.logger = logger;
+            this.idPSessionCookieRepository = idPSessionCookieRepository;
         }
 
         [Route("Metadata")]
@@ -65,7 +74,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
         }
 
         [Route("Login")]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             var requestBinding = new Saml2RedirectBinding();
             var relyingParty = ValidateRelyingParty(ReadRelyingPartyFromLoginRequest(requestBinding));
@@ -77,29 +86,51 @@ namespace AspNetCoreSamlIdPSample.Controllers
 
                 // ****  Handle user login e.g. in GUI ****
                 // Test user with session index and claims
-                var sessionIndex = Guid.NewGuid().ToString();
-                var claims = CreateTestUserClaims();
+                var session = await idPSessionCookieRepository.GetAsync();
+                if (session == null)
+                {
+                    session = new IdPSession
+                    {
+                        RelyingPartyIssuer = relyingParty.Issuer,
+                        NameIdentifier = "12345",
+                        Upn = "12345@email.test",
+                        Email = "some@email.test",
+                        SessionIndex = Guid.NewGuid().ToString()
+                    };
+                    await idPSessionCookieRepository.SaveAsync(session);
+                }
+                var claims = CreateClaims(session);
 
-                return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, requestBinding.RelayState, relyingParty, sessionIndex, claims);
+                return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, requestBinding.RelayState, relyingParty, session.SessionIndex, claims);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-#if DEBUG
-                Debug.WriteLine($"Saml 2.0 Authn Request error: {exc.ToString()}\nSaml Auth Request: '{saml2AuthnRequest.XmlDocument?.OuterXml}'\nQuery String: {Request.QueryString}");
-#endif
+                logger.LogWarning(ex, $"SAML 2.0 Authn Request error. Authn Request '{saml2AuthnRequest.XmlDocument?.OuterXml}', Query String '{Request.QueryString}'.");
                 return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Responder, requestBinding.RelayState, relyingParty);
             }
         }
 
-        private IEnumerable<Claim> CreateTestUserClaims()
+        private IEnumerable<Claim> CreateClaims(IdPSession idPSession)
         {
-            yield return new Claim(ClaimTypes.NameIdentifier, "12345");
-            yield return new Claim(ClaimTypes.Upn, "12345@email.test");
-            yield return new Claim(ClaimTypes.Email, "some@email.test");
+            yield return new Claim(ClaimTypes.NameIdentifier, idPSession.NameIdentifier);
+            yield return new Claim(ClaimTypes.Upn, idPSession.Upn);
+            yield return new Claim(ClaimTypes.Email, idPSession.Email);
         }
 
         [Route("Logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
+        {
+            if (new Saml2PostBinding().IsRequest(Request.ToGenericHttpRequest()))
+            {
+                return await LogoutInternal();
+            }
+            else
+            {
+                return SingleLogoutResponseInternal();
+            }
+        }
+
+        private async Task<IActionResult> LogoutInternal()
         {
             var requestBinding = new Saml2PostBinding();
             var relyingParty = ValidateRelyingParty(ReadRelyingPartyFromLogoutRequest(requestBinding));
@@ -110,17 +141,45 @@ namespace AspNetCoreSamlIdPSample.Controllers
             {
                 requestBinding.Unbind(Request.ToGenericHttpRequest(), saml2LogoutRequest);
 
-                // **** Delete user session ****
+                await idPSessionCookieRepository.DeleteAsync();
 
                 return LogoutResponse(saml2LogoutRequest.Id, Saml2StatusCodes.Success, requestBinding.RelayState, saml2LogoutRequest.SessionIndex, relyingParty);
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-#if DEBUG
-                Debug.WriteLine($"Saml 2.0 Logout Request error: {exc.ToString()}\nSaml Logout Request: '{saml2LogoutRequest.XmlDocument?.OuterXml}'");
-#endif
+                logger.LogWarning(ex, $"SAML 2.0 Logout Request error. Logout Request '{saml2LogoutRequest.XmlDocument?.OuterXml}'.");
                 return LogoutResponse(saml2LogoutRequest.Id, Saml2StatusCodes.Responder, requestBinding.RelayState, saml2LogoutRequest.SessionIndex, relyingParty);
             }
+        }
+
+        private IActionResult SingleLogoutResponseInternal()
+        {
+            var responseBinding = new Saml2PostBinding();
+            var relyingParty = ValidateRelyingParty(ReadRelyingPartyFromLogoutResponse(responseBinding));
+
+            var saml2LogoutResponse = new Saml2LogoutResponse(saml2Config);
+            saml2LogoutResponse.SignatureValidationCertificates = new X509Certificate2[] { relyingParty.SignatureValidationCertificate };
+            responseBinding.Unbind(Request.ToGenericHttpRequest(), saml2LogoutResponse);
+
+            return Redirect(Url.Content("~/"));
+        }
+
+        [Route("SingleLogout")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SingleLogout()
+        {
+            var session = await idPSessionCookieRepository.GetAsync();
+            var relyingParty = ValidateRelyingParty(session.RelyingPartyIssuer);
+
+            var binding = new Saml2PostBinding();
+            var saml2LogoutRequest = new Saml2LogoutRequest(saml2Config, User)
+            {
+                Destination = relyingParty.SingleLogoutDestination
+            };
+
+            await idPSessionCookieRepository.DeleteAsync();         
+
+            return binding.Bind(saml2LogoutRequest).ToActionResult();
         }
 
         private string ReadRelyingPartyFromLoginRequest<T>(Saml2Binding<T> binding)
@@ -131,6 +190,11 @@ namespace AspNetCoreSamlIdPSample.Controllers
         private string ReadRelyingPartyFromLogoutRequest<T>(Saml2Binding<T> binding)
         {
             return binding.ReadSamlRequest(Request.ToGenericHttpRequest(), new Saml2LogoutRequest(saml2Config))?.Issuer;
+        }
+
+        private string ReadRelyingPartyFromLogoutResponse<T>(Saml2Binding<T> binding)
+        {
+            return binding.ReadSamlResponse(Request.ToGenericHttpRequest(), new Saml2LogoutResponse(saml2Config))?.Issuer;
         }
 
         private IActionResult LoginResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, RelyingParty relyingParty, string sessionIndex = null, IEnumerable<Claim> claims = null)
@@ -153,7 +217,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
                 //saml2AuthnResponse.NameId = new Saml2NameIdentifier(claimsIdentity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).Single());
                 saml2AuthnResponse.ClaimsIdentity = claimsIdentity;
 
-                var token = saml2AuthnResponse.CreateSecurityToken(relyingParty.Issuer);
+                _ = saml2AuthnResponse.CreateSecurityToken(relyingParty.Issuer);
             }
 
             return responsebinding.Bind(saml2AuthnResponse).ToActionResult();

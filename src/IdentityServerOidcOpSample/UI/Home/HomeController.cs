@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace IdentityServer.UI
+namespace IdentityServerOidcOpSample.UI
 {
     [SecurityHeaders]
     [AllowAnonymous]

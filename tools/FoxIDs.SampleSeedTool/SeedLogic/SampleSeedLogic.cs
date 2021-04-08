@@ -390,7 +390,10 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
                         },
                         ResponseTypes = new[] { "code" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc") },
+                        PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "signout-callback-oidc"),
+                        FrontChannelLogoutUri = UrlCombine.Combine(baseUrl, "auth", "frontchannellogout"),
+                        FrontChannelLogoutSessionRequired = true,
                         RequirePkce = true,
                         RequireLogoutIdTokenHint = true,
                         AuthorizationCodeLifetime = 30, // 30 seconds 
@@ -472,7 +475,11 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
                         },
                         ResponseTypes = new[] { "id_token token", "id_token" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc"), UrlCombine.Combine(baseUrl, "signout-callback-oidc") },
+                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc") },
+                        PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "signout-callback-oidc"),
+                        FrontChannelLogoutUri = UrlCombine.Combine(baseUrl, "auth", "frontchannellogout"),
+                        FrontChannelLogoutSessionRequired = true,
+
                         RequirePkce = false,
                         RequireLogoutIdTokenHint = true,
                         IdTokenLifetime = 3600, // 60 minutes 
@@ -559,7 +566,8 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
                         },
                         ResponseTypes = new[] { "code" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback"), UrlCombine.Combine(baseUrl, "authentication/logout-callback") },
+                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback") },
+                        PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "authentication/logout-callback"),
                         RequirePkce = true,
                         RequireLogoutIdTokenHint = true,
                         AuthorizationCodeLifetime = 30, // 30 seconds 
@@ -573,14 +581,6 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 };
 
                 await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
-
-                var secret = RandomGenerator.Generate(32);
-                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
-                {
-                    PartyName = oidcDownParty.Name,
-                    Secrets = new string[] { secret },
-                });
-                Console.WriteLine($"\t'{name}' client secret is: {secret}");
             };
 
             await CreateIfNotExistsAsync(blazorOidcAuthCodePkceSampleDownPartyName, getAction, postAction);

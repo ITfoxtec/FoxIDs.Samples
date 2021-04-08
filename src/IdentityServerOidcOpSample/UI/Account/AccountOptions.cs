@@ -4,7 +4,7 @@
 
 using System;
 
-namespace IdentityServer.UI
+namespace IdentityServerOidcOpSample.UI
 {
     public class AccountOptions
     {

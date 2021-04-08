@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace IdentityServer.UI
+namespace IdentityServerOidcOpSample.UI
 {
     public class SecurityHeadersAttribute : ActionFilterAttribute
     {

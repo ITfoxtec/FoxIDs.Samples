@@ -11,6 +11,7 @@ using AspNetCoreSamlIdPSample.Models;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using System;
 using System.Linq;
+using FoxIDs.SampleHelperLibrary.Repository;
 
 namespace AspNetCoreSamlIdPSample
 {
@@ -50,6 +51,7 @@ namespace AspNetCoreSamlIdPSample
                         rp.SingleSignOnDestination = entityDescriptor.SPSsoDescriptor.AssertionConsumerServices.First().Location;
 
                         var singleLogoutService = entityDescriptor.SPSsoDescriptor.SingleLogoutServices.First();
+                        rp.SingleLogoutDestination = singleLogoutService.Location;
                         rp.SingleLogoutResponseDestination = singleLogoutService.ResponseLocation ?? singleLogoutService.Location;
 
                         rp.SignatureValidationCertificate = entityDescriptor.SPSsoDescriptor.SigningCertificates.First();
@@ -69,9 +71,12 @@ namespace AspNetCoreSamlIdPSample
                 saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
             });
 
+            services.AddTransient<IdPSessionCookieRepository>();
+
             services.AddSaml2();
 
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

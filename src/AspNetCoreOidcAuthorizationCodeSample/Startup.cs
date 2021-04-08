@@ -135,13 +135,14 @@ namespace AspNetCoreOidcAuthorizationCodeSample
 
                         await Task.FromResult(string.Empty);
                     };
-                    options.Events.OnRedirectToIdentityProviderForSignOut = async (context) =>
-                    {
-                        var loginType = await GetSelectedLoginType(context.HttpContext);
-                        SetIssuerAddress(context, loginType);
+                    // FoxIDs support OIDC RP Initiated Logout without up-party in the URL if the ID Token is provided in the request.
+                    //options.Events.OnRedirectToIdentityProviderForSignOut = async (context) =>
+                    //{
+                    //    var loginType = await GetSelectedLoginType(context.HttpContext);
+                    //    SetIssuerAddress(context, loginType);
 
-                        await Task.FromResult(string.Empty);
-                    };
+                    //    await Task.FromResult(string.Empty);
+                    //};
                     options.Events.OnTokenValidated = async (context) =>
                     {
                         var idPSelectionCookieRepository = context.HttpContext.RequestServices.GetService<IdPSelectionCookieRepository>();

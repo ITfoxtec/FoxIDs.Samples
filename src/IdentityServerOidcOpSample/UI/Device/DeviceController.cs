@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace IdentityServer.UI
+namespace IdentityServerOidcOpSample.UI
 {
     [Authorize]
     [SecurityHeaders]

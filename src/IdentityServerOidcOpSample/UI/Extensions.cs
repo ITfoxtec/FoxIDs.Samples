@@ -2,7 +2,7 @@ using System;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityServer.UI
+namespace IdentityServerOidcOpSample.UI
 {
     public static class Extensions
     {

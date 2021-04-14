@@ -1,8 +1,6 @@
-﻿using FoxIDs.SampleSeedTool.Models;
-using FoxIDs.SampleSeedTool.ServiceAccess;
+﻿using FoxIDs.SampleSeedTool.ServiceAccess;
 using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
 using ITfoxtec.Identity;
-using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
@@ -21,18 +19,18 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
         const string aspNetCoreApi1SampleDownPartyName = "aspnetcore_api1_sample";
 
+        const string netCoreClientGrantConsoleSampleDownPartyName = "netcore_clientgrant_sample";
+
         const string aspNetCoreOidcAuthCodeSampleDownPartyName = "aspnetcore_oidcauthcode_sample";
         const string aspNetCoreOidcImplicitSampleDownPartyName = "aspnetcore_oidcimplicit_sample";
         const string blazorOidcAuthCodePkceSampleDownPartyName = "blazor_oidcauthcodepkce_sample";
 
         const string aspNetCoreSamlSampleDownPartyName = "aspnetcore_saml_sample";
 
-        private readonly SeedSettings settings;
         private readonly FoxIDsApiClient foxIDsApiClient;
 
-        public SampleSeedLogic(SeedSettings settings, FoxIDsApiClient foxIDsApiClient)
+        public SampleSeedLogic(FoxIDsApiClient foxIDsApiClient)
         {
-            this.settings = settings;
             this.foxIDsApiClient = foxIDsApiClient;
         }
 
@@ -47,6 +45,8 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
             await CreateAspNetCoreApi1SampleDownPartyAsync();
 
+            await CreateNetCoreClientGrantConsoleSampleDownPartyAsync();
+
             await CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync();
             await CreateAspNetCoreOidcImplicitSampleDownPartyAsync();
             await CreateBlazorOidcAuthCodePkceSampleDownPartyAsync();
@@ -55,7 +55,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
             Console.WriteLine(string.Empty);
             Console.WriteLine($"Sample configuration created");
-        }
+        } 
 
         public async Task DeleteAsync()
         {
@@ -315,6 +315,45 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             };
 
             await CreateIfNotExistsAsync(aspNetCoreApi1SampleDownPartyName, getAction, postAction);
+        }
+
+        private async Task CreateNetCoreClientGrantConsoleSampleDownPartyAsync()
+        {
+            Func<string, Task> getAction = async (name) =>
+            {
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+            };
+
+            Func<string, Task> postAction = async (name) =>
+            {
+                var oauthDownParty = new OAuthDownParty
+                {
+                    Name = name,
+                    Client = new OAuthDownClient
+                    {
+                        ResourceScopes = new[]
+                        {
+                            // Scope to API1.
+                            new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
+                        },
+                        ResponseTypes = new[] { "token" },
+                        RedirectUris = new[] { $"uri:{netCoreClientGrantConsoleSampleDownPartyName}:client" },
+                        AccessTokenLifetime = 600 // 10 minutes
+                    }
+                };
+
+                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+
+                var secret = "MXtV-UmVJqygGUthkG5Q_6SCpmyBpsksvA1kvbE735k";
+                await foxIDsApiClient.PostOAuthClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                {
+                    PartyName = oauthDownParty.Name,
+                    Secrets = new string[] { secret },
+                });
+                Console.WriteLine($"\t'{name}' client secret is: {secret}");
+            };
+
+            await CreateIfNotExistsAsync(netCoreClientGrantConsoleSampleDownPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync()

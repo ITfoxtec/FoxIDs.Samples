@@ -6,10 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System.Text;
 using System;
 
 namespace AspNetCoreOidcAuthorizationCodeSample.Controllers

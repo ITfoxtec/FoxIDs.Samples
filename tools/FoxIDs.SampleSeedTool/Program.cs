@@ -50,7 +50,7 @@ namespace FoxIDs.SampleSeedTool
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error: {ex.ToString()}");
+                        Console.WriteLine($"Error: {ex}");
                     }
 
                     Console.WriteLine(string.Empty); 
@@ -59,7 +59,7 @@ namespace FoxIDs.SampleSeedTool
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.ToString()}");
+                Console.WriteLine($"Error: {ex}");
             }
         }
     }

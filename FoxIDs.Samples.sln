@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorOidcPkceSample", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerOidcOpSample", "src\IdentityServerOidcOpSample\IdentityServerOidcOpSample.csproj", "{923D85B3-6F08-4813-929B-F3E50E7ED391}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreClientGrantConsoleSample", "src\NetCoreClientGrantConsoleSample\NetCoreClientGrantConsoleSample.csproj", "{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{923D85B3-6F08-4813-929B-F3E50E7ED391}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{923D85B3-6F08-4813-929B-F3E50E7ED391}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{923D85B3-6F08-4813-929B-F3E50E7ED391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{A7CB61EC-C445-4185-AE4E-75DA45BBE4CB} = {B425347E-0E24-4818-8D12-24F71DB44E9C}
 		{D6A74FE6-FF79-4DFE-88B7-5087C1FBDFFD} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
 		{923D85B3-6F08-4813-929B-F3E50E7ED391} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
+		{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

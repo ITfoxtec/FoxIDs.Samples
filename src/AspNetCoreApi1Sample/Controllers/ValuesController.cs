@@ -26,7 +26,7 @@ namespace AspNetCoreApi1Sample.Controllers
                 Console.WriteLine($"claim '{claim.Type}' = '{claim.Value}'");
             }
 
-            return $"value is '{id}' for user '{User.Identity.Name}'";
+            return $"value is '{id}' for caller '{User.Identity.Name}'";
         }
 
         // POST api/values

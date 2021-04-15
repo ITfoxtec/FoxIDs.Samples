@@ -73,6 +73,9 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                 })
                 .AddCookie(options => 
                 {
+                    // Required to support Front channel logout
+                    options.Cookie.SameSite = SameSiteMode.None;
+
                     options.Events.OnValidatePrincipal = async (context) =>
                     {
                         var utcNow = DateTimeOffset.UtcNow;

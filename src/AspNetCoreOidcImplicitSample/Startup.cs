@@ -54,7 +54,11 @@ namespace AspNetCoreOidcImplicitSample
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
-                .AddCookie()
+                .AddCookie(options =>
+                {
+                    // Required to support Front channel logout
+                    options.Cookie.SameSite = SameSiteMode.None;
+                })
                 .AddOpenIdConnect(options =>
                 {
                     options.Authority = identitySettings.Authority;

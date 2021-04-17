@@ -62,7 +62,8 @@ namespace AspNetCoreSamlSample
                 }
             });
 
-            services.AddSaml2("/Saml/Login");
+            // Required SameSiteMode.None to support OpenID Connect Front channel logout
+            services.AddSaml2("/Saml/Login", cookieSameSite: SameSiteMode.None);
 
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();

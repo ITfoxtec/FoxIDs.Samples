@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using FoxIDs.SampleHelperLibrary.Repository;
 using ITfoxtec.Identity;
 using FoxIDs.SampleHelperLibrary.Models;
+using UrlCombineLib;
 
 namespace AspNetCoreSamlIdPSample.Controllers
 {
@@ -58,11 +59,11 @@ namespace AspNetCoreSamlIdPSample.Controllers
                 //},
                 SingleSignOnServices = new SingleSignOnService[]
                 {
-                    new SingleSignOnService { Binding = ProtocolBindings.HttpRedirect, Location = new Uri($"{defaultSite}/Saml/Login") }
+                    new SingleSignOnService { Binding = ProtocolBindings.HttpRedirect, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Login")) }
                 },
                 SingleLogoutServices = new SingleLogoutService[]
                 {
-                    new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri($"{defaultSite}/Saml/Logout") }
+                    new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Logout")) }
                 },
                 NameIDFormats = new Uri[] { NameIdentifierFormats.X509SubjectName },
             };

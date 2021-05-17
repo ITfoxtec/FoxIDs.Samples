@@ -191,7 +191,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     SessionAbsoluteLifetime = 43200,
                     EnableCancelLogin = true,
                     EnableCreateUser = true,
-                    LogoutConsent = LoginUpPartyLogoutConsent.IfRequired,
+                    LogoutConsent = LoginUpPartyLogoutConsents.IfRequired,
                 };
 
                 await foxIDsApiClient.PostLoginUpPartyAsync(loginUpParty);
@@ -230,9 +230,11 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     //SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                     //CertificateValidationMode = X509CertificateValidationMode.None,
                     //RevocationMode = X509RevocationMode.NoCheck,
-                    AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
+                    AuthnRequestBinding = SamlBindingTypes.Redirect,
+                    AuthnResponseBinding = SamlBindingTypes.Post,
                     AuthnUrl = UrlCombine.Combine(baseUrl, "saml/login"),
-                    LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
+                    LogoutRequestBinding = SamlBindingTypes.Post,
+                    LogoutResponseBinding = SamlBindingTypes.Post,
                     LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout"),
                     Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role }
                 };
@@ -643,26 +645,27 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
                     Keys = new[]
                     {
-                    new JsonWebKey
-                    {
-                        Kty = "RSA",
-                        Kid = "3863A8A752E5D6B812AA8A78A656E2DE6C637D12",
-                        X5c = new[] { "MIICzzCCAbegAwIBAgIJAOd44ujQLBp/MA0GCSqGSIb3DQEBCwUAMBkxFzAVBgNVBAMTDnRlc3Qtc2lnbi1jZXJ0MB4XDTE4MTAwOTA4NTMxOFoXDTE5MTAxMDA4NTMxOFowGTEXMBUGA1UEAxMOdGVzdC1zaWduLWNlcnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDCbttrAY2VkISBs/dQW9B38dvO1++Pcqqlj0darBfq8+1f+nRsn0OcQOYAhMvPhuS7qy5NLaTFm8RbH3veybYm7cJFU6xGu8SiLv6rPa5CBrSTgL/sJ+NwIDG3ZaZbayKTqgf31D1Gv8mIOWtEVHOn9ZPvfO6r0I9tLMZtJASHDTxe7niskT2PEfGe1KBTXVgJqY67KttzlydvH4zN+lwXFguBKLQqicw9iJ9BngxDAMLkOz6SIeF5WFGRPfiLD/MOZQ/skb+1H9Bl+5mbL/F0TiVs1HaQNEt3N9SO18dRyA2ZGtGfTzJbx3gQ7RwRjmNMnK8In9M0jxZZ1Rvji2XFAgMBAAGjGjAYMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgXgMA0GCSqGSIb3DQEBCwUAA4IBAQC5RtTJV7mONXWKFkmF8EnCfPbFemCZs7Usw4cicjWlPTPfneFTsSJ4NuFmpWYrf1Lr75cf9BjHZDVHDGrRTsou/wAuqSehRPlZyj35ysjrC1hNmFYKQU+WkulxE4BZIcD+3fKj+6WAPVGG0NMnKWrmie2XK0aM5nFrWST4xqk6V5+4DOT7lltmPs9eUDJ8wkIL1oP/mhsE7tKpqMk9qNCb5nZMwXhqoTnlqTw/DFDCPJV/CS20/PamGTVUUhW1I0r73QDv054ycFY0ijU3tUK2V4D3daFTBHVGlLsCUxSBJSWkTGieN+iyU5aNbCErBc0+cim79lXT6sZ8VPVJ+kdW" },
-                        X5t = "OGOop1Ll1rgSqop4plbi3mxjfRI",
-                        N = "wm7bawGNlZCEgbP3UFvQd_Hbztfvj3KqpY9HWqwX6vPtX_p0bJ9DnEDmAITLz4bku6suTS2kxZvEWx973sm2Ju3CRVOsRrvEoi7-qz2uQga0k4C_7CfjcCAxt2WmW2sik6oH99Q9Rr_JiDlrRFRzp_WT73zuq9CPbSzGbSQEhw08Xu54rJE9jxHxntSgU11YCamOuyrbc5cnbx-MzfpcFxYLgSi0KonMPYifQZ4MQwDC5Ds-kiHheVhRkT34iw_zDmUP7JG_tR_QZfuZmy_xdE4lbNR2kDRLdzfUjtfHUcgNmRrRn08yW8d4EO0cEY5jTJyvCJ_TNI8WWdUb44tlxQ",
-                        E = "AQAB"
-                    }
-                },
+                        new JsonWebKey
+                        {
+                            Kty = "RSA",
+                            Kid = "3863A8A752E5D6B812AA8A78A656E2DE6C637D12",
+                            X5c = new[] { "MIICzzCCAbegAwIBAgIJAOd44ujQLBp/MA0GCSqGSIb3DQEBCwUAMBkxFzAVBgNVBAMTDnRlc3Qtc2lnbi1jZXJ0MB4XDTE4MTAwOTA4NTMxOFoXDTE5MTAxMDA4NTMxOFowGTEXMBUGA1UEAxMOdGVzdC1zaWduLWNlcnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDCbttrAY2VkISBs/dQW9B38dvO1++Pcqqlj0darBfq8+1f+nRsn0OcQOYAhMvPhuS7qy5NLaTFm8RbH3veybYm7cJFU6xGu8SiLv6rPa5CBrSTgL/sJ+NwIDG3ZaZbayKTqgf31D1Gv8mIOWtEVHOn9ZPvfO6r0I9tLMZtJASHDTxe7niskT2PEfGe1KBTXVgJqY67KttzlydvH4zN+lwXFguBKLQqicw9iJ9BngxDAMLkOz6SIeF5WFGRPfiLD/MOZQ/skb+1H9Bl+5mbL/F0TiVs1HaQNEt3N9SO18dRyA2ZGtGfTzJbx3gQ7RwRjmNMnK8In9M0jxZZ1Rvji2XFAgMBAAGjGjAYMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgXgMA0GCSqGSIb3DQEBCwUAA4IBAQC5RtTJV7mONXWKFkmF8EnCfPbFemCZs7Usw4cicjWlPTPfneFTsSJ4NuFmpWYrf1Lr75cf9BjHZDVHDGrRTsou/wAuqSehRPlZyj35ysjrC1hNmFYKQU+WkulxE4BZIcD+3fKj+6WAPVGG0NMnKWrmie2XK0aM5nFrWST4xqk6V5+4DOT7lltmPs9eUDJ8wkIL1oP/mhsE7tKpqMk9qNCb5nZMwXhqoTnlqTw/DFDCPJV/CS20/PamGTVUUhW1I0r73QDv054ycFY0ijU3tUK2V4D3daFTBHVGlLsCUxSBJSWkTGieN+iyU5aNbCErBc0+cim79lXT6sZ8VPVJ+kdW" },
+                            X5t = "OGOop1Ll1rgSqop4plbi3mxjfRI",
+                            N = "wm7bawGNlZCEgbP3UFvQd_Hbztfvj3KqpY9HWqwX6vPtX_p0bJ9DnEDmAITLz4bku6suTS2kxZvEWx973sm2Ju3CRVOsRrvEoi7-qz2uQga0k4C_7CfjcCAxt2WmW2sik6oH99Q9Rr_JiDlrRFRzp_WT73zuq9CPbSzGbSQEhw08Xu54rJE9jxHxntSgU11YCamOuyrbc5cnbx-MzfpcFxYLgSi0KonMPYifQZ4MQwDC5Ds-kiHheVhRkT34iw_zDmUP7JG_tR_QZfuZmy_xdE4lbNR2kDRLdzfUjtfHUcgNmRrRn08yW8d4EO0cEY5jTJyvCJ_TNI8WWdUb44tlxQ",
+                            E = "AQAB"
+                        }
+                    },
                     SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                     CertificateValidationMode = X509CertificateValidationMode.None,
                     RevocationMode = X509RevocationMode.NoCheck,
-                    AuthnBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Redirect, ResponseBinding = SamlBindingTypes.Post },
+                    AuthnRequestBinding = SamlBindingTypes.Redirect,
+                    AuthnResponseBinding = SamlBindingTypes.Post,
                     AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },
-                    LogoutBinding = new SamlBinding { RequestBinding = SamlBindingTypes.Post, ResponseBinding = SamlBindingTypes.Post },
+                    LogoutRequestBinding = SamlBindingTypes.Post,
+                    LogoutResponseBinding = SamlBindingTypes.Post,
                     SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
                     LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
                     Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role },
-                    MetadataLifetime = 1728000, // 20 days
                     SubjectConfirmationLifetime = 300, // 5 minutes
                     IssuedTokenLifetime = 36000 // 10 hours
                 };

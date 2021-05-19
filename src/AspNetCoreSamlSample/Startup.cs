@@ -52,9 +52,14 @@ namespace AspNetCoreSamlSample
                 entityDescriptor.ReadIdPSsoDescriptorFromUrl(new Uri(Configuration["Saml2:IdPMetadata"]));
                 if (entityDescriptor.IdPSsoDescriptor != null)
                 {
+                    saml2Configuration.AllowedIssuer = entityDescriptor.EntityId;
                     saml2Configuration.SingleSignOnDestination = entityDescriptor.IdPSsoDescriptor.SingleSignOnServices.First().Location;
                     saml2Configuration.SingleLogoutDestination = entityDescriptor.IdPSsoDescriptor.SingleLogoutServices.First().Location;
                     saml2Configuration.SignatureValidationCertificates.AddRange(entityDescriptor.IdPSsoDescriptor.SigningCertificates);
+                    if (entityDescriptor.IdPSsoDescriptor.WantAuthnRequestsSigned.HasValue)
+                    {
+                        saml2Configuration.SignAuthnRequest = entityDescriptor.IdPSsoDescriptor.WantAuthnRequestsSigned.Value;
+                    }
                 }
                 else
                 {
@@ -62,7 +67,8 @@ namespace AspNetCoreSamlSample
                 }
             });
 
-            services.AddSaml2("/Saml/Login");
+            // Required SameSiteMode.None to support OpenID Connect Front channel logout
+            services.AddSaml2("/Saml/Login", cookieSameSite: SameSiteMode.None);
 
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();

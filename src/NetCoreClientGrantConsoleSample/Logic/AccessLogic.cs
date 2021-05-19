@@ -26,7 +26,7 @@ namespace NetCoreClientGrantConsoleSample.Logic
                 var scope = "aspnetcore_api1_sample:some_access";
                 (var accessToken, var expiresIn) = await tokenHelper.GetAccessTokenWithClientCredentialsAsync(settings.ClientId, settings.ClientSecret, settings.RedirectUri, scope);
                 accessTokenCache = accessToken;
-                cacheExpiresAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + expiresIn;
+                cacheExpiresAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + expiresIn.Value;
                 Console.WriteLine($"Access token: {accessToken.Substring(0, 40)}...");
             }
             else

@@ -48,7 +48,7 @@ namespace FoxIDs.SampleHelperLibrary.Repository
             {
                 Secure = true,
                 HttpOnly = true,
-                SameSite = SameSiteMode.Lax,
+                SameSite = SameSiteMode.None,
                 IsEssential = true,
             };
 
@@ -69,7 +69,7 @@ namespace FoxIDs.SampleHelperLibrary.Repository
                     Expires = DateTime.UtcNow.AddMonths(-1),
                     Secure = true,
                     HttpOnly = true,
-                    SameSite = SameSiteMode.Lax,
+                    SameSite = SameSiteMode.None,
                     IsEssential = true,
                 });
             return Task.FromResult(0);

@@ -11,7 +11,7 @@
 
 	<ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="ITfoxtec.Identity" Version="2.2.3" />
+    <PackageReference Include="ITfoxtec.Identity" Version="2.3.1" />
 		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.1.21" />
 		<PackageReference Include="NSwag.MSBuild" Version="13.6.1">
 			<PrivateAssets>all</PrivateAssets>
@@ -28,6 +28,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="AspNetCoreSamlIdPSample-test-sign-cert.crt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="AspNetCoreSamlSample-test-sign-cert.crt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="identityserver-tempkey.jwk">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

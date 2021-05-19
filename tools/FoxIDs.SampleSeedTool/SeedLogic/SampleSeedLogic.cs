@@ -1,6 +1,7 @@
 ﻿using FoxIDs.SampleSeedTool.ServiceAccess;
 using FoxIDs.SampleSeedTool.ServiceAccess.Contracts;
 using ITfoxtec.Identity;
+using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
@@ -215,18 +216,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                 {
                     Name = name,
                     Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlidpsample",
-                    Keys = new[]
-                    {
-                        new JsonWebKey
-                        {
-                            Kty = "RSA",
-                            Kid = "27EB823D00B02FA7A02AA754146B6CFC60B8C301",
-                            X5c = new[] { "MIICzzCCAbegAwIBAgIJANht5lyL71T0MA0GCSqGSIb3DQEBCwUAMBkxFzAVBgNVBAMTDnRlc3Qtc2lnbi1jZXJ0MB4XDTE4MTAxMTE1MDEyMVoXDTE5MTAxMjE1MDEyMVowGTEXMBUGA1UEAxMOdGVzdC1zaWduLWNlcnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDUf6b4mtamR7DvTdtz6fdtEe+aXHpzXqvTrjf3SbN5Hol+kAvrIGVXcnJJSfO6N9yC/s8fPE4crVJKwceGkeykzt/j0UHRafmX7e7zzCPO8nd8pVSwZtflogNVdYbrIPTIHLP/eOrPt4Im2PHU0Q561frZjIDgqaoGmtpTLof/0z3GoD52hesZyeE3mW9Q0/+TngLne52rmDe9gmebtmckM7wJw9DXbaJhI24KZPn25PRYnPJMuyBh2EFjJ6qjIAQodpaMstdH6eGJyTan9J/yI6yPhYZ3jl4UngwZ7OpSiGB7m335SYIpPRGxZSdN/tGGdVPV1TIyBU6QFD5mn259AgMBAAGjGjAYMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgXgMA0GCSqGSIb3DQEBCwUAA4IBAQCCYJoiq4sVqTyJ5md4VJIvT3Ezoo6MUDxPmC+bcdT+4j0rYPJr69Fv7celEcS7NEnDK3JQXU2bJ1HAAExBz53bqZphlFnuDFQcJU2lYGaOamDUN/v2aEM/g/Zrlbs4/V4WsCETUkcq7FwmtVia58AZSOtBEqpS7OpdEq4WUmWPRqpjDn+Ne1n921qIKMDtczqOCGc/BREbFUjy49gY/+a57WUxXPhL0gWrGHBwSLIJHp/m9sG7wFA6a2wnvgycrAMYFZ50iGe6IcSzktRdQXd5lTeVtl4JgftwIplIqWyuTYoHwTX+xo2qMSMCF38w31j6BASAmXJniKWeK8aeQ9o7" },
-                            X5t = "J-uCPQCwL6egKqdUFGts_GC4wwE",
-                            N = "1H-m-JrWpkew703bc-n3bRHvmlx6c16r064390mzeR6JfpAL6yBlV3JySUnzujfcgv7PHzxOHK1SSsHHhpHspM7f49FB0Wn5l-3u88wjzvJ3fKVUsGbX5aIDVXWG6yD0yByz_3jqz7eCJtjx1NEOetX62YyA4KmqBpraUy6H_9M9xqA-doXrGcnhN5lvUNP_k54C53udq5g3vYJnm7ZnJDO8CcPQ122iYSNuCmT59uT0WJzyTLsgYdhBYyeqoyAEKHaWjLLXR-nhick2p_Sf8iOsj4WGd45eFJ4MGezqUohge5t9-UmCKT0RsWUnTf7RhnVT1dUyMgVOkBQ-Zp9ufQ",
-                            E = "AQAB"
-                        }
-                    },
+                    Keys = new[] { GetSamlCertificateKey("AspNetCoreSamlIdPSample-test-sign-cert.crt") },
                     //SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                     //CertificateValidationMode = X509CertificateValidationMode.None,
                     //RevocationMode = X509RevocationMode.NoCheck,
@@ -643,18 +633,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     Name = name,
                     Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample",
                     AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
-                    Keys = new[]
-                    {
-                        new JsonWebKey
-                        {
-                            Kty = "RSA",
-                            Kid = "3863A8A752E5D6B812AA8A78A656E2DE6C637D12",
-                            X5c = new[] { "MIICzzCCAbegAwIBAgIJAOd44ujQLBp/MA0GCSqGSIb3DQEBCwUAMBkxFzAVBgNVBAMTDnRlc3Qtc2lnbi1jZXJ0MB4XDTE4MTAwOTA4NTMxOFoXDTE5MTAxMDA4NTMxOFowGTEXMBUGA1UEAxMOdGVzdC1zaWduLWNlcnQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDCbttrAY2VkISBs/dQW9B38dvO1++Pcqqlj0darBfq8+1f+nRsn0OcQOYAhMvPhuS7qy5NLaTFm8RbH3veybYm7cJFU6xGu8SiLv6rPa5CBrSTgL/sJ+NwIDG3ZaZbayKTqgf31D1Gv8mIOWtEVHOn9ZPvfO6r0I9tLMZtJASHDTxe7niskT2PEfGe1KBTXVgJqY67KttzlydvH4zN+lwXFguBKLQqicw9iJ9BngxDAMLkOz6SIeF5WFGRPfiLD/MOZQ/skb+1H9Bl+5mbL/F0TiVs1HaQNEt3N9SO18dRyA2ZGtGfTzJbx3gQ7RwRjmNMnK8In9M0jxZZ1Rvji2XFAgMBAAGjGjAYMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgXgMA0GCSqGSIb3DQEBCwUAA4IBAQC5RtTJV7mONXWKFkmF8EnCfPbFemCZs7Usw4cicjWlPTPfneFTsSJ4NuFmpWYrf1Lr75cf9BjHZDVHDGrRTsou/wAuqSehRPlZyj35ysjrC1hNmFYKQU+WkulxE4BZIcD+3fKj+6WAPVGG0NMnKWrmie2XK0aM5nFrWST4xqk6V5+4DOT7lltmPs9eUDJ8wkIL1oP/mhsE7tKpqMk9qNCb5nZMwXhqoTnlqTw/DFDCPJV/CS20/PamGTVUUhW1I0r73QDv054ycFY0ijU3tUK2V4D3daFTBHVGlLsCUxSBJSWkTGieN+iyU5aNbCErBc0+cim79lXT6sZ8VPVJ+kdW" },
-                            X5t = "OGOop1Ll1rgSqop4plbi3mxjfRI",
-                            N = "wm7bawGNlZCEgbP3UFvQd_Hbztfvj3KqpY9HWqwX6vPtX_p0bJ9DnEDmAITLz4bku6suTS2kxZvEWx973sm2Ju3CRVOsRrvEoi7-qz2uQga0k4C_7CfjcCAxt2WmW2sik6oH99Q9Rr_JiDlrRFRzp_WT73zuq9CPbSzGbSQEhw08Xu54rJE9jxHxntSgU11YCamOuyrbc5cnbx-MzfpcFxYLgSi0KonMPYifQZ4MQwDC5Ds-kiHheVhRkT34iw_zDmUP7JG_tR_QZfuZmy_xdE4lbNR2kDRLdzfUjtfHUcgNmRrRn08yW8d4EO0cEY5jTJyvCJ_TNI8WWdUb44tlxQ",
-                            E = "AQAB"
-                        }
-                    },
+                    Keys = new[] { GetSamlCertificateKey("AspNetCoreSamlSample-test-sign-cert.crt") },
                     SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                     CertificateValidationMode = X509CertificateValidationMode.None,
                     RevocationMode = X509RevocationMode.NoCheck,
@@ -674,6 +653,13 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             };
 
             await CreateIfNotExistsAsync(aspNetCoreSamlSampleDownPartyName, getAction, postAction);
+        }
+
+        private JsonWebKey GetSamlCertificateKey(string file)
+        {
+            var certificate = CertificateUtil.Load(file);
+            var jwk = certificate.ToFTJsonWebKey();
+            return jwk.ToJson().ToObject<JsonWebKey>();
         }
 
         private async Task CreateIfNotExistsAsync(string name, Func<string, Task> getActionAsync, Func<string, Task> postActionAsync)

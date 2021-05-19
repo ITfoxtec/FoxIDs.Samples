@@ -42,7 +42,7 @@ namespace FoxIDs.SampleHelperLibrary
                         false));
 
                 var now = DateTimeOffset.UtcNow;
-                var cert = certRequest.CreateSelfSigned(now.AddDays(-1), now.AddDays(365));
+                var cert = certRequest.CreateSelfSigned(now.AddDays(-1), now.AddYears(100));
 
                 File.WriteAllBytes(PfxFile(path, cn), cert.Export(X509ContentType.Pfx));
                 File.WriteAllBytes(CrtFile(path, cn), cert.Export(X509ContentType.Cert));

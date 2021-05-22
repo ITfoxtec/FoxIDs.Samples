@@ -55,6 +55,11 @@ namespace AspNetCoreSamlIdPSample
                         rp.SingleLogoutResponseDestination = singleLogoutService.ResponseLocation ?? singleLogoutService.Location;
 
                         rp.SignatureValidationCertificate = entityDescriptor.SPSsoDescriptor.SigningCertificates.First();
+
+                        if (entityDescriptor.SPSsoDescriptor.EncryptionCertificates?.Count() > 0)
+                        {
+                            rp.EncryptionCertificate = entityDescriptor.SPSsoDescriptor.EncryptionCertificates.First();
+                        }
                     }
                     else
                     {

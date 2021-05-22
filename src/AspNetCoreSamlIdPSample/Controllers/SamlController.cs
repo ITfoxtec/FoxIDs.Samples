@@ -26,7 +26,6 @@ namespace AspNetCoreSamlIdPSample.Controllers
     [Route("Saml")]
     public class SamlController : Controller
     {
-        const string relayStateReturnUrl = "ReturnUrl";
         private readonly Saml2Configuration saml2Config;
         private readonly Settings settings;
         private readonly ILogger<SamlController> logger;
@@ -55,7 +54,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
                 },
                 //EncryptionCertificates = new X509Certificate2[]
                 //{
-                //    config.DecryptionCertificate
+                //    saml2Config.DecryptionCertificate
                 //},
                 SingleSignOnServices = new SingleSignOnService[]
                 {
@@ -67,9 +66,11 @@ namespace AspNetCoreSamlIdPSample.Controllers
                 },
                 NameIDFormats = new Uri[] { NameIdentifierFormats.X509SubjectName },
             };
-            entityDescriptor.ContactPerson = new ContactPerson(ContactTypes.Administrative)
-            {
-                Company = "Some sample IdP",
+            entityDescriptor.ContactPersons = new [] { 
+                new ContactPerson(ContactTypes.Administrative)
+                {
+                    Company = "Some sample IdP",
+                } 
             };
             return new Saml2Metadata(entityDescriptor).CreateMetadata().ToActionResult();
         }
@@ -80,7 +81,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
             var requestBinding = new Saml2RedirectBinding();
             var relyingParty = ValidateRelyingParty(ReadRelyingPartyFromLoginRequest(requestBinding));
 
-            var saml2AuthnRequest = new Saml2AuthnRequest(saml2Config);
+            var saml2AuthnRequest = new Saml2AuthnRequest(saml2Config);            
             try
             {
                 requestBinding.Unbind(Request.ToGenericHttpRequest(), saml2AuthnRequest);
@@ -109,6 +110,22 @@ namespace AspNetCoreSamlIdPSample.Controllers
                 logger.LogWarning(ex, $"SAML 2.0 Authn Request error. Authn Request '{saml2AuthnRequest.XmlDocument?.OuterXml}', Query String '{Request.QueryString}'.");
                 return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Responder, requestBinding.RelayState, relyingParty);
             }
+        }
+
+        private Saml2Configuration GetLoginSaml2Config(RelyingParty relyingParty)
+        {
+            var loginSaml2Config = new Saml2Configuration
+            {
+                Issuer = saml2Config.Issuer,
+                SigningCertificate = saml2Config.SigningCertificate,                
+                SignatureAlgorithm = saml2Config.SignatureAlgorithm,
+                CertificateValidationMode = saml2Config.CertificateValidationMode,
+                RevocationMode = saml2Config.RevocationMode
+            };
+            loginSaml2Config.AllowedAudienceUris.AddRange(saml2Config.AllowedAudienceUris);
+            loginSaml2Config.EncryptionCertificate = relyingParty.EncryptionCertificate;
+
+            return loginSaml2Config;
         }
 
         private IEnumerable<Claim> CreateClaims(IdPSession idPSession)
@@ -203,7 +220,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
             var responsebinding = new Saml2PostBinding();
             responsebinding.RelayState = relayState;
 
-            var saml2AuthnResponse = new Saml2AuthnResponse(saml2Config)
+            var saml2AuthnResponse = new Saml2AuthnResponse(GetLoginSaml2Config(relyingParty))
             {
                 InResponseTo = inResponseTo,
                 Status = status,

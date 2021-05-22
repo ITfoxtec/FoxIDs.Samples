@@ -14,5 +14,7 @@ namespace AspNetCoreSamlIdPSample.Models
         public Uri SingleLogoutResponseDestination { get; set; }
 
         public X509Certificate2 SignatureValidationCertificate { get; set; }
+
+        public X509Certificate2 EncryptionCertificate { get; set; }        
     }
 }

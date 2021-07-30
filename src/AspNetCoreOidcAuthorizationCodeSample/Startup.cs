@@ -80,7 +80,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     {
                         var utcNow = DateTimeOffset.UtcNow;
 
-                        if (context.Properties.ExpiresUtc < utcNow.AddMinutes(-10))
+                        if (context.Properties.ExpiresUtc < utcNow.AddSeconds(-10))
                         {
                             var tokenResponse = await RefreshTokens(context, identitySettings);
 

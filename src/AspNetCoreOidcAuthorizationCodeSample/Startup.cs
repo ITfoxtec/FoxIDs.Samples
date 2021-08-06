@@ -78,36 +78,39 @@ namespace AspNetCoreOidcAuthorizationCodeSample
 
                     options.Events.OnValidatePrincipal = async (context) =>
                     {
-                        var utcNow = DateTimeOffset.UtcNow;
-
-                        if (context.Properties.ExpiresUtc < utcNow.AddMinutes(-10))
+                        try
                         {
-                            var tokenResponse = await RefreshTokens(context, identitySettings);
+                            var expiresUtc = DateTimeOffset.Parse(context.Properties.GetTokenValue("expires_at"));
 
-                            // https://github.com/aspnet/AspNetCore/blob/f2e6e6ff334176540ef0b3291122e359c2106d1a/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectHandler.cs#L867
-                            var tokens = new List<AuthenticationToken>();
-
-                            tokens.Add(new AuthenticationToken { Name = OpenIdConnectParameterNames.AccessToken, Value = tokenResponse.AccessToken });
-                            tokens.Add(new AuthenticationToken { Name = OpenIdConnectParameterNames.IdToken, Value = tokenResponse.IdToken });
-                            if (!tokenResponse.RefreshToken.IsNullOrEmpty())
+                            // Tokens expires 30 seconds before actual expiration time.
+                            if (expiresUtc < DateTimeOffset.UtcNow.AddSeconds(30))
                             {
-                                tokens.Add(new AuthenticationToken { Name = OpenIdConnectParameterNames.RefreshToken, Value = tokenResponse.RefreshToken });
-                            }
-                            else
-                            {
-                                tokens.Add(new AuthenticationToken { Name = OpenIdConnectParameterNames.RefreshToken, Value = context.Properties.GetTokenValue(OpenIdConnectParameterNames.RefreshToken) });
-                            }
-                            tokens.Add(new AuthenticationToken { Name = OpenIdConnectParameterNames.TokenType, Value = tokenResponse.TokenType });
+                                var tokenResponse = await RefreshTokens(context, identitySettings);
 
-                            context.Properties.IssuedUtc = utcNow;
-                            context.Properties.ExpiresUtc = utcNow.AddSeconds(tokenResponse.ExpiresIn);
-                            tokens.Add(new AuthenticationToken { Name = "expires_at", Value = context.Properties.ExpiresUtc.Value.ToString("o", CultureInfo.InvariantCulture) });
+                                context.Properties.UpdateTokenValue(OpenIdConnectParameterNames.AccessToken, tokenResponse.AccessToken);
+                                context.Properties.UpdateTokenValue(OpenIdConnectParameterNames.IdToken, tokenResponse.IdToken);
+                                if (!tokenResponse.RefreshToken.IsNullOrEmpty())
+                                {
+                                    context.Properties.UpdateTokenValue(OpenIdConnectParameterNames.RefreshToken, tokenResponse.RefreshToken);
+                                }
+                                else
+                                {
+                                    context.Properties.UpdateTokenValue(OpenIdConnectParameterNames.RefreshToken, context.Properties.GetTokenValue(OpenIdConnectParameterNames.RefreshToken));
+                                }
+                                context.Properties.UpdateTokenValue(OpenIdConnectParameterNames.TokenType, tokenResponse.TokenType);
 
-                            context.Properties.StoreTokens(tokens);
-                            await context.HttpContext.SignInAsync(context.Principal, context.Properties);
+                                var newExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(tokenResponse.ExpiresIn);
+                                context.Properties.UpdateTokenValue("expires_at", newExpiresUtc.ToString("o", CultureInfo.InvariantCulture));
+
+                                // Cookie should be renewed.
+                                context.ShouldRenew = true;
+                            }
                         }
-
-                        await Task.CompletedTask;
+                        catch
+                        {
+                            context.RejectPrincipal();
+                            await context.HttpContext.SignOutAsync();
+                        }
                     };
                 })
                 .AddOpenIdConnect(options =>
@@ -119,7 +122,8 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     options.ResponseType = OpenIdConnectResponseType.Code;
 
                     options.SaveTokens = true;
-                    options.UseTokenLifetime = true;
+                    // False to support refresh token renewal.
+                    options.UseTokenLifetime = false;
 
                     // Scope to the application it self.
                     //options.Scope.Add("aspnetcore_oidcauthcode_sample");

@@ -7,6 +7,7 @@
         IdentityServer,
         AzureAd,
         SamlIdPSample,
-        SamlIdPAdfs,
+        SamlAdfs,
+        SamlNemLogin,
     }
 }

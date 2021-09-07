@@ -156,7 +156,7 @@ namespace AspNetCoreOidcImplicitSample
                     return settings.IdentityServerUpParty;
                 case LoginType.SamlIdPSample:
                     return settings.SamlIdPSampleUpParty;
-                case LoginType.SamlIdPAdfs:
+                case LoginType.SamlAdfs:
                     return settings.SamlIdPAdfsUpParty;
                 default:
                     throw new NotImplementedException("LoginType not implemented.");

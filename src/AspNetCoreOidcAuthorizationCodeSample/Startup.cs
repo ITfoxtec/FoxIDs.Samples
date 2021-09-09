@@ -278,8 +278,10 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     return settings.AzureAdUpParty;
                 case LoginType.SamlIdPSample:
                     return settings.SamlIdPSampleUpParty;
-                case LoginType.SamlIdPAdfs:
-                    return settings.SamlIdPAdfsUpParty;
+                case LoginType.SamlAdfs:
+                    return settings.SamlAdfsUpParty;
+                case LoginType.SamlNemLogin:
+                    return settings.SamlNemLoginUpParty;
                 default:
                     throw new NotImplementedException("LoginType not implemented.");
             }

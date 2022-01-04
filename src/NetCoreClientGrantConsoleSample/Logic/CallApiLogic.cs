@@ -22,7 +22,7 @@ namespace NetCoreClientGrantConsoleSample.Logic
         {
             var accessToken = await accessLogic.GetAccessTokenAsync();
             Console.WriteLine("\nCalling API 1...");
-            var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "1234");
+            using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "1234");
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();

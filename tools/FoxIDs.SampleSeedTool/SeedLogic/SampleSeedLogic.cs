@@ -85,7 +85,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             }
 
             Console.WriteLine("Delete OAuth down party sample configuration");
-            var oauthDownPartyNames = new[] { aspNetCoreApi1SampleDownPartyName };
+            var oauthDownPartyNames = new[] { netCoreClientGrantConsoleSampleDownPartyName, aspNetCoreApi1SampleDownPartyName };
             foreach (var name in oauthDownPartyNames)
             {
                 try

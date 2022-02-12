@@ -246,7 +246,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             {
                 var baseUrl = "https://localhost:44346";
 
-                var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JsonWebKey>();
+                var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JwtWithCertificateInfo>();
 
                 var oidcUpParty = new OidcUpParty
                 {
@@ -254,7 +254,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                     Authority = baseUrl,
                     UpdateState = PartyUpdateStates.Manual,
                     Issuers = new string[] { baseUrl },
-                    Keys = new JsonWebKey[] { key },
+                    Keys = new JwtWithCertificateInfo[] { key },
 
                     Client = new OidcUpClient
                     {
@@ -655,11 +655,11 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
             await CreateIfNotExistsAsync(aspNetCoreSamlSampleDownPartyName, getAction, postAction);
         }
 
-        private JsonWebKey GetSamlCertificateKey(string file)
+        private JwtWithCertificateInfo GetSamlCertificateKey(string file)
         {
             var certificate = CertificateUtil.Load(file);
             var jwk = certificate.ToFTJsonWebKey();
-            return jwk.ToJson().ToObject<JsonWebKey>();
+            return jwk.ToJson().ToObject<JwtWithCertificateInfo>();
         }
 
         private async Task CreateIfNotExistsAsync(string name, Func<string, Task> getActionAsync, Func<string, Task> postActionAsync)

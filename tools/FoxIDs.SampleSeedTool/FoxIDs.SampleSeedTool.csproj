@@ -6,7 +6,7 @@
 		<AssemblyName>SampleSeedTool</AssemblyName>
 		<StartupObject></StartupObject>
 		<RootNamespace>FoxIDs.SampleSeedTool</RootNamespace>
-		<GenerateCode>False</GenerateCode>
+		<GenerateCode>True</GenerateCode>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -37,7 +37,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample.Controllers
         {
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
 
-            var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "1234");
+            using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "1234");
             if (response.IsSuccessStatusCode)
             {
                 ViewBag.Result = await response.Content.ReadAsStringAsync();

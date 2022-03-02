@@ -92,7 +92,7 @@ namespace FoxIDs.SampleHelperLibrary.Repository
 
         private string CookieName()
         {
-            return $"{httpContextAccessor.HttpContext.Request.Host}.{PostCookieName}";
+            return $"{httpContextAccessor.HttpContext.Request.Host.Host}_{httpContextAccessor.HttpContext.Request.Host.Port}.{PostCookieName}";
         }
 
         protected abstract string PostCookieName { get; }

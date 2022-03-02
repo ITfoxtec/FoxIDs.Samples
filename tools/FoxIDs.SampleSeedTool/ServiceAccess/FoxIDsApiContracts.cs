@@ -89,14 +89,17 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"AddIfNot")]
         AddIfNot = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"AddIfNotOut")]
+        AddIfNotOut = 2,
+    
         [System.Runtime.Serialization.EnumMember(Value = @"Replace")]
-        Replace = 2,
+        Replace = 3,
     
         [System.Runtime.Serialization.EnumMember(Value = @"ReplaceIfNot")]
-        ReplaceIfNot = 3,
+        ReplaceIfNot = 4,
     
         [System.Runtime.Serialization.EnumMember(Value = @"Remove")]
-        Remove = 4,
+        Remove = 5,
     
     }
     
@@ -650,7 +653,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("claim", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(80)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w:\/\-.+]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w:\/\-.+\*]*$")]
         public string Claim { get; set; }
     
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -777,7 +780,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("claim", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(80)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w:\/\-.+]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w:\/\-.+\*]*$")]
         public string Claim { get; set; }
     
         [Newtonsoft.Json.JsonProperty("values", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]

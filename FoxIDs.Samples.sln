@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "down-parties", "down-partie
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "up-parties", "up-parties", "{02BEC832-D782-4BD8-ACC7-B79064D6D9A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerOidcSample", "src\BlazorServerOidcSample\BlazorServerOidcSample.csproj", "{B8A6FFC3-9964-47C3-86FF-A12DE1861947}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerOidcSample", "src\BlazorServerOidcSample\BlazorServerOidcSample.csproj", "{B8A6FFC3-9964-47C3-86FF-A12DE1861947}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

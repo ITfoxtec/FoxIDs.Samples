@@ -1,3 +1,5 @@
+using System;
+
 namespace BlazorServerOidcSample.Data
 {
     public class WeatherForecast

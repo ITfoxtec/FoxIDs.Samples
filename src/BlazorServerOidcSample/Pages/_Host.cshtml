@@ -1,0 +1,16 @@
+﻿@page "/"
+@using BlazorServerOidcSample.Models
+@namespace BlazorServerOidcSample.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf;
+
+@{
+    var tokens = new InitialApplicationState
+    {
+        XsrfToken = Xsrf.GetAndStoreTokens(HttpContext).RequestToken
+    };
+}
+<component type="typeof(App)" render-mode="ServerPrerendered" param-InitialState="tokens" />

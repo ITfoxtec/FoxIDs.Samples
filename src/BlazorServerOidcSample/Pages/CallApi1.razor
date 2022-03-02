@@ -1,0 +1,41 @@
+@page "/callapi1"
+@using Microsoft.AspNetCore.Http
+@using Microsoft.IdentityModel.Protocols.OpenIdConnect
+@using Microsoft.AspNetCore.Authentication
+@attribute [Authorize]
+@inject IHttpContextAccessor httpContextAccessor
+@inject IHttpClientFactory httpClientFactory
+@inject AppSettings appSettings
+
+<h1>Call AspNetCoreApi1Sample</h1>
+
+<p>This component demonstrates fetching data from the API.</p>
+
+@if (api1Result == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3>Result</h3>
+    <pre>@api1Result</pre>
+}
+
+@code {
+    private string api1Result;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var accessToken = await httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+
+        using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "1234");
+        if (response.IsSuccessStatusCode)
+        {
+            api1Result = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            throw new Exception($"Unable to call API. Api url='{appSettings.AspNetCoreApi1SampleUrl}', StatusCode='{response.StatusCode}'");
+        }
+    }
+}

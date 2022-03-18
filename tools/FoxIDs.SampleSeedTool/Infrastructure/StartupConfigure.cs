@@ -54,7 +54,14 @@ namespace FoxIDs.SampleSeedTool.Infrastructure
                 return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.Authority, IdentityConstants.OidcDiscovery.Path));
             });
 
-            services.AddTransient<FoxIDsApiClient>();
+            services.AddTransient(serviceProvider =>
+            {
+                var settings = serviceProvider.GetService<SeedSettings>();
+                var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+                var accessLogic = serviceProvider.GetService<AccessLogic>();
+
+                return new FoxIDsApiClient(settings, httpClientFactory, accessLogic);
+            });
         }
 
         private void AddConfiguration()

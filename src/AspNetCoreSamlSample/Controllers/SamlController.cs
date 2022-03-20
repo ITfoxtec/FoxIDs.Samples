@@ -99,11 +99,13 @@ namespace AspNetCoreSamlSample.Controllers
             {
                 //ForceAuthn = true,
                 //NameIdPolicy = new NameIdPolicy { AllowCreate = true, Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" },
+
+                // To require MFA
                 //RequestedAuthnContext = new RequestedAuthnContext
                 //{
                 //    Comparison = AuthnContextComparisonTypes.Exact,
-                //    AuthnContextClassRef = new string[] { AuthnContextClassTypes.PasswordProtectedTransport.OriginalString },
-                //},
+                //    AuthnContextClassRef = new string[] { "urn:foxids:mfa" },
+                //}
             };
 
             saml2AuthnRequest.Destination = AddUpParty(saml2AuthnRequest.Destination, loginType.HasValue ? loginType.Value : LoginType.FoxIDsLogin);

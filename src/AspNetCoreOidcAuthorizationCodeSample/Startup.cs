@@ -137,6 +137,9 @@ namespace AspNetCoreOidcAuthorizationCodeSample
 
                     options.Events.OnRedirectToIdentityProvider = async (context) =>
                     {
+                        // To require MFA
+                        //context.ProtocolMessage.AcrValues = "urn:foxids:mfa";
+
                         var loginType = ReadLoginType(context.Properties);
                         SetIssuerAddress(context, loginType);
 

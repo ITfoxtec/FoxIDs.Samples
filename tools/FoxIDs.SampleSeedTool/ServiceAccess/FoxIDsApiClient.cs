@@ -278,7 +278,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Update risk passwords.
         /// </summary>
         /// <param name="body">Risk passwords.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task PutRiskPasswordAsync(RiskPasswordRequest body)
         {
@@ -290,7 +290,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Update risk passwords.
         /// </summary>
         /// <param name="body">Risk passwords.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task PutRiskPasswordAsync(RiskPasswordRequest body, System.Threading.CancellationToken cancellationToken)
         {
@@ -381,7 +381,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete risk passwords.
         /// </summary>
         /// <param name="body">Risk passwords to delete.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteRiskPasswordAsync(RiskPasswordDelete body)
         {
@@ -393,7 +393,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete risk passwords.
         /// </summary>
         /// <param name="body">Risk passwords to delete.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteRiskPasswordAsync(RiskPasswordDelete body, System.Threading.CancellationToken cancellationToken)
         {
@@ -1419,7 +1419,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create Login up-party.
         /// </summary>
         /// <param name="body">Login up-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<LoginUpParty> PostLoginUpPartyAsync(LoginUpParty body)
         {
@@ -1431,7 +1431,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create Login up-party.
         /// </summary>
         /// <param name="body">Login up-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<LoginUpParty> PostLoginUpPartyAsync(LoginUpParty body, System.Threading.CancellationToken cancellationToken)
         {
@@ -1649,7 +1649,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete Login up-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteLoginUpPartyAsync(string name)
         {
@@ -1661,7 +1661,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete Login up-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteLoginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -1877,7 +1877,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OAuth 2.0 client secret for down-party.
         /// </summary>
         /// <param name="body">OAuth 2.0 client secret for down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<OAuthDownParty> PostOAuthClientSecretDownPartyAsync(OAuthClientSecretRequest body)
         {
@@ -1889,7 +1889,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OAuth 2.0 client secret for down-party.
         /// </summary>
         /// <param name="body">OAuth 2.0 client secret for down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<OAuthDownParty> PostOAuthClientSecretDownPartyAsync(OAuthClientSecretRequest body, System.Threading.CancellationToken cancellationToken)
         {
@@ -1992,7 +1992,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OAuth 2.0 client secret for down-party.
         /// </summary>
         /// <param name="name">Party name and secret id.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteOAuthClientSecretDownPartyAsync(string name)
         {
@@ -2004,7 +2004,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OAuth 2.0 client secret for down-party.
         /// </summary>
         /// <param name="name">Party name and secret id.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteOAuthClientSecretDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -2220,7 +2220,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OAuth 2.0 down-party.
         /// </summary>
         /// <param name="body">OAuth 2.0 down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<OAuthDownParty> PostOAuthDownPartyAsync(OAuthDownParty body)
         {
@@ -2232,7 +2232,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OAuth 2.0 down-party.
         /// </summary>
         /// <param name="body">OAuth 2.0 down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<OAuthDownParty> PostOAuthDownPartyAsync(OAuthDownParty body, System.Threading.CancellationToken cancellationToken)
         {
@@ -2450,7 +2450,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OAuth 2.0 down-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteOAuthDownPartyAsync(string name)
         {
@@ -2462,7 +2462,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OAuth 2.0 down-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteOAuthDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -2678,7 +2678,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OIDC client secret for down-party.
         /// </summary>
         /// <param name="body">OIDC client secret for down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<OidcDownParty> PostOidcClientSecretDownPartyAsync(OAuthClientSecretRequest body)
         {
@@ -2690,7 +2690,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OIDC client secret for down-party.
         /// </summary>
         /// <param name="body">OIDC client secret for down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<OidcDownParty> PostOidcClientSecretDownPartyAsync(OAuthClientSecretRequest body, System.Threading.CancellationToken cancellationToken)
         {
@@ -2793,7 +2793,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OIDC client secret for down-party.
         /// </summary>
         /// <param name="name">Party name and secret id.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteOidcClientSecretDownPartyAsync(string name)
         {
@@ -2805,7 +2805,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OIDC client secret for down-party.
         /// </summary>
         /// <param name="name">Party name and secret id.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteOidcClientSecretDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -3021,7 +3021,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OIDC down-party.
         /// </summary>
         /// <param name="body">OIDC down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<OidcDownParty> PostOidcDownPartyAsync(OidcDownParty body)
         {
@@ -3033,7 +3033,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OIDC down-party.
         /// </summary>
         /// <param name="body">OIDC down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<OidcDownParty> PostOidcDownPartyAsync(OidcDownParty body, System.Threading.CancellationToken cancellationToken)
         {
@@ -3251,7 +3251,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OIDC down-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteOidcDownPartyAsync(string name)
         {
@@ -3263,7 +3263,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OIDC down-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteOidcDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -3479,7 +3479,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OIDC up-party.
         /// </summary>
         /// <param name="body">OIDC up-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<OidcUpParty> PostOidcUpPartyAsync(OidcUpParty body)
         {
@@ -3491,7 +3491,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create OIDC up-party.
         /// </summary>
         /// <param name="body">OIDC up-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<OidcUpParty> PostOidcUpPartyAsync(OidcUpParty body, System.Threading.CancellationToken cancellationToken)
         {
@@ -3709,7 +3709,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OIDC up-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteOidcUpPartyAsync(string name)
         {
@@ -3721,7 +3721,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete OIDC up-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteOidcUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -4046,7 +4046,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create SAML 2.0 down-party.
         /// </summary>
         /// <param name="body">SAML 2.0 down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(SamlDownParty body)
         {
@@ -4058,7 +4058,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create SAML 2.0 down-party.
         /// </summary>
         /// <param name="body">SAML 2.0 down-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(SamlDownParty body, System.Threading.CancellationToken cancellationToken)
         {
@@ -4276,7 +4276,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete SAML 2.0 down-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteSamlDownPartyAsync(string name)
         {
@@ -4288,7 +4288,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete SAML 2.0 down-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteSamlDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -4504,7 +4504,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create SAML 2.0 up-party.
         /// </summary>
         /// <param name="body">SAML 2.0 up-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(SamlUpParty body)
         {
@@ -4516,7 +4516,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create SAML 2.0 up-party.
         /// </summary>
         /// <param name="body">SAML 2.0 up-party.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(SamlUpParty body, System.Threading.CancellationToken cancellationToken)
         {
@@ -4734,7 +4734,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete SAML 2.0 up-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteSamlUpPartyAsync(string name)
         {
@@ -4746,7 +4746,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete SAML 2.0 up-party.
         /// </summary>
         /// <param name="name">Party name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteSamlUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -5071,7 +5071,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create tenant.
         /// </summary>
         /// <param name="body">Tenant.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<Tenant> PostTenantAsync(CreateTenantRequest body)
         {
@@ -5083,7 +5083,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create tenant.
         /// </summary>
         /// <param name="body">Tenant.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<Tenant> PostTenantAsync(CreateTenantRequest body, System.Threading.CancellationToken cancellationToken)
         {
@@ -5186,7 +5186,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete tenant.
         /// </summary>
         /// <param name="name">Tenant name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteTenantAsync(string name)
         {
@@ -5198,7 +5198,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete tenant.
         /// </summary>
         /// <param name="name">Tenant name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteTenantAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -5414,7 +5414,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create track.
         /// </summary>
         /// <param name="body">Track.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<Track> PostTrackAsync(Track body)
         {
@@ -5426,7 +5426,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create track.
         /// </summary>
         /// <param name="body">Track.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<Track> PostTrackAsync(Track body, System.Threading.CancellationToken cancellationToken)
         {
@@ -5644,7 +5644,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete track.
         /// </summary>
         /// <param name="name">Track name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteTrackAsync(string name)
         {
@@ -5656,7 +5656,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete track.
         /// </summary>
         /// <param name="name">Track name.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteTrackAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
@@ -5839,7 +5839,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         if (status_ == 204)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", status_, responseText_, headers_, null);
+                            throw new FoxIDsApiException("No Content", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 404)
@@ -6210,7 +6210,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <summary>
         /// Delete secondary track key contained.
         /// </summary>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteTrackKeyContainedAsync()
         {
@@ -6221,7 +6221,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <summary>
         /// Delete secondary track key contained.
         /// </summary>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteTrackKeyContainedAsync(System.Threading.CancellationToken cancellationToken)
         {
@@ -6315,7 +6315,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Swap track key contained.
         /// </summary>
         /// <param name="body">Track to swap.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> PostTrackKeyContainedSwapAsync(TrackKeyItemContainedSwap body)
         {
@@ -6327,7 +6327,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Swap track key contained.
         /// </summary>
         /// <param name="body">Track to swap.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> PostTrackKeyContainedSwapAsync(TrackKeyItemContainedSwap body, System.Threading.CancellationToken cancellationToken)
         {
@@ -6768,7 +6768,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         if (status_ == 204)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", status_, responseText_, headers_, null);
+                            throw new FoxIDsApiException("No Content", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 404)
@@ -6884,7 +6884,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         if (status_ == 204)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", status_, responseText_, headers_, null);
+                            throw new FoxIDsApiException("No Content", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 404)
@@ -7115,7 +7115,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         if (status_ == 204)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", status_, responseText_, headers_, null);
+                            throw new FoxIDsApiException("No Content", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 404)
@@ -7494,7 +7494,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete track resource.
         /// </summary>
         /// <param name="resourceId">Resource id.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteTrackResourceAsync(int? resourceId)
         {
@@ -7506,7 +7506,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete track resource.
         /// </summary>
         /// <param name="resourceId">Resource id.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteTrackResourceAsync(int? resourceId, System.Threading.CancellationToken cancellationToken)
         {
@@ -7689,7 +7689,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         if (status_ == 204)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new FoxIDsApiException("Success", status_, responseText_, headers_, null);
+                            throw new FoxIDsApiException("No Content", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 404)
@@ -7835,7 +7835,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <summary>
         /// Delete track send email.
         /// </summary>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteTrackSendEmailAsync()
         {
@@ -7846,7 +7846,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <summary>
         /// Delete track send email.
         /// </summary>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteTrackSendEmailAsync(System.Threading.CancellationToken cancellationToken)
         {
@@ -8057,7 +8057,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create user.
         /// </summary>
         /// <param name="body">User.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<User> PostUserAsync(CreateUserRequest body)
         {
@@ -8069,7 +8069,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Create user.
         /// </summary>
         /// <param name="body">User.</param>
-        /// <returns>Success</returns>
+        /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<User> PostUserAsync(CreateUserRequest body, System.Threading.CancellationToken cancellationToken)
         {
@@ -8287,7 +8287,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete user.
         /// </summary>
         /// <param name="email">User email.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task DeleteUserAsync(string email)
         {
@@ -8299,7 +8299,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// Delete user.
         /// </summary>
         /// <param name="email">User email.</param>
-        /// <returns>Success</returns>
+        /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteUserAsync(string email, System.Threading.CancellationToken cancellationToken)
         {

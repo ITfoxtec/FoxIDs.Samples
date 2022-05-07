@@ -6,7 +6,7 @@
 		<AssemblyName>SampleSeedTool</AssemblyName>
 		<StartupObject></StartupObject>
 		<RootNamespace>FoxIDs.SampleSeedTool</RootNamespace>
-		<GenerateCode>False</GenerateCode>
+		<GenerateCode>True</GenerateCode>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -40,7 +40,7 @@
 	</ItemGroup>
 
 	<Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">
-		<Exec Command="$(NSwagExe_Core31) run ServiceAccess\nswag.json /variables:Configuration=$(Configuration)" />
+		<Exec Command="$(NSwagExe_Net60) run ServiceAccess\nswag.json /variables:Configuration=$(Configuration)" />
 	</Target>
 
 </Project>

@@ -6,6 +6,5 @@ namespace NetCoreClientGrantConsoleSample.Models
     {
         public string ClientId => DownParty;
         public string ClientSecret { get; set; }
-        public string RedirectUri { get; set; }
     }
 }

@@ -331,7 +331,6 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
                             new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
                         },
                         ResponseTypes = new[] { "token" },
-                        RedirectUris = new[] { $"uri:{netCoreClientGrantConsoleSampleDownPartyName}:client" },
                         AccessTokenLifetime = 600 // 10 minutes
                     }
                 };

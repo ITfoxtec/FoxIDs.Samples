@@ -106,6 +106,12 @@ namespace AspNetCoreSamlSample.Controllers
                 //    Comparison = AuthnContextComparisonTypes.Exact,
                 //    AuthnContextClassRef = new string[] { "urn:foxids:mfa" },
                 //}
+
+                //RequestedAuthnContext = new RequestedAuthnContext
+                //{
+                //    Comparison = AuthnContextComparisonTypes.Exact,
+                //    AuthnContextClassRef = new string[] { "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport" },
+                //}
             };
 
             saml2AuthnRequest.Destination = AddUpParty(saml2AuthnRequest.Destination, loginType.HasValue ? loginType.Value : LoginType.FoxIDsLogin);

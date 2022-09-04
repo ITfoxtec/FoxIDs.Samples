@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using UrlCombineLib;
 
-namespace FoxIDs.SampleSeedTool.SeedLogic
+namespace FoxIDs.SampleSeedTool.Logic
 {
     public class SampleSeedLogic
     {
@@ -58,7 +58,7 @@ namespace FoxIDs.SampleSeedTool.SeedLogic
 
             Console.WriteLine(string.Empty);
             Console.WriteLine($"Sample configuration created");
-        } 
+        }
 
         public async Task DeleteAsync()
         {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using FoxIDs.SampleSeedTool.Infrastructure;
-using FoxIDs.SampleSeedTool.SeedLogic;
+using FoxIDs.SampleSeedTool.Logic;
 
 namespace FoxIDs.SampleSeedTool
 {

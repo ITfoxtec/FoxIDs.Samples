@@ -1,6 +1,5 @@
 ﻿using FoxIDs.SampleSeedTool.Logic;
 using FoxIDs.SampleSeedTool.Models;
-using FoxIDs.SampleSeedTool.SeedLogic;
 using FoxIDs.SampleSeedTool.ServiceAccess;
 using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
@@ -25,20 +24,16 @@ namespace FoxIDs.SampleSeedTool.Infrastructure
             AddConfiguration();
             AddInfrastructure(services);
             AddLogic(services);
-            AddSeedLogic(services);
 
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
         }
 
-        private static void AddSeedLogic(ServiceCollection services)
-        {
-            services.AddTransient<SampleSeedLogic>();
-        }
-
         private static void AddLogic(ServiceCollection services)
         {
             services.AddSingleton<AccessLogic>();
+
+            services.AddTransient<SampleSeedLogic>();
         }
 
         private static void AddInfrastructure(ServiceCollection services)

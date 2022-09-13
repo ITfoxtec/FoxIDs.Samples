@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://localhost:44331/api/swagger/v1/swagger.json",
+      "url": "https://control.foxids.com/api/swagger/v1/swagger.json",
       "output": null
     }
   },

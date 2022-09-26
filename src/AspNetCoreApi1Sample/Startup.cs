@@ -43,7 +43,7 @@ namespace AspNetCoreApi1Sample
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = identitySettings.Authority;
+                    options.Authority = identitySettings.AuthorityWithoutUpParty;
                     options.Audience = identitySettings.ResourceId;
 
                     options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;

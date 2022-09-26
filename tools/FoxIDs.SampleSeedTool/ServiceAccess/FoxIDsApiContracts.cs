@@ -992,7 +992,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         public PartyUpdateStates UpdateState { get; set; }
 
         [Newtonsoft.Json.JsonProperty("oidcDiscoveryUpdateRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(86400, 31536000)]
+        [System.ComponentModel.DataAnnotations.Range(14400, 5184000)]
         public int? OidcDiscoveryUpdateRate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("authority", Required = Newtonsoft.Json.Required.Always)]
@@ -1476,7 +1476,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         public PartyUpdateStates UpdateState { get; set; }
 
         [Newtonsoft.Json.JsonProperty("metadataUpdateRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(86400, 31536000)]
+        [System.ComponentModel.DataAnnotations.Range(14400, 5184000)]
         public int? MetadataUpdateRate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("metadataUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]

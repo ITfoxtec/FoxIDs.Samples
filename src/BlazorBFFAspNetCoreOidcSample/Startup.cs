@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorServerOidcSample.Models;
-using BlazorServerOidcSample.Data;
+using BlazorBFFAspNetCoreOidcSample.Models;
 using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Messages;
@@ -22,13 +20,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using FoxIDs.SampleHelperLibrary.Models;
-using FoxIDs.SampleHelperLibrary.Repository;
 using Microsoft.Extensions.Hosting;
 using UrlCombineLib;
-using Microsoft.AspNetCore.Builder;
 
-namespace BlazorServerOidcSample
+namespace BlazorBFFAspNetCoreOidcSample
 {
     public class Startup
     {
@@ -53,20 +48,14 @@ namespace BlazorServerOidcSample
             var identitySettings = services.BindConfig<IdentitySettings>(Configuration, nameof(IdentitySettings));
             services.BindConfig<AppSettings>(Configuration, nameof(AppSettings));
 
-            services.AddTransient<IdPSelectionCookieRepository>();
             services.AddSingleton((serviceProvider) =>
             {
                 var settings = serviceProvider.GetService<IdentitySettings>();
                 var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
 
-                return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.AuthorityWithoutUpParty, IdentityConstants.OidcDiscovery.Path));
+                return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.Authority, IdentityConstants.OidcDiscovery.Path));
             });
-
-            services.AddScoped<TokenProvider>();
-            services.AddSingleton<WeatherForecastService>();
-
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
+            services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddHttpClient();
 
@@ -122,7 +111,7 @@ namespace BlazorServerOidcSample
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.Authority = identitySettings.AuthorityWithoutUpParty;
+                    options.Authority = identitySettings.Authority;
                     options.ClientId = identitySettings.ClientId;
                     options.ClientSecret = identitySettings.ClientSecret;
 
@@ -133,7 +122,7 @@ namespace BlazorServerOidcSample
                     options.UseTokenLifetime = false;
 
                     // Scope to the application it self.
-                    //options.Scope.Add("aspnetcore_oidcauthcode_sample");
+                    //options.Scope.Add("blazor_bff_aspnetcore_oidc_sample");
                     options.Scope.Add("aspnetcore_api1_sample:some_access");
                     options.Scope.Add("offline_access");
                     options.Scope.Add("profile");
@@ -144,24 +133,8 @@ namespace BlazorServerOidcSample
 
                     options.Events.OnRedirectToIdentityProvider = async (context) =>
                     {
-                        var loginType = ReadLoginType(context.Properties);
-                        SetIssuerAddress(context, loginType);
-
-                        await Task.FromResult(string.Empty);
-                    };
-                    // FoxIDs support OIDC RP Initiated Logout without up-party in the URL if the ID Token is provided in the request.
-                    //options.Events.OnRedirectToIdentityProviderForSignOut = async (context) =>
-                    //{
-                    //    var loginType = await GetSelectedLoginType(context.HttpContext);
-                    //    SetIssuerAddress(context, loginType);
-
-                    //    await Task.FromResult(string.Empty);
-                    //};
-                    options.Events.OnTokenValidated = async (context) =>
-                    {
-                        var idPSelectionCookieRepository = context.HttpContext.RequestServices.GetService<IdPSelectionCookieRepository>();
-                        var loginType = ReadLoginType(context.Properties);
-                        await idPSelectionCookieRepository.SaveAsync(loginType.ToString());
+                        // To require MFA
+                        //context.ProtocolMessage.AcrValues = "urn:foxids:mfa";
 
                         await Task.FromResult(string.Empty);
                     };
@@ -173,10 +146,10 @@ namespace BlazorServerOidcSample
                         }
                         await Task.FromResult(string.Empty);
                     };
-                    options.Events.OnRemoteFailure = async (context) =>
-                    {
-                        await Task.FromResult(string.Empty);
-                    };
+                    //options.Events.OnRemoteFailure = async (context) =>
+                    //{
+                    //    await Task.FromResult(string.Empty);
+                    //};
                 });
         }
 
@@ -232,78 +205,21 @@ namespace BlazorServerOidcSample
             }
         }
 
-        private static LoginType ReadLoginType(AuthenticationProperties properties)
-        {
-            LoginType loginType;
-            if (!properties.Items.ContainsKey(Constants.StateLoginType) || !Enum.TryParse(properties.Items[Constants.StateLoginType], true, out loginType))
-            {
-                loginType = LoginType.FoxIDsLogin;
-            }
-
-            return loginType;
-        }
-
-        private async Task<LoginType> GetSelectedLoginType(HttpContext httpContext)
-        {
-            var idPSelectionCookieRepository = httpContext.RequestServices.GetService<IdPSelectionCookieRepository>();
-
-            var loginTypeValue = await idPSelectionCookieRepository.GetAsync();
-            if (!string.IsNullOrEmpty(loginTypeValue))
-            {
-                LoginType loginType;
-                if (Enum.TryParse(loginTypeValue, true, out loginType))
-                {
-                    return loginType;
-                }
-            }
-
-            throw new InvalidOperationException("Unable to read Login Type from IdP session cookie.");
-        }
-
-        private void SetIssuerAddress(RedirectContext context, LoginType loginType)
-        {
-            if (context.ProtocolMessage.RequestType != OpenIdConnectRequestType.Token)
-            {
-                var settings = context.HttpContext.RequestServices.GetService<IdentitySettings>();
-
-                var upParty = GetUpParty(settings, loginType);
-                context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace($"/{settings.DownParty}/", $"/{settings.DownParty}({upParty})/");
-            }
-        }
-
-        private string GetUpParty(IdentitySettings settings, LoginType loginType)
-        {
-            switch (loginType)
-            {
-                case LoginType.FoxIDsLogin:
-                    return settings.FoxIDsLoginUpParty;
-                case LoginType.ParallelFoxIDs:
-                    return settings.ParallelFoxIDsUpParty;
-                case LoginType.IdentityServer:
-                    return settings.IdentityServerUpParty;
-                case LoginType.AzureAd:
-                    return settings.AzureAdUpParty;
-                case LoginType.SamlIdPSample:
-                    return settings.SamlIdPSampleUpParty;
-                case LoginType.SamlAdfs:
-                    return settings.SamlAdfsUpParty;
-                case LoginType.SamlNemLogin:
-                    return settings.SamlNemLoginUpParty;
-                default:
-                    throw new NotImplementedException("LoginType not implemented.");
-            }
-        }
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (!env.IsDevelopment())
+            if (env.IsDevelopment())
             {
-                app.UseExceptionHandler("/Error");
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
@@ -312,8 +228,9 @@ namespace BlazorServerOidcSample
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

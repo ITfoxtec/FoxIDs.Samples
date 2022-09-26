@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "up-parties", "up-parties", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerOidcSample", "src\BlazorServerOidcSample\BlazorServerOidcSample.csproj", "{B8A6FFC3-9964-47C3-86FF-A12DE1861947}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBFFAspNetCoreOidcSample", "src\BlazorBFFAspNetCoreOidcSample\BlazorBFFAspNetCoreOidcSample.csproj", "{D186C812-248C-40BE-97A7-FDFC076904D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,10 @@ Global
 		{B8A6FFC3-9964-47C3-86FF-A12DE1861947}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8A6FFC3-9964-47C3-86FF-A12DE1861947}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8A6FFC3-9964-47C3-86FF-A12DE1861947}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D186C812-248C-40BE-97A7-FDFC076904D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D186C812-248C-40BE-97A7-FDFC076904D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D186C812-248C-40BE-97A7-FDFC076904D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D186C812-248C-40BE-97A7-FDFC076904D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{BBD711D8-51DE-41F5-9D3C-81A445FA8E80} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
 		{02BEC832-D782-4BD8-ACC7-B79064D6D9A1} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
 		{B8A6FFC3-9964-47C3-86FF-A12DE1861947} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
+		{D186C812-248C-40BE-97A7-FDFC076904D3} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

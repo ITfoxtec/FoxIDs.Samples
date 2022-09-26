@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+@{
+    ViewData["Title"] = "Secure";
+}
+<h2>@ViewData["Title"]</h2>
+
+<h3>User claims</h3>
+<dl>
+    @foreach (var claim in User.Claims)
+    {
+        <dt>@claim.Type</dt>
+        <dd style="padding-left: 10px">@claim.Value</dd>
+    }
+</dl>
+
+<h3>User tokens</h3>
+<dl>
+    <dt>id token</dt>
+    <dd>@await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken)</dd>
+
+    <dt>access token</dt>
+    <dd>@await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken)</dd>
+
+    <dt>refresh token</dt>
+    <dd>@await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken)</dd>
+</dl>
+

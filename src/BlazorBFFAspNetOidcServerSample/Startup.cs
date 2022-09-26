@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorBFFAspNetCoreOidcSample.Models;
+using BlazorBFFAspNetOidcServerSample.Models;
 using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Messages;
@@ -23,7 +23,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Extensions.Hosting;
 using UrlCombineLib;
 
-namespace BlazorBFFAspNetCoreOidcSample
+namespace BlazorBFFAspNetOidcServerSample
 {
     public class Startup
     {

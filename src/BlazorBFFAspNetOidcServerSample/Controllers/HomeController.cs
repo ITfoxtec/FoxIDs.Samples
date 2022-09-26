@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using BlazorBFFAspNetCoreOidcSample.Models;
+using BlazorBFFAspNetOidcServerSample.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
 using System;
 
-namespace BlazorBFFAspNetCoreOidcSample.Controllers
+namespace BlazorBFFAspNetOidcServerSample.Controllers
 {
     public class HomeController : Controller
     {

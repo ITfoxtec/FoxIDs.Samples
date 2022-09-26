@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace BlazorBFFAspNetOidcServerSample
+namespace BlazorBFFAspNetOidcSample.Server
 {
     public class Program
     {

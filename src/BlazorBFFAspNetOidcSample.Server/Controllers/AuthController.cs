@@ -6,7 +6,7 @@ using System.Linq;
 using ITfoxtec.Identity;
 using System.Threading.Tasks;
 
-namespace BlazorBFFAspNetOidcServerSample.Controllers
+namespace BlazorBFFAspNetOidcSample.Server.Controllers
 {
     public class AuthController : Controller
     {

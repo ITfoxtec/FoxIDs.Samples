@@ -1,6 +1,6 @@
 ﻿using FoxIDs.SampleHelperLibrary.Models;
 
-namespace BlazorBFFAspNetOidcServerSample.Models
+namespace BlazorBFFAspNetOidcSample.Server.Models
 {
     public class IdentitySettings : FoxIDsSettings
     {

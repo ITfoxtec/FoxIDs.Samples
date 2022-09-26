@@ -1,4 +1,4 @@
-﻿namespace BlazorBFFAspNetOidcServerSample.Models
+﻿namespace BlazorBFFAspNetOidcSample.Server.Models
 {
     public class AppSettings
     {

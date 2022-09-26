@@ -1,6 +1,6 @@
 using System;
 
-namespace BlazorBFFAspNetOidcServerSample.Models
+namespace BlazorBFFAspNetOidcSample.Server.Models
 {
     public class ErrorViewModel
     {

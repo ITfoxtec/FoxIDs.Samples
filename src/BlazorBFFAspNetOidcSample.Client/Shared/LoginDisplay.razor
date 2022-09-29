@@ -1,0 +1,20 @@
+﻿<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name!
+      @*  <button class="nav-link btn btn-link" @onclick="LogoutAsync">Logout</button>*@
+
+        <a class="nav-link btn btn-link" href="auth/logout">Log out</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="auth/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    //private async Task LogoutAsync(MouseEventArgs args)
+    //{
+    //    NavigationManager navigationManager
+    //    navigationManager.NavigateTo
+    //}
+}

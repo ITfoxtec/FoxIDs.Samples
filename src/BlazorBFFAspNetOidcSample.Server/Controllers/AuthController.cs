@@ -10,9 +10,9 @@ namespace BlazorBFFAspNetOidcSample.Server.Controllers
 {
     public class AuthController : Controller
     {
-        public IActionResult Login()
+        public IActionResult Login(string redirectUrl = null)
         {
-            var redirectUrl = Url.Action(nameof(HomeController.Secure), "Home");
+            redirectUrl = redirectUrl ?? Url.Action(nameof(HomeController.Secure), "Home");
             var authenticationProperties = new AuthenticationProperties { RedirectUri = redirectUrl };
             return Challenge(authenticationProperties, OpenIdConnectDefaults.AuthenticationScheme);
         }

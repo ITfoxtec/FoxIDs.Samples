@@ -22,6 +22,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Extensions.Hosting;
 using UrlCombineLib;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace BlazorBFFAspNetOidcSample.Server
 {
@@ -37,14 +38,7 @@ namespace BlazorBFFAspNetOidcSample.Server
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
-
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-            
+          
             var identitySettings = services.BindConfig<IdentitySettings>(Configuration, nameof(IdentitySettings));
             services.BindConfig<AppSettings>(Configuration, nameof(AppSettings));
 
@@ -59,6 +53,11 @@ namespace BlazorBFFAspNetOidcSample.Server
             services.AddHttpContextAccessor();
             services.AddHttpClient();
 
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-CSRF-TOKEN";
+            });
+
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services
@@ -69,8 +68,10 @@ namespace BlazorBFFAspNetOidcSample.Server
                 })
                 .AddCookie(options => 
                 {
-                    // Required to support Front channel logout
+                    // Required at a lover level to support Front channel logout
                     options.Cookie.SameSite = SameSiteMode.None;
+                    // but it is more secure to use
+                    //options.Cookie.SameSite = SameSiteMode.Strict;
 
                     options.Events.OnValidatePrincipal = async (context) =>
                     {
@@ -205,11 +206,12 @@ namespace BlazorBFFAspNetOidcSample.Server
             }
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAntiforgery antiforgery)
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
             }
             else
             {
@@ -218,19 +220,44 @@ namespace BlazorBFFAspNetOidcSample.Server
             }
 
             app.UseHttpsRedirection();
+
+             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
 
             app.UseRouting();
+
+            //app.Use(async (context, next) =>
+            //{
+            //    var tokens = antiforgery.GetAndStoreTokens(context);
+            //    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() 
+            //    {
+            //        Secure = true,
+            //        SameSite = SameSiteMode.Strict
+            //    });
+
+            //    await next();
+            //});
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //app.Map("/api", api = &gt;
+            //{
+            //    api.RunProxy(async context = &gt;
+            //    {
+            //        var forwardContext = context.ForwardTo("https://localhost:5101");
+            //        return await forwardContext.Send();
+            //    });
+            //});
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                   name: "default",
+                   pattern: "{controller}/{action}/{id?}");
+
+                endpoints.MapFallbackToFile("index.html");
+
             });
         }
     }

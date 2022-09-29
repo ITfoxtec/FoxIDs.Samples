@@ -31,6 +31,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a href="/">Blazor home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Secure">Secure</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="CallAspNetCoreApi1Sample">Call AspNetCoreApi1Sample</a></li>
                 </ul>
@@ -38,8 +39,6 @@
             </div>
         </div>
     </nav>
-
-    <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @RenderBody()

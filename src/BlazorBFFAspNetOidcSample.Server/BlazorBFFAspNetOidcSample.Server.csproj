@@ -7,17 +7,13 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.9" />
-
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.9" />
+		<PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\BlazorBFFAspNetOidcSample.Client\BlazorBFFAspNetOidcSample.Client.csproj" />
 		<ProjectReference Include="..\FoxIDs.SampleHelperLibrary\FoxIDs.SampleHelperLibrary.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Controllers\Proxy\" />
 	</ItemGroup>
 
 </Project>

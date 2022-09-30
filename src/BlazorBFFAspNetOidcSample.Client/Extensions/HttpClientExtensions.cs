@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BlazorOidcPkceSample
+namespace BlazorBFFAspNetOidcSample.Client
 {
     public static class HttpClientExtensions
     {

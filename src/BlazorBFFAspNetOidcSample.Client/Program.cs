@@ -1,6 +1,6 @@
+using BlazorBFFAspNetOidcSample;
 using BlazorBFFAspNetOidcSample.Client;
 using BlazorBFFAspNetOidcSample.Client.Infrastructure;
-using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -19,20 +19,18 @@ namespace BlazorOidcPkceSample
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddBlazoredSessionStorage();
-
             // Authentication
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 
             builder.Services.AddScoped<AntiforgeryHandler>();
 
-            builder.Services.AddHttpClient("server", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-            builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("server"));
+            builder.Services.AddHttpClient(Constants.Client.HttpClientLogicalName, client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+            builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(Constants.Client.HttpClientLogicalName));
 
-            builder.Services.AddHttpClient("server.secure", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+            builder.Services.AddHttpClient(Constants.Client.HttpClientSecureLogicalName, client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
                 .AddHttpMessageHandler<AntiforgeryHandler>();
-            builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("server.secure"));
+            builder.Services.AddTransient(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(Constants.Client.HttpClientSecureLogicalName));
 
             await builder.Build().RunAsync();
         }

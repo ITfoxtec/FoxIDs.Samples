@@ -21,7 +21,7 @@ namespace BlazorBFFAspNetOidcSample.Server.Controllers.Api
         [HttpGet]
         public ActionResult<AntiforgeryTokenResponse> Get()
         {
-            var tokens = antiforgery.GetTokens(HttpContext);
+            var tokens = antiforgery.GetAndStoreTokens(HttpContext);
             return new AntiforgeryTokenResponse
             {
                 Token = tokens.RequestToken!,

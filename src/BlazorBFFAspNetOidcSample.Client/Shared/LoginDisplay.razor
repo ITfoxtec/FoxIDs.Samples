@@ -1,9 +1,12 @@
-﻿<AuthorizeView>
+﻿@using BlazorBFFAspNetOidcSample.Client.Infrastructure
+@using Microsoft.AspNetCore.WebUtilities
+@inject NavigationManager navigationManager
+@inject AntiforgeryHandler antiforgeryHandler
+
+<AuthorizeView>
     <Authorized>
         Hello, @context.User.Identity.Name!
-      @*  <button class="nav-link btn btn-link" @onclick="LogoutAsync">Logout</button>*@
-
-        <a class="nav-link btn btn-link" href="auth/logout">Log out</a>
+        <button class="nav-link btn btn-link" @onclick="LogoutAsync">Log out</button>
     </Authorized>
     <NotAuthorized>
         <a href="auth/login">Log in</a>
@@ -11,10 +14,9 @@
 </AuthorizeView>
 
 @code {
-
-    //private async Task LogoutAsync(MouseEventArgs args)
-    //{
-    //    NavigationManager navigationManager
-    //    navigationManager.NavigateTo
-    //}
+    private async Task LogoutAsync(MouseEventArgs args)
+    {
+        string uri = QueryHelpers.AddQueryString("auth/blazorlogout", new Dictionary<string, string> { { "antiforgeryToken", await antiforgeryHandler.GetAntiforgeryTokenAsync() } });
+        navigationManager.NavigateTo(uri, forceLoad: true);
+    }
 }

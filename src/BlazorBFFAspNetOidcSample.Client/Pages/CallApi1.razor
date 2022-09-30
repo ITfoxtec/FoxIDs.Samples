@@ -1,0 +1,28 @@
+@page "/callapi1"
+@using Microsoft.AspNetCore.WebUtilities
+@attribute [Authorize]
+@inject IHttpClientFactory httpClientFactory
+
+<h1>Call AspNetCoreApi1Sample</h1>
+
+<p>This component demonstrates fetching data from the API through the server proxy.</p>
+
+@if (api1Result == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3>Result</h3>
+    <pre>@api1Result</pre>
+}
+
+@code {
+    private string api1Result;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var apiUrl = "proxy/api1/values";
+        api1Result = await httpClientFactory.CreateClient(Constants.Client.HttpClientSecureLogicalName).GetStringAsync(apiUrl, "1234");
+    }
+}

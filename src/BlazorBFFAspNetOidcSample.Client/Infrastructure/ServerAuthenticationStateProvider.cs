@@ -2,7 +2,6 @@
 using ITfoxtec.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -22,18 +21,14 @@ namespace BlazorBFFAspNetOidcSample.Client.Infrastructure
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            //var claims = new List<Claim>();
-            //claims.Add(new Claim(JwtClaimTypes.Subject, "testuser1"));
-
-            //var identity = new ClaimsIdentity(claims, nameof(ServerAuthenticationStateProvider), JwtClaimTypes.Subject, JwtClaimTypes.Role);
             var identity = await GetIdentityAsync();
-            return new AuthenticationState(identity != null ? new ClaimsPrincipal(identity) : new ClaimsPrincipal());
+            return new AuthenticationState(new ClaimsPrincipal(identity));
         }
 
         private async Task<ClaimsIdentity> GetIdentityAsync()
         {
             var apiUrl = "api/identity";
-            using var response = await httpClientFactory.CreateClient("server.secure").GetAsync(apiUrl);
+            using var response = await httpClientFactory.CreateClient(Constants.Client.HttpClientSecureLogicalName).GetAsync(apiUrl);
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
                 throw new Exception($"Error, Bad request. StatusCode={response.StatusCode}, API URL='{apiUrl}'");
@@ -51,7 +46,7 @@ namespace BlazorBFFAspNetOidcSample.Client.Infrastructure
             }
             else
             {
-                return null;
+                return new ClaimsIdentity();
             }
         }
     }

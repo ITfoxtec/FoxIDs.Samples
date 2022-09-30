@@ -23,6 +23,9 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Extensions.Hosting;
 using UrlCombineLib;
 using Microsoft.AspNetCore.Antiforgery;
+using Yarp.ReverseProxy.Forwarder;
+using BlazorBFFAspNetOidcSample.Server.Infrastructur.Proxy;
+using BlazorBFFAspNetOidcSample.Server.Infrastructur;
 
 namespace BlazorBFFAspNetOidcSample.Server
 {
@@ -52,10 +55,12 @@ namespace BlazorBFFAspNetOidcSample.Server
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddHttpClient();
+            services.AddReverseProxy();
+            services.AddTransient<ApiTransformBuilder>();
 
             services.AddAntiforgery(options =>
             {
-                options.HeaderName = "X-CSRF-TOKEN";
+                options.HeaderName = Constants.AntiforgeryTokenHeaderName;
             });
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -206,7 +211,7 @@ namespace BlazorBFFAspNetOidcSample.Server
             }
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAntiforgery antiforgery)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAntiforgery antiforgery, IHttpForwarder httpForwarder, ApiTransformBuilder apiTransformBuilder)
         {
             if (env.IsDevelopment())
             {
@@ -221,44 +226,26 @@ namespace BlazorBFFAspNetOidcSample.Server
 
             app.UseHttpsRedirection();
 
-             app.UseBlazorFrameworkFiles();
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            //app.Use(async (context, next) =>
-            //{
-            //    var tokens = antiforgery.GetAndStoreTokens(context);
-            //    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken, new CookieOptions() 
-            //    {
-            //        Secure = true,
-            //        SameSite = SameSiteMode.Strict
-            //    });
-
-            //    await next();
-            //});
-
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.Map("/api", api = &gt;
-            //{
-            //    api.RunProxy(async context = &gt;
-            //    {
-            //        var forwardContext = context.ForwardTo("https://localhost:5101");
-            //        return await forwardContext.Send();
-            //    });
-            //});
-
             app.UseEndpoints(endpoints =>
             {
+                endpoints.AddApiProxy("/proxy/api1", "https://localhost:44344/api", proxyTimeoutInSeconds: 100);
+
                 endpoints.MapControllerRoute(
                    name: "default",
                    pattern: "{controller}/{action}/{id?}");
 
                 endpoints.MapFallbackToFile("index.html");
-
             });
+
+
         }
     }
 }

@@ -23,7 +23,8 @@ namespace FoxIDs.SampleSeedTool.Logic
         const string netCoreClientGrantConsoleSampleDownPartyName = "netcore_clientgrant_sample";
 
         const string aspNetCoreOidcAuthCodeSampleDownPartyName = "aspnetcore_oidcauthcode_sample";
-        const string aspNetCoreOidcImplicitSampleDownPartyName = "aspnetcore_oidcimplicit_sample";
+        const string aspNetCoreOidcImplicitSampleDownPartyName = "aspnetcore_oidcimplicit_sample"; 
+        const string blazorBffAspNetCoreOidcSampleDownPartyName = "blazor_bff_aspnet_oidc_sample";
         const string blazorOidcAuthCodePkceSampleDownPartyName = "blazor_oidcauthcodepkce_sample";
         const string blazorServerOidcSampleDownPartyName = "blazorserver_oidc_sample";
 
@@ -51,6 +52,7 @@ namespace FoxIDs.SampleSeedTool.Logic
 
             await CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync();
             await CreateAspNetCoreOidcImplicitSampleDownPartyAsync();
+            await CreateBffAspNetCoreOidcSampleDownPartyAsync();
             await CreateBlazorOidcAuthCodePkceSampleDownPartyAsync();
             await CreateblazorServerOidcSampleDownPartyAsync();
 
@@ -65,7 +67,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             Console.WriteLine("Delete sample configuration");
 
             Console.WriteLine("Delete Oidc down party sample configuration");
-            var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName, blazorOidcAuthCodePkceSampleDownPartyName, blazorServerOidcSampleDownPartyName };
+            var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName, blazorBffAspNetCoreOidcSampleDownPartyName, blazorOidcAuthCodePkceSampleDownPartyName, blazorServerOidcSampleDownPartyName };
             foreach (var name in oidcDownPartyNames)
             {
                 try
@@ -523,6 +525,111 @@ namespace FoxIDs.SampleSeedTool.Logic
             };
 
             await CreateIfNotExistsAsync(aspNetCoreOidcImplicitSampleDownPartyName, getAction, postAction);
+        }
+
+        
+
+        private async Task CreateBffAspNetCoreOidcSampleDownPartyAsync()
+        {
+            Func<string, Task> getAction = async (name) =>
+            {
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+            };
+
+            Func<string, Task> postAction = async (name) =>
+            {
+                var baseUrl = "https://localhost:44348";
+
+                var oidcDownParty = new OidcDownParty
+                {
+                    Name = name,
+                    AllowCorsOrigins = new[] { baseUrl },
+                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    Client = new OidcDownClient
+                    {
+                        ResourceScopes = new[]
+                        {
+                            // Scope to the application it self.
+                            //new OAuthDownResourceScope { Resource = name },
+                            // Scope to API1.
+                            new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
+                        },
+                        Scopes = new[]
+                        {
+                            new OidcDownScope { Scope = "offline_access" },
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.MiddleName, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Nickname },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PreferredUsername },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Profile },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Picture },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Website },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Gender },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Birthdate },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Locale },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
+                                }
+                            },
+                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
+                                }
+                            },
+                            new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
+                                }
+                            },
+                            new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
+                                {
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
+                                    new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
+                                }
+                            },
+                        },
+                        Claims = new[]
+                        {
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
+                            new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
+                        },
+                        ResponseTypes = new[] { "code" },
+                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc") },
+                        PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "signout-callback-oidc"),
+                        FrontChannelLogoutUri = UrlCombine.Combine(baseUrl, "auth", "frontchannellogout"),
+                        FrontChannelLogoutSessionRequired = true,
+                        RequirePkce = true,
+                        RequireLogoutIdTokenHint = true,
+                        AuthorizationCodeLifetime = 30, // 30 seconds 
+                        IdTokenLifetime = 600, // 10 minutes
+                        AccessTokenLifetime = 600, // 10 minutes
+                        RefreshTokenLifetime = 900, // 15 minutes
+                        RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
+                        RefreshTokenUseOneTime = false,
+                        RefreshTokenLifetimeUnlimited = false
+                    }
+                };
+
+                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+
+                var secret = "wXyFfKVxZXGAIoFrcj-8hXtcPD6CgtjpEhrqGJJe95g";
+                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                {
+                    PartyName = oidcDownParty.Name,
+                    Secrets = new string[] { secret },
+                });
+                Console.WriteLine($"\t'{name}' client secret is: {secret}");
+            };
+
+            await CreateIfNotExistsAsync(blazorBffAspNetCoreOidcSampleDownPartyName, getAction, postAction);
         }
 
         private async Task CreateBlazorOidcAuthCodePkceSampleDownPartyAsync()

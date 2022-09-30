@@ -57,7 +57,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                 var settings = serviceProvider.GetService<IdentitySettings>();
                 var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
 
-                return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.Authority, IdentityConstants.OidcDiscovery.Path));
+                return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.AuthorityWithoutUpParty, IdentityConstants.OidcDiscovery.Path));
             });
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
@@ -115,7 +115,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.Authority = identitySettings.Authority;
+                    options.Authority = identitySettings.AuthorityWithoutUpParty;
                     options.ClientId = identitySettings.ClientId;
                     options.ClientSecret = identitySettings.ClientSecret;
 

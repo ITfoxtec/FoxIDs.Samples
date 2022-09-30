@@ -59,7 +59,7 @@ namespace BlazorServerOidcSample
                 var settings = serviceProvider.GetService<IdentitySettings>();
                 var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
 
-                return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.Authority, IdentityConstants.OidcDiscovery.Path));
+                return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.AuthorityWithoutUpParty, IdentityConstants.OidcDiscovery.Path));
             });
 
             services.AddScoped<TokenProvider>();
@@ -122,7 +122,7 @@ namespace BlazorServerOidcSample
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.Authority = identitySettings.Authority;
+                    options.Authority = identitySettings.AuthorityWithoutUpParty;
                     options.ClientId = identitySettings.ClientId;
                     options.ClientSecret = identitySettings.ClientSecret;
 

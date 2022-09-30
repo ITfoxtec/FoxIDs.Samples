@@ -61,7 +61,7 @@ namespace AspNetCoreOidcImplicitSample
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.Authority = identitySettings.Authority;
+                    options.Authority = identitySettings.AuthorityWithoutUpParty;
                     options.ClientId = identitySettings.ClientId;
 
                     options.ResponseType = "id_token token";

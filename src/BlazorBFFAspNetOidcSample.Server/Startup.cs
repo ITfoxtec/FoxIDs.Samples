@@ -211,7 +211,7 @@ namespace BlazorBFFAspNetOidcSample.Server
             }
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAntiforgery antiforgery, IHttpForwarder httpForwarder, ApiTransformBuilder apiTransformBuilder)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppSettings appSettings)
         {
             if (env.IsDevelopment())
             {
@@ -236,7 +236,7 @@ namespace BlazorBFFAspNetOidcSample.Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.AddApiProxy("/proxy/api1", "https://localhost:44344/api", proxyTimeoutInSeconds: 100);
+                endpoints.AddApiProxy("/proxy/api1", appSettings.AspNetCoreApi1SampleUrl, proxyTimeoutInSeconds: 100);
 
                 endpoints.MapControllerRoute(
                    name: "default",

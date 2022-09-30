@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
 using System;
+using Microsoft.AspNetCore.Http;
+using UrlCombineLib;
 
 namespace BlazorBFFAspNetOidcSample.Server.Controllers
 {
@@ -37,14 +39,15 @@ namespace BlazorBFFAspNetOidcSample.Server.Controllers
         {
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
 
-            using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "1234");
+            var appUrl = UrlCombine.Combine(appSettings.AspNetCoreApi1SampleUrl, "values");
+            using var response = await httpClientFactory.CreateClient().GetAsync(appUrl, accessToken, "1234");
             if (response.IsSuccessStatusCode)
             {
                 ViewBag.Result = await response.Content.ReadAsStringAsync();
             }
             else
             {
-                throw new Exception($"Unable to call API. Api url='{appSettings.AspNetCoreApi1SampleUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API. Api url='{appUrl}', StatusCode='{response.StatusCode}'");
             }
 
             ViewBag.Title = "Call AspNetCoreApi1Sample";

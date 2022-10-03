@@ -2,9 +2,11 @@
 using System.Linq;
 using ITfoxtec.Identity;
 using BlazorBFFAspNetOidcSample.Models.Api;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlazorBFFAspNetOidcSample.Server.Controllers.Api
 {
+    [AllowAnonymous]
     [ValidateAntiForgeryToken]
     [Route("api/[controller]")]
     [ApiController]

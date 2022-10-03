@@ -1,11 +1,13 @@
 ﻿using BlazorBFFAspNetOidcSample.Models.Api;
 using ITfoxtec.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BlazorBFFAspNetOidcSample.Client.Infrastructure
@@ -13,15 +15,35 @@ namespace BlazorBFFAspNetOidcSample.Client.Infrastructure
     public class ServerAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly IHttpClientFactory httpClientFactory;
+        private readonly ILogger<ServerAuthenticationStateProvider> logger;
 
-        public ServerAuthenticationStateProvider(IHttpClientFactory httpClientFactory)
+        public ServerAuthenticationStateProvider(IHttpClientFactory httpClientFactory, ILogger<ServerAuthenticationStateProvider> logger)
         {
             this.httpClientFactory = httpClientFactory;
+            this.logger = logger;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var identity = await GetIdentityAsync();
+
+            if(identity.IsAuthenticated)
+            {
+                logger.LogInformation("User logged in.");
+
+                Timer timer = null;
+                timer = new Timer(async _ =>
+                {
+                    var identity = await GetIdentityAsync();
+                    if (!identity.IsAuthenticated)
+                    {
+                        logger.LogInformation("User logged out.");
+                        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
+                        await timer.DisposeAsync();
+                    }
+                }, null, 30000, 10000);
+            }
+
             return new AuthenticationState(new ClaimsPrincipal(identity));
         }
 

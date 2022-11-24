@@ -147,6 +147,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CreateTenantRequest
     {
+        [Newtonsoft.Json.JsonProperty("planName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string PlanName { get; set; }
+
         [Newtonsoft.Json.JsonProperty("customDomain", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(200)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$")]
@@ -446,10 +451,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class LogStreamApplicationInsightsSettings
     {
-        [Newtonsoft.Json.JsonProperty("instrumentationKey", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("connectionString", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(50, MinimumLength = 1)]
-        public string InstrumentationKey { get; set; }
+        [System.ComponentModel.DataAnnotations.StringLength(4096, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-=.:;\/]*$")]
+        public string ConnectionString { get; set; }
 
     }
 
@@ -607,6 +613,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class MyTenantRequest
     {
+        [Newtonsoft.Json.JsonProperty("planName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string PlanName { get; set; }
+
         [Newtonsoft.Json.JsonProperty("customDomain", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(200)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$")]
@@ -1101,6 +1112,77 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"AutomaticStopped")]
         AutomaticStopped = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Plan
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(30, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(4000)]
+        public string Text { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("currency", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(10, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w]*$")]
+        public string Currency { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("costPerMonth", Required = Newtonsoft.Json.Required.Always)]
+        public double CostPerMonth { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("users", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public PlanItem Users { get; set; } = new PlanItem();
+
+        [Newtonsoft.Json.JsonProperty("logins", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public PlanItem Logins { get; set; } = new PlanItem();
+
+        [Newtonsoft.Json.JsonProperty("tokenRequests", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public PlanItem TokenRequests { get; set; } = new PlanItem();
+
+        [Newtonsoft.Json.JsonProperty("controlApiGetRequests", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public PlanItem ControlApiGetRequests { get; set; } = new PlanItem();
+
+        [Newtonsoft.Json.JsonProperty("controlApiUpdateRequests", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public PlanItem ControlApiUpdateRequests { get; set; } = new PlanItem();
+
+        [Newtonsoft.Json.JsonProperty("applicationInsightsConnectionString", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(4096)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-=.:;\/]*$")]
+        public string ApplicationInsightsConnectionString { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("logAnalyticsWorkspaceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(40)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-f0-9\-]*$")]
+        public string LogAnalyticsWorkspaceId { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class PlanItem
+    {
+        [Newtonsoft.Json.JsonProperty("included", Required = Newtonsoft.Json.Required.Always)]
+        public long Included { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("firstLevelCost", Required = Newtonsoft.Json.Required.Always)]
+        public double FirstLevelCost { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("firstLevelThreshold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? FirstLevelThreshold { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("secondLevelCost", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? SecondLevelCost { get; set; }
 
     }
 
@@ -1639,6 +1721,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class Tenant
     {
+        [Newtonsoft.Json.JsonProperty("planName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string PlanName { get; set; }
+
         [Newtonsoft.Json.JsonProperty("customDomain", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(200)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$")]
@@ -1658,6 +1745,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class TenantRequest
     {
+        [Newtonsoft.Json.JsonProperty("planName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string PlanName { get; set; }
+
         [Newtonsoft.Json.JsonProperty("customDomain", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(200)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$")]
@@ -1806,6 +1898,88 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public PartyTypes Type { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UsageLogItem
+    {
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public UsageLogTypes Type { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Value { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("subItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UsageLogItem> SubItems { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UsageLogResponse
+    {
+        [Newtonsoft.Json.JsonProperty("summarizeLevel", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public UsageLogSummarizeLevels SummarizeLevel { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UsageLogItem> Items { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum UsageLogSummarizeLevels
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Hour")]
+        Hour = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Day")]
+        Day = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Month")]
+        Month = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum UsageLogTimeScopes
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ThisMonth")]
+        ThisMonth = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LastMonth")]
+        LastMonth = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum UsageLogTypes
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Hour")]
+        Hour = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Day")]
+        Day = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"user")]
+        User = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Login")]
+        Login = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TokenRequest")]
+        TokenRequest = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ControlApiGet")]
+        ControlApiGet = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ControlApiUpdate")]
+        ControlApiUpdate = 6,
 
     }
 

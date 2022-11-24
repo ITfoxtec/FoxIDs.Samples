@@ -158,6 +158,581 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
 
         /// <summary>
+        /// Filter plan.
+        /// </summary>
+        /// <param name="filterName">Filter plan name.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Plan>> GetFilterPlanAsync(string filterName)
+        {
+            return GetFilterPlanAsync(filterName, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Filter plan.
+        /// </summary>
+        /// <param name="filterName">Filter plan name.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Plan>> GetFilterPlanAsync(string filterName, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/@master/!FilterPlan?");
+            if (filterName != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("filterName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(filterName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<Plan>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new FoxIDsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Get plan.
+        /// </summary>
+        /// <param name="name">Plan name.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<Plan> GetPlanAsync(string name)
+        {
+            return GetPlanAsync(name, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get plan.
+        /// </summary>
+        /// <param name="name">Plan name.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<Plan> GetPlanAsync(string name, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/@master/!Plan?");
+            if (name != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("name") + "=").Append(System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Plan>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new FoxIDsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Create plan.
+        /// </summary>
+        /// <param name="body">plan.</param>
+        /// <returns>Created</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<Plan> PostPlanAsync(Plan body)
+        {
+            return PostPlanAsync(body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Create plan.
+        /// </summary>
+        /// <param name="body">plan.</param>
+        /// <returns>Created</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<Plan> PostPlanAsync(Plan body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/@master/!Plan");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 201)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Plan>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new FoxIDsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 409)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Conflict", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Update plan.
+        /// </summary>
+        /// <param name="body">Plan.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<Plan> PutPlanAsync(Plan body)
+        {
+            return PutPlanAsync(body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update plan.
+        /// </summary>
+        /// <param name="body">Plan.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<Plan> PutPlanAsync(Plan body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/@master/!Plan");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Plan>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new FoxIDsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Delete plan.
+        /// </summary>
+        /// <param name="name">Plan name.</param>
+        /// <returns>No Content</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task DeletePlanAsync(string name)
+        {
+            return DeletePlanAsync(name, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Delete plan.
+        /// </summary>
+        /// <param name="name">Plan name.</param>
+        /// <returns>No Content</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task DeletePlanAsync(string name, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/@master/!Plan?");
+            if (name != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("name") + "=").Append(System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Get risk password.
         /// </summary>
         /// <param name="passwordSha1Hash">Password SHA1 hash.</param>
@@ -1069,9 +1644,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
 
         /// <summary>
-        /// Filter up-party.
+        /// Filter track.
         /// </summary>
-        /// <param name="filterName">Filter up-party name.</param>
+        /// <param name="filterName">Filter track name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Track>> GetFilterTrackAsync(string filterName)
@@ -1081,9 +1656,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Filter up-party.
+        /// Filter track.
         /// </summary>
-        /// <param name="filterName">Filter up-party name.</param>
+        /// <param name="filterName">Filter track name.</param>
         /// <returns>Success</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Track>> GetFilterTrackAsync(string filterName, System.Threading.CancellationToken cancellationToken)
@@ -1303,7 +1878,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
 
         /// <summary>
-        /// Filter up-party.
+        /// Filter user.
         /// </summary>
         /// <param name="filterEmail">Filter user email.</param>
         /// <returns>Success</returns>
@@ -1315,7 +1890,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Filter up-party.
+        /// Filter user.
         /// </summary>
         /// <param name="filterEmail">Filter user email.</param>
         /// <returns>Success</returns>
@@ -2179,6 +2754,155 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                         if (status_ == 204)
                         {
                             return;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Get my tenant usage logs.
+        /// </summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetMyTenantLogUsageAsync(string trackName, UsageLogTimeScopes timeScope, UsageLogSummarizeLevels summarizeLevel, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeControlApiGets, bool? includeControlApiUpdates)
+        {
+            return GetMyTenantLogUsageAsync(trackName, timeScope, summarizeLevel, includeUsers, includeLogins, includeTokenRequests, includeControlApiGets, includeControlApiUpdates, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get my tenant usage logs.
+        /// </summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetMyTenantLogUsageAsync(string trackName, UsageLogTimeScopes timeScope, UsageLogSummarizeLevels summarizeLevel, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeControlApiGets, bool? includeControlApiUpdates, System.Threading.CancellationToken cancellationToken)
+        {
+            if (timeScope == null)
+                throw new System.ArgumentNullException("timeScope");
+
+            if (summarizeLevel == null)
+                throw new System.ArgumentNullException("summarizeLevel");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!MyTenantLogUsage?");
+            if (trackName != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("TrackName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(trackName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Append(System.Uri.EscapeDataString("TimeScope") + "=").Append(System.Uri.EscapeDataString(ConvertToString(timeScope, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("SummarizeLevel") + "=").Append(System.Uri.EscapeDataString(ConvertToString(summarizeLevel, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (includeUsers != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeUsers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeUsers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeLogins != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeLogins") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeLogins, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeTokenRequests != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeTokenRequests") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeTokenRequests, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeControlApiGets != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeControlApiGets") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeControlApiGets, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeControlApiUpdates != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeControlApiUpdates") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeControlApiUpdates, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UsageLogResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new FoxIDsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 204)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("No Content", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 404)
@@ -5859,6 +6583,159 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         }
 
         /// <summary>
+        /// Get tenant usage logs.
+        /// </summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetTenantLogUsageAsync(string tenantName, string trackName, UsageLogTimeScopes timeScope, UsageLogSummarizeLevels summarizeLevel, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeControlApiGets, bool? includeControlApiUpdates)
+        {
+            return GetTenantLogUsageAsync(tenantName, trackName, timeScope, summarizeLevel, includeUsers, includeLogins, includeTokenRequests, includeControlApiGets, includeControlApiUpdates, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get tenant usage logs.
+        /// </summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetTenantLogUsageAsync(string tenantName, string trackName, UsageLogTimeScopes timeScope, UsageLogSummarizeLevels summarizeLevel, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeControlApiGets, bool? includeControlApiUpdates, System.Threading.CancellationToken cancellationToken)
+        {
+            if (timeScope == null)
+                throw new System.ArgumentNullException("timeScope");
+
+            if (summarizeLevel == null)
+                throw new System.ArgumentNullException("summarizeLevel");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TenantLogUsage?");
+            if (tenantName != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("TenantName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(tenantName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (trackName != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("TrackName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(trackName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Append(System.Uri.EscapeDataString("TimeScope") + "=").Append(System.Uri.EscapeDataString(ConvertToString(timeScope, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("SummarizeLevel") + "=").Append(System.Uri.EscapeDataString(ConvertToString(summarizeLevel, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (includeUsers != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeUsers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeUsers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeLogins != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeLogins") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeLogins, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeTokenRequests != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeTokenRequests") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeTokenRequests, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeControlApiGets != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeControlApiGets") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeControlApiGets, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeControlApiUpdates != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeControlApiUpdates") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeControlApiUpdates, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UsageLogResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new FoxIDsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 204)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("No Content", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Get track.
         /// </summary>
         /// <param name="name">Track name.</param>
@@ -7796,6 +8673,151 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
                                 throw new FoxIDsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Get track usage logs.
+        /// </summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetTrackLogUsageAsync(UsageLogTimeScopes timeScope, UsageLogSummarizeLevels summarizeLevel, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeControlApiGets, bool? includeControlApiUpdates)
+        {
+            return GetTrackLogUsageAsync(timeScope, summarizeLevel, includeUsers, includeLogins, includeTokenRequests, includeControlApiGets, includeControlApiUpdates, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get track usage logs.
+        /// </summary>
+        /// <returns>Success</returns>
+        /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetTrackLogUsageAsync(UsageLogTimeScopes timeScope, UsageLogSummarizeLevels summarizeLevel, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeControlApiGets, bool? includeControlApiUpdates, System.Threading.CancellationToken cancellationToken)
+        {
+            if (timeScope == null)
+                throw new System.ArgumentNullException("timeScope");
+
+            if (summarizeLevel == null)
+                throw new System.ArgumentNullException("summarizeLevel");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/[tenant_name]/[track_name]/!TrackLogUsage?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("TimeScope") + "=").Append(System.Uri.EscapeDataString(ConvertToString(timeScope, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("SummarizeLevel") + "=").Append(System.Uri.EscapeDataString(ConvertToString(summarizeLevel, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (includeUsers != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeUsers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeUsers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeLogins != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeLogins") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeLogins, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeTokenRequests != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeTokenRequests") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeTokenRequests, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeControlApiGets != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeControlApiGets") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeControlApiGets, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (includeControlApiUpdates != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("IncludeControlApiUpdates") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeControlApiUpdates, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Bad Request", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("Server Error", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<UsageLogResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new FoxIDsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 204)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new FoxIDsApiException("No Content", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 404)

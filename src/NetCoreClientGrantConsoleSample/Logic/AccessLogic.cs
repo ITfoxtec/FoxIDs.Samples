@@ -18,12 +18,11 @@ namespace NetCoreClientGrantConsoleSample.Logic
             this.tokenHelper = tokenHelper;
         }
 
-        public async Task<string> GetAccessTokenAsync()
+        public async Task<string> GetAccessTokenAsync(string scope)
         {
             if (cacheExpiresAt < DateTimeOffset.UtcNow.AddSeconds(-5).ToUnixTimeSeconds())
             {
                 Console.WriteLine("Acquire access token...");
-                var scope = "aspnetcore_api1_sample:some_access";
                 (var accessToken, var expiresIn) = await tokenHelper.GetAccessTokenWithClientCredentialGrantAsync(settings.ClientId, settings.ClientSecret, scope);
                 accessTokenCache = accessToken;
                 cacheExpiresAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + expiresIn.Value;

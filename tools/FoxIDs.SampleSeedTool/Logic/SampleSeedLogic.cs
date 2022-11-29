@@ -19,6 +19,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         const string identityserverOidcOpUpPartyName = "identityserver_oidc_op_sample";
 
         const string aspNetCoreApi1SampleDownPartyName = "aspnetcore_api1_sample";
+        const string aspNetCoreApiOAuthTwoIdPsSampleDownPartyName = "aspnetapi_oauth_twoidps_sample";
 
         const string netCoreClientGrantConsoleSampleDownPartyName = "netcore_clientgrant_sample";
 
@@ -48,6 +49,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             await CreateIdentityserverOidcOpUpPartyAsync();
 
             await CreateAspNetCoreApi1SampleDownPartyAsync();
+            await CreateAspNetCoreApiOAuthTwoIdPsSampleDownPartyAsync();
 
             await CreateNetCoreClientGrantConsoleSampleDownPartyAsync();
 
@@ -91,7 +93,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             }
 
             Console.WriteLine("Delete OAuth down party sample configuration");
-            var oauthDownPartyNames = new[] { netCoreClientGrantConsoleSampleDownPartyName, aspNetCoreApi1SampleDownPartyName };
+            var oauthDownPartyNames = new[] { netCoreClientGrantConsoleSampleDownPartyName, aspNetCoreApi1SampleDownPartyName, aspNetCoreApiOAuthTwoIdPsSampleDownPartyName };
             foreach (var name in oauthDownPartyNames)
             {
                 try
@@ -315,6 +317,30 @@ namespace FoxIDs.SampleSeedTool.Logic
             await CreateIfNotExistsAsync(aspNetCoreApi1SampleDownPartyName, getAction, postAction);
         }
 
+        private async Task CreateAspNetCoreApiOAuthTwoIdPsSampleDownPartyAsync()
+        {
+            Func<string, Task> getAction = async (name) =>
+            {
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+            };
+
+            Func<string, Task> postAction = async (name) =>
+            {
+                var oauthDownParty = new OAuthDownParty
+                {
+                    Name = name,
+                    Resource = new OAuthDownResource
+                    {
+                        Scopes = new[] { "admin", "some_access" }
+                    }
+                };
+
+                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+            };
+
+            await CreateIfNotExistsAsync(aspNetCoreApiOAuthTwoIdPsSampleDownPartyName, getAction, postAction);
+        }
+
         private async Task CreateNetCoreClientGrantConsoleSampleDownPartyAsync()
         {
             Func<string, Task> getAction = async (name) =>
@@ -332,7 +358,9 @@ namespace FoxIDs.SampleSeedTool.Logic
                         ResourceScopes = new[]
                         {
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } }
+                            new OAuthDownResourceScope { Resource = "aspnetcore_api1_sample", Scopes = new [] { "admin", "some_access" } },
+                            // Scope to API which support two IdPs.
+                            new OAuthDownResourceScope { Resource = "aspnetapi_oauth_twoidps_sample", Scopes = new [] { "some_access" } }
                         },
                         ResponseTypes = new[] { "token" },
                         AccessTokenLifetime = 600 // 10 minutes

@@ -20,9 +20,9 @@ namespace NetCoreClientGrantConsoleSample.Logic
 
         public async Task CallAspNetCoreApi1SampleAsync()
         {
-            var accessToken = await accessLogic.GetAccessTokenAsync();
+            var accessToken = await accessLogic.GetAccessTokenAsync("aspnetcore_api1_sample:some_access");
             Console.WriteLine("\nCalling API 1...");
-            using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "1234");
+            using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "4567");
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsStringAsync();
@@ -32,7 +32,22 @@ namespace NetCoreClientGrantConsoleSample.Logic
             {
                 throw new Exception($"Unable to call API. API URL='{appSettings.AspNetCoreApi1SampleUrl}', StatusCode='{response.StatusCode}'");
             }
-
+        }   
+        
+        public async Task CallAspNetCoreApiOAuthTwoIdPsSampleAsync()
+        {
+            var accessToken = await accessLogic.GetAccessTokenAsync("aspnetapi_oauth_twoidps_sample:some_access");
+            Console.WriteLine("\nCalling API - support two IdPs...");
+            using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApiOAuthTwoIdPsSampleUrl, accessToken);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"API result:\n{result}");
+            }
+            else
+            {
+                throw new Exception($"Unable to call API. API URL='{appSettings.AspNetCoreApiOAuthTwoIdPsSampleUrl}', StatusCode='{response.StatusCode}'");
+            }
         }
     }
 }

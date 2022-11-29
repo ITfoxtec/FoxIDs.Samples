@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBFFAspNetOidcSample.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBFFAspNetOidcSample.Client", "src\BlazorBFFAspNetOidcSample.Client\BlazorBFFAspNetOidcSample.Client.csproj", "{57EC6665-6592-4C8D-8F40-764B834B6F51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreOidcAuthCodeAllUpPartiesSample", "src\AspNetCoreOidcAuthCodeAllUpPartiesSample\AspNetCoreOidcAuthCodeAllUpPartiesSample.csproj", "{FD18F270-2441-4CCB-A6FB-CB586D004E7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreOidcAuthCodeAllUpPartiesSample", "src\AspNetCoreOidcAuthCodeAllUpPartiesSample\AspNetCoreOidcAuthCodeAllUpPartiesSample.csproj", "{FD18F270-2441-4CCB-A6FB-CB586D004E7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreApiOAuthTwoIdPsSample", "src\AspNetCoreApiOAuthTwoIdPsSample\AspNetCoreApiOAuthTwoIdPsSample.csproj", "{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{FD18F270-2441-4CCB-A6FB-CB586D004E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD18F270-2441-4CCB-A6FB-CB586D004E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD18F270-2441-4CCB-A6FB-CB586D004E7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +134,7 @@ Global
 		{D186C812-248C-40BE-97A7-FDFC076904D3} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{57EC6665-6592-4C8D-8F40-764B834B6F51} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{FD18F270-2441-4CCB-A6FB-CB586D004E7E} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
+		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

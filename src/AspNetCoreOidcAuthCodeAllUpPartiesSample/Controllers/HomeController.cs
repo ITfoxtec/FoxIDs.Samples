@@ -1,14 +1,12 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using AspNetCoreOidcAuthorizationCodeSample.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+﻿using AspNetCoreOidcAuthCodeAllUpPartiesSample.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Diagnostics;
 using System.Net.Http;
-using System;
 
-namespace AspNetCoreOidcAuthorizationCodeSample.Controllers
+namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
 {
     public class HomeController : Controller
     {
@@ -31,13 +29,13 @@ namespace AspNetCoreOidcAuthorizationCodeSample.Controllers
         {
             return View();
         }
-       
+
         [Authorize]
         public async Task<IActionResult> CallAspNetCoreApi1Sample()
         {
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
 
-            using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "1234");
+            using var response = await httpClientFactory.CreateClient().GetAsync(appSettings.AspNetCoreApi1SampleUrl, accessToken, "4321");
             if (response.IsSuccessStatusCode)
             {
                 ViewBag.Result = await response.Content.ReadAsStringAsync();

@@ -22,8 +22,6 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Extensions.Hosting;
 using UrlCombineLib;
-using Microsoft.AspNetCore.Antiforgery;
-using Yarp.ReverseProxy.Forwarder;
 using BlazorBFFAspNetOidcSample.Server.Infrastructur.Proxy;
 using BlazorBFFAspNetOidcSample.Server.Infrastructur;
 
@@ -124,8 +122,6 @@ namespace BlazorBFFAspNetOidcSample.Server
                     options.ResponseType = OpenIdConnectResponseType.Code;
 
                     options.SaveTokens = true;
-                    // False to support refresh token renewal.
-                    options.UseTokenLifetime = false;
 
                     // Scope to the application it self.
                     //options.Scope.Add("blazor_bff_aspnetcore_oidc_sample");

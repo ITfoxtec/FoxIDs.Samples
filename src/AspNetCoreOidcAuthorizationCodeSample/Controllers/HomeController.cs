@@ -44,7 +44,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API. Api url='{appSettings.AspNetCoreApi1SampleUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API. API URL='{appSettings.AspNetCoreApi1SampleUrl}', StatusCode='{response.StatusCode}'");
             }
 
             ViewBag.Title = "Call AspNetCoreApi1Sample";

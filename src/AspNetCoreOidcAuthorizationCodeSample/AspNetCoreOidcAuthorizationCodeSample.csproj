@@ -11,5 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\FoxIDs.SampleHelperLibrary\FoxIDs.SampleHelperLibrary.csproj" />
   </ItemGroup>
+ 
 
 </Project>

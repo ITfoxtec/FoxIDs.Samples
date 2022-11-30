@@ -7,7 +7,6 @@ namespace AspNetCoreApiOAuthTwoIdPsSample.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[ApiSomeAccessScopeAuthorize]
     [Authorize]
     public class WeatherForecastController : ControllerBase
     {

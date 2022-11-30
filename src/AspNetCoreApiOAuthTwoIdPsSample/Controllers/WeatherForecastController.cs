@@ -1,5 +1,4 @@
 using AspNetCoreApiOAuthTwoIdPsSample.Models;
-using AspNetCoreApiOAuthTwoIdPsSample.Policys;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

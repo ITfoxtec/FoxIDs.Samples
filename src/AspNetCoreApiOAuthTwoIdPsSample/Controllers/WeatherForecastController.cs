@@ -1,5 +1,4 @@
 using AspNetCoreApiOAuthTwoIdPsSample.Models;
-using AspNetCoreApiOAuthTwoIdPsSample.Policys;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +6,6 @@ namespace AspNetCoreApiOAuthTwoIdPsSample.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[ApiSomeAccessScopeAuthorize]
     [Authorize]
     public class WeatherForecastController : ControllerBase
     {

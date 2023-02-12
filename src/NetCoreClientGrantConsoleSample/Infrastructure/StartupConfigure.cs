@@ -52,10 +52,12 @@ namespace NetCoreClientGrantConsoleSample.Infrastructure
 
         private void AddConfiguration()
         {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var builder = new ConfigurationBuilder()
                                  .SetBasePath(Directory.GetCurrentDirectory())
                                  .AddJsonFile("appsettings.json")
-                                 .AddJsonFile("appsettings.Development.json", optional: true);
+                                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
+                                 .AddEnvironmentVariables();
 
             var configuration = builder.Build();
 

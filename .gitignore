@@ -24,6 +24,8 @@ bld/
 
 # ignore appsettings configuration files
 **/appsettings.development.json
+**/appsettings.test.json
+**/appsettings.qa.json
 **/appsettings.staging.json
 **/appsettings.production.json
 

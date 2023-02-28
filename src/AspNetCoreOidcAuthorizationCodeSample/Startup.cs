@@ -121,6 +121,9 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     // False to support refresh token renewal.
                     options.UseTokenLifetime = false;
 
+                    // To show the acr claim in the User.Claims collection
+                    options.ClaimActions.Remove("acr");
+
                     // Scope to the application it self.
                     //options.Scope.Add("aspnetcore_oidcauthcode_sample");
                     options.Scope.Add("aspnetcore_api1_sample:some_access");

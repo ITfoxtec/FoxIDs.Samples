@@ -84,6 +84,9 @@ builder.Services.AddAuthentication(options =>
         // False to support refresh token renewal.
         options.UseTokenLifetime = false;
 
+        // To show the acr claim in the User.Claims collection
+        options.ClaimActions.Remove("acr");
+
         // Scope to the application it self.
         //options.Scope.Add(identitySettings.DownParty);
         options.Scope.Add("aspnetcore_api1_sample:some_access");

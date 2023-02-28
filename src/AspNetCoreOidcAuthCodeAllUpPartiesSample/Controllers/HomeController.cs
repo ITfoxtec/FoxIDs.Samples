@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Diagnostics;
-using System.Net.Http;
 
 namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
 {

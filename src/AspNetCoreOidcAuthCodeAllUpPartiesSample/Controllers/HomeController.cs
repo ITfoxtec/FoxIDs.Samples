@@ -63,7 +63,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
             using var response = await httpClientFactory.CreateClient().GetAsync(oidcDiscovery.UserInfoEndpoint, accessToken);
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.Result = JToken.Parse(await response.Content.ReadAsStringAsync()).ToString();
+                ViewBag.Result = $"UserInfo URL='{oidcDiscovery.UserInfoEndpoint}'{Environment.NewLine}{JToken.Parse(await response.Content.ReadAsStringAsync())}";
             }
             else
             {

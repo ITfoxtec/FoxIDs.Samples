@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 
 namespace FoxIDs.SampleSeedTool.Models
 {

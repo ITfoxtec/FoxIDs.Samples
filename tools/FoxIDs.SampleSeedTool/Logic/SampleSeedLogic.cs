@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 
 namespace FoxIDs.SampleSeedTool.Logic
 {

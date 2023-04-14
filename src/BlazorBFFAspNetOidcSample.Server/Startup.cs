@@ -21,7 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Extensions.Hosting;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 using BlazorBFFAspNetOidcSample.Server.Infrastructur.Proxy;
 using BlazorBFFAspNetOidcSample.Server.Infrastructur;
 

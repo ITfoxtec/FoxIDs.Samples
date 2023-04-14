@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 
 var builder = WebApplication.CreateBuilder(args);

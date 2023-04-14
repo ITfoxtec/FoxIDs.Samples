@@ -19,7 +19,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using FoxIDs.SampleHelperLibrary.Models;
 using FoxIDs.SampleHelperLibrary.Repository;
 using Microsoft.Extensions.Hosting;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthorizationCodeSample.Identity;
 
 namespace AspNetCoreOidcAuthorizationCodeSample

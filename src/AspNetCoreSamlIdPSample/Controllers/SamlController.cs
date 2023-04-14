@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging;
 using FoxIDs.SampleHelperLibrary.Repository;
 using ITfoxtec.Identity;
 using FoxIDs.SampleHelperLibrary.Models;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 
 namespace AspNetCoreSamlIdPSample.Controllers
 {

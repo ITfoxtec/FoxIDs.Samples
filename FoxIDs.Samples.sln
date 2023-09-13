@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApiOAuthTwoIdPsSa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientAssertionGrantConsoleSample", "src\NetCoreClientAssertionGrantConsoleSample\NetCoreClientAssertionGrantConsoleSample.csproj", "{83C7142C-268F-44BA-92F3-03236BF76801}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApi2Sample", "src\AspNetCoreApi2Sample\AspNetCoreApi2Sample.csproj", "{C41057D7-0396-4222-9845-CCBB41809025}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +121,10 @@ Global
 		{83C7142C-268F-44BA-92F3-03236BF76801}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83C7142C-268F-44BA-92F3-03236BF76801}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83C7142C-268F-44BA-92F3-03236BF76801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C41057D7-0396-4222-9845-CCBB41809025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41057D7-0396-4222-9845-CCBB41809025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C41057D7-0396-4222-9845-CCBB41809025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C41057D7-0396-4222-9845-CCBB41809025}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,6 +148,7 @@ Global
 		{FD18F270-2441-4CCB-A6FB-CB586D004E7E} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{83C7142C-268F-44BA-92F3-03236BF76801} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
+		{C41057D7-0396-4222-9845-CCBB41809025} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

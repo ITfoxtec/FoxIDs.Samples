@@ -1,7 +1,5 @@
 ﻿using ITfoxtec.Identity;
-using ITfoxtec.Identity.Discovery;
 using System.IdentityModel.Tokens.Jwt;
-using ITfoxtec.Identity.Util;
 using AspNetCoreApi2Sample.Models;
 using AspNetCoreApi2Sample.Policys;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

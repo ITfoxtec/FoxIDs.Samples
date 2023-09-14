@@ -315,7 +315,6 @@ namespace FoxIDs.SampleSeedTool.Logic
                         {
                             new OAuthDownResourceScope { Resource = aspNetCoreApi2SampleDownPartyName, Scopes = new[] { "some_2_access" } }
                         },
-                        ResponseTypes = new[] { "token" },
                         AccessTokenLifetime = 600, // 10 minutes
                         ClientAuthenticationMethod = ClientAuthenticationMethods.PrivateKeyJwt,
                         ClientKeys = new[] { GetCertificateInfoKey("CN=AspNetCoreApi2Sample, O=test corp.cer") }
@@ -401,7 +400,6 @@ namespace FoxIDs.SampleSeedTool.Logic
                             // Scope to API which support two IdPs.
                             new OAuthDownResourceScope { Resource = aspNetCoreApiOAuthTwoIdPsSampleDownPartyName, Scopes = new [] { "some_access" } }
                         },
-                        ResponseTypes = new[] { "token" },
                         AccessTokenLifetime = 600 // 10 minutes
                     }
                 };
@@ -441,7 +439,6 @@ namespace FoxIDs.SampleSeedTool.Logic
                             // Scope to API which support two IdPs.
                             new OAuthDownResourceScope { Resource = aspNetCoreApiOAuthTwoIdPsSampleDownPartyName, Scopes = new [] { "some_access" } }
                         },
-                        ResponseTypes = new[] { "token" },
                         AccessTokenLifetime = 600, // 10 minutes
                         ClientAuthenticationMethod = ClientAuthenticationMethods.PrivateKeyJwt,
                         ClientKeys = new [] { GetCertificateInfoKey("CN=NetCoreClientAssertionGrantConsoleSample, O=test corp.cer") }

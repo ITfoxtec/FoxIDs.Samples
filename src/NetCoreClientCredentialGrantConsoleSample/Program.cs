@@ -1,10 +1,10 @@
-﻿using NetCoreClientGrantConsoleSample.Infrastructure;
-using NetCoreClientGrantConsoleSample.Logic;
+﻿using NetCoreClientCredentialGrantConsoleSample.Infrastructure;
+using NetCoreClientCredentialGrantConsoleSample.Logic;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace NetCoreClientGrantConsoleSample
+namespace NetCoreClientCredentialGrantConsoleSample
 {
     class Program
     {

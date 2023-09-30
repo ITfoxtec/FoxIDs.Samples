@@ -13,4 +13,10 @@
     <ProjectReference Include="..\FoxIDs.SampleHelperLibrary\FoxIDs.SampleHelperLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="CN=TokenExchangeAspnetcoreSamlSample, O=test corp.pfx.pfx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

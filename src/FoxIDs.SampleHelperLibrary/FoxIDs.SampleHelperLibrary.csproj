@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="ITfoxtec.Identity" Version="2.5.24" />
+    <PackageReference Include="ITfoxtec.Identity" Version="2.5.29" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
   </ItemGroup>
 

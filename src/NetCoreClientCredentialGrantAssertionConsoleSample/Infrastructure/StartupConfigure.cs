@@ -3,14 +3,14 @@ using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetCoreClientGrantConsoleSample.Logic;
-using NetCoreClientGrantConsoleSample.Models;
+using NetCoreClientCredentialGrantAssertionConsoleSample.Logic;
+using NetCoreClientCredentialGrantAssertionConsoleSample.Models;
 using System;
 using System.IO;
 using System.Net.Http;
 using ITfoxtec.Identity.Util;
 
-namespace NetCoreClientGrantConsoleSample.Infrastructure
+namespace NetCoreClientCredentialGrantAssertionConsoleSample.Infrastructure
 {
     public class StartupConfigure
     {
@@ -46,8 +46,6 @@ namespace NetCoreClientGrantConsoleSample.Infrastructure
 
                 return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.AuthorityWithoutUpParty, IdentityConstants.OidcDiscovery.Path));
             });
-
-            services.AddHttpClient();
         }
 
         private void AddConfiguration()

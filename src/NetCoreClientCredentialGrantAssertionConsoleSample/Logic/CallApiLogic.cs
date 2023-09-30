@@ -1,9 +1,9 @@
-﻿using NetCoreClientGrantConsoleSample.Models;
+﻿using NetCoreClientCredentialGrantAssertionConsoleSample.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace NetCoreClientGrantConsoleSample.Logic
+namespace NetCoreClientCredentialGrantAssertionConsoleSample.Logic
 {
     public class CallApiLogic
     {

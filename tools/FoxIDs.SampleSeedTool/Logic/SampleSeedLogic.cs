@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ITfoxtec.Identity.Util;
 
 namespace FoxIDs.SampleSeedTool.Logic
 {
@@ -1051,6 +1050,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                     CertificateValidationMode = X509CertificateValidationMode.None,
                     RevocationMode = X509RevocationMode.NoCheck,
+                    AuthnResponseSignType = Saml2AuthnResponseSignTypes.SignAssertionAndResponse,
                     AuthnRequestBinding = SamlBindingTypes.Redirect,
                     AuthnResponseBinding = SamlBindingTypes.Post,
                     AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },

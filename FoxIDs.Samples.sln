@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorOidcPkceSample", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerOidcOpSample", "src\IdentityServerOidcOpSample\IdentityServerOidcOpSample.csproj", "{923D85B3-6F08-4813-929B-F3E50E7ED391}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientGrantConsoleSample", "src\NetCoreClientGrantConsoleSample\NetCoreClientGrantConsoleSample.csproj", "{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientCredentialGrantConsoleSample", "src\NetCoreClientCredentialGrantConsoleSample\NetCoreClientCredentialGrantConsoleSample.csproj", "{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "down-parties", "down-parties", "{BBD711D8-51DE-41F5-9D3C-81A445FA8E80}"
 EndProject
@@ -47,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreOidcAuthCodeAllUp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApiOAuthTwoIdPsSample", "src\AspNetCoreApiOAuthTwoIdPsSample\AspNetCoreApiOAuthTwoIdPsSample.csproj", "{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientAssertionGrantConsoleSample", "src\NetCoreClientAssertionGrantConsoleSample\NetCoreClientAssertionGrantConsoleSample.csproj", "{83C7142C-268F-44BA-92F3-03236BF76801}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientCredentialGrantAssertionConsoleSample", "src\NetCoreClientCredentialGrantAssertionConsoleSample\NetCoreClientCredentialGrantAssertionConsoleSample.csproj", "{83C7142C-268F-44BA-92F3-03236BF76801}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApi2Sample", "src\AspNetCoreApi2Sample\AspNetCoreApi2Sample.csproj", "{C41057D7-0396-4222-9845-CCBB41809025}"
 EndProject

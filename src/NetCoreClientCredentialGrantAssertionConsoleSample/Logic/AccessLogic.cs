@@ -1,10 +1,10 @@
 ﻿using ITfoxtec.Identity.Helpers;
 using ITfoxtec.Identity.Util;
-using NetCoreClientGrantConsoleSample.Models;
+using NetCoreClientCredentialGrantAssertionConsoleSample.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace NetCoreClientGrantConsoleSample.Logic
+namespace NetCoreClientCredentialGrantAssertionConsoleSample.Logic
 {
     public class AccessLogic
     {
@@ -25,7 +25,7 @@ namespace NetCoreClientGrantConsoleSample.Logic
             {
                 Console.WriteLine("Acquire access token...");
                 var clientCertificate = CertificateUtil.Load(settings.ClientCertificateFile, settings.ClientCertificatePassword);
-                (var accessToken, var expiresIn) = await tokenHelper.GetAccessTokenWithClientAssertionGrantAsync(clientCertificate, settings.ClientId, scope);
+                (var accessToken, var expiresIn) = await tokenHelper.GetAccessTokenWithAssertionClientCredentialGrantAsync(clientCertificate, settings.ClientId, scope);
                 accessTokenCache = accessToken;
                 cacheExpiresAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + expiresIn.Value;
                 Console.WriteLine($"Access token: {accessToken.Substring(0, 40)}...");

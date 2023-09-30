@@ -1,4 +1,4 @@
-﻿namespace NetCoreClientGrantConsoleSample.Models
+﻿namespace NetCoreClientCredentialGrantConsoleSample.Models
 {
     public class AppSettings
     {

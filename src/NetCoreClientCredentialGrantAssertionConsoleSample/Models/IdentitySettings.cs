@@ -1,6 +1,6 @@
 ﻿using FoxIDs.SampleHelperLibrary.Models;
 
-namespace NetCoreClientGrantConsoleSample.Models
+namespace NetCoreClientCredentialGrantAssertionConsoleSample.Models
 {
     public class IdentitySettings : FoxIDsSettings
     {

@@ -865,6 +865,15 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("refreshTokenLifetimeUnlimited", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RefreshTokenLifetimeUnlimited { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("disableClientCredentialsGrant", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableClientCredentialsGrant { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableTokenExchangeGrant", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableTokenExchangeGrant { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableClientAsTokenExchangeActor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableClientAsTokenExchangeActor { get; set; }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1050,6 +1059,15 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("responseMode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(30)]
         public string ResponseMode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableClientCredentialsGrant", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableClientCredentialsGrant { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableTokenExchangeGrant", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableTokenExchangeGrant { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableClientAsTokenExchangeActor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableClientAsTokenExchangeActor { get; set; }
 
     }
 
@@ -1248,6 +1266,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(500)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^https:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}")]
         public string HrdLogoUrl { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableUserAuthenticationTrust", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableUserAuthenticationTrust { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableTokenExchangeTrust", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableTokenExchangeTrust { get; set; }
 
     }
 
@@ -1472,6 +1496,21 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum Saml2AuthnResponseSignTypes
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SignResponse")]
+        SignResponse = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SignAssertion")]
+        SignAssertion = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SignAssertionAndResponse")]
+        SignAssertionAndResponse = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public enum SamlAuthnContextComparisonTypes
     {
 
@@ -1589,6 +1628,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public X509RevocationMode RevocationMode { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("authnResponseSignType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Saml2AuthnResponseSignTypes AuthnResponseSignType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("issuer", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -1923,6 +1966,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(500)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^https:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}")]
         public string HrdLogoUrl { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableUserAuthenticationTrust", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableUserAuthenticationTrust { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("disableTokenExchangeTrust", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DisableTokenExchangeTrust { get; set; }
 
     }
 

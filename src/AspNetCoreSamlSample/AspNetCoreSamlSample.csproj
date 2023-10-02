@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="CN=TokenExchangeAspnetcoreSamlSample, O=test corp.pfx.pfx">
+    <None Update="CN=TokenExchangeAspnetcoreSamlSample, O=test corp.pfx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>

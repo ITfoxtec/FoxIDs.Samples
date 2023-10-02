@@ -58,7 +58,7 @@ namespace AspNetCoreSamlSample.Controllers
             };
 
             var clientCertificate = CertificateUtil.Load(Path.Combine(Startup.AppEnvironment.ContentRootPath, settings.TokenExchangeClientCertificateFile), settings.TokenExchangeClientCertificatePassword);
-            var tokenExchangeResponse = await tokenExecuteHelper.ExecuteTokenRequestWithAssertionClientCredentialGrantAsync<TokenExchangeRequest, TokenExchangeResponse>(clientCertificate, settings.TokenExchangeClientId, tokenEndpoint: settings.TokenExchangeTokenEndpoint, tokenRequest: tokenExchangeRequest);
+            var tokenExchangeResponse = await tokenExecuteHelper.ExecuteTokenRequestWithAssertionClientCredentialGrantAsync<TokenExchangeRequest, TokenExchangeResponse>(clientCertificate, settings.TokenExchangeClientId, tokenEndpoint: settings.TokenExchangeEndpoint, tokenRequest: tokenExchangeRequest);
 
             using var response = await httpClientFactory.CreateClient().GetAsync(settings.AspNetCoreApi1SampleUrl, tokenExchangeResponse.AccessToken, "4321");
             if (response.IsSuccessStatusCode)

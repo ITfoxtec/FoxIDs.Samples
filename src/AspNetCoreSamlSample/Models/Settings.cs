@@ -12,7 +12,7 @@
 
         public string TokenExchangeDownParty { get; set; }
         public string TokenExchangeClientId => DownParty;
-        public string TokenExchangeTokenEndpoint { get; set; }
+        public string TokenExchangeEndpoint { get; set; }
         public string TokenExchangeClientCertificateFile { get; set; }
         public string TokenExchangeClientCertificatePassword { get; set; }
 

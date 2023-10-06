@@ -316,7 +316,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                         },
                         AccessTokenLifetime = 600, // 10 minutes
                         ClientAuthenticationMethod = ClientAuthenticationMethods.PrivateKeyJwt,
-                        ClientKeys = new[] { GetCertificateInfoKey("CN=AspNetCoreApi2Sample, O=test corp.cer") }
+                        ClientKeys = new[] { GetCertificateInfoKey("CN=AspNetCoreApi1Sample, O=test corp.cer") }
                     },
                     Resource = new OAuthDownResource
                     {

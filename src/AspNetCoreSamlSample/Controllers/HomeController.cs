@@ -53,21 +53,22 @@ namespace AspNetCoreSamlSample.Controllers
             var tokenExchangeRequest = new TokenExchangeRequest
             {
                 Scope = "aspnetcore_api1_sample:some_access",
-                ActorToken = User.Identities.First().BootstrapContext as string,
-                ActorTokenType = IdentityConstants.TokenTypeIdentifiers.Saml2
+                SubjectToken = User.Identities.First().BootstrapContext as string,
+                SubjectTokenType = IdentityConstants.TokenTypeIdentifiers.Saml2
             };
 
             var clientCertificate = CertificateUtil.Load(Path.Combine(Startup.AppEnvironment.ContentRootPath, settings.TokenExchangeClientCertificateFile), settings.TokenExchangeClientCertificatePassword);
             var tokenExchangeResponse = await tokenExecuteHelper.ExecuteTokenRequestWithAssertionClientCredentialGrantAsync<TokenExchangeRequest, TokenExchangeResponse>(clientCertificate, settings.TokenExchangeClientId, tokenEndpoint: settings.TokenExchangeEndpoint, tokenRequest: tokenExchangeRequest);
 
-            using var response = await httpClientFactory.CreateClient().GetAsync(settings.AspNetCoreApi1SampleUrl, tokenExchangeResponse.AccessToken, "4321");
+            var apiUrl = settings.AspNetCoreApi1SampleUrl;
+            using var response = await httpClientFactory.CreateClient().GetAsync(apiUrl, tokenExchangeResponse.AccessToken, "4321");
             if (response.IsSuccessStatusCode)
             {
                 ViewBag.Result = await response.Content.ReadAsStringAsync();
             }
             else
             {
-                throw new Exception($"Unable to call API. API URL='{settings.AspNetCoreApi1SampleUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
             }
 
             ViewBag.Title = "Call AspNetCoreApi1Sample";

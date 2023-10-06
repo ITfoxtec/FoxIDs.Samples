@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
+using ITfoxtec.Identity.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,8 +88,8 @@ builder.Services.AddAuthentication(options =>
         // To show the acr claim in the User.Claims collection
         options.ClaimActions.Remove("acr");
 
-        // Scope to the application it self.
-        //options.Scope.Add(identitySettings.DownParty);
+        // Scope to the application it self, used to do token exchange.
+        options.Scope.Add(identitySettings.DownParty);
         options.Scope.Add("aspnetcore_api1_sample:some_access");
         options.Scope.Add("offline_access");
         options.Scope.Add("profile");
@@ -116,7 +117,9 @@ builder.Services.AddAuthentication(options =>
             await Task.FromResult(string.Empty);
         };
     });
- 
+
+builder.Services.AddTransient<TokenExecuteHelper>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 // Add services to the container.

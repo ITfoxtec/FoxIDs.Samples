@@ -12,11 +12,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FoxIDs.SampleHelperLibrary;
 using FoxIDs.SampleHelperLibrary.Repository;
+using ITfoxtec.Identity.Helpers;
 
 namespace AspNetCoreSamlSample
 {
     public class Startup
     {
+        public static IWebHostEnvironment AppEnvironment { get; private set; }
+
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
             AppEnvironment = env;
@@ -24,7 +27,6 @@ namespace AspNetCoreSamlSample
         }
 
         public IConfiguration Configuration { get; }
-        public IWebHostEnvironment AppEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -43,6 +45,9 @@ namespace AspNetCoreSamlSample
             services.Configure<Saml2Configuration>(Configuration.GetSection("Saml2"));
             services.Configure<Saml2Configuration>(saml2Configuration =>
             {
+                // Include the SAML 2.0 token in the session.
+                saml2Configuration.SaveBootstrapContext = true;
+
                 //saml2Configuration.SignAuthnRequest = true;
                 saml2Configuration.SigningCertificate = TestCertificate.GetSelfSignedCertificate(AppEnvironment.ContentRootPath, "test-sign-cert");
 
@@ -67,11 +72,15 @@ namespace AspNetCoreSamlSample
                 }
             });
 
+            services.AddTransient<TokenExecuteHelper>();
+
+            services.AddHttpClient();
+            services.AddHttpContextAccessor();
+
             // Required SameSiteMode.None to support OpenID Connect Front channel logout
             services.AddSaml2("/Saml/Login", cookieSameSite: SameSiteMode.None);
 
             services.AddControllersWithViews();
-            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

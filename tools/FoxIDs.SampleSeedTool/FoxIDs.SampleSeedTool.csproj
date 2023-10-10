@@ -33,7 +33,13 @@
 		<None Update="AspNetCoreSamlSample-test-sign-cert.crt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="CN=AspNetCoreApi1Sample, O=test corp.cer">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="CN=NetCoreClientAssertionGrantConsoleSample, O=test corp.cer">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="CN=TokenExchangeAspnetcoreSamlSample, O=test corp.cer">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="identityserver-tempkey.jwk">

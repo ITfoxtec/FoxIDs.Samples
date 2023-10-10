@@ -35,6 +35,8 @@ namespace FoxIDs.SampleSeedTool.Logic
         const string blazorServerOidcSampleDownPartyName = "blazorserver_oidc_sample";
 
         const string aspNetCoreSamlSampleDownPartyName = "aspnetcore_saml_sample";
+        const string aspNetCoreSamlSampleDownIssuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample";
+        const string oauthTokenExchangeForSamlDownPartyName = "token_exchange_saml";
         // To enable token exchange trust
         const string aspNetCoreSamlSampleTrustUpPartyName = "aspnetcore_saml_sample-trust";
 
@@ -71,6 +73,7 @@ namespace FoxIDs.SampleSeedTool.Logic
 
             await CreateAspNetCoreSamlSampleDownPartyAsync();
             await CreateAspNetCoreSamlSampleTrustUpPartyAsync();
+            await CreateOAuthTokenExchangeForSamlDownPartyAsync();
 
             Console.WriteLine(string.Empty);
             Console.WriteLine($"Sample configuration created");
@@ -81,7 +84,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             Console.WriteLine("Delete sample configuration");
 
             Console.WriteLine("Delete Oidc down party sample configuration");
-            var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName, aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName, blazorBffAspNetCoreOidcSampleDownPartyName, blazorOidcAuthCodePkceSampleDownPartyName, blazorServerOidcSampleDownPartyName };
+            var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName, aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName, blazorBffAspNetCoreOidcSampleDownPartyName, blazorOidcAuthCodePkceSampleDownPartyName, blazorServerOidcSampleDownPartyName, oauthTokenExchangeForSamlDownPartyName };
             foreach (var name in oidcDownPartyNames)
             {
                 try
@@ -1059,7 +1062,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                 var samlUpParty = new SamlDownParty
                 {
                     Name = name,
-                    Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample",
+                    Issuer = aspNetCoreSamlSampleDownIssuer,
                     AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
                     Keys = new[] { GetCertificateInfoKey("AspNetCoreSamlSample-test-sign-cert.crt") },
                     SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
@@ -1098,15 +1101,49 @@ namespace FoxIDs.SampleSeedTool.Logic
                     // Only enable token exchange
                     DisableUserAuthenticationTrust = true,
                     Name = name,
+                    UpdateState = PartyUpdateStates.Automatic,
                     MetadataUrl = UrlCombine.Combine(settings.FoxIDsEndpoint, new[] { settings.Tenant, settings.Track, aspNetCoreSamlSampleDownPartyName, "saml", "idpmetadata" }),
-                    SpIssuer = aspNetCoreSamlSampleDownPartyName,
+                    // The SP issuer can be configured to match an external application (service provider)
+                    SpIssuer = aspNetCoreSamlSampleDownIssuer,
                 };
 
                 await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
             };
 
-            await CreateIfNotExistsAsync(aspNetCoreSamlIdPSampleUpPartyName, getAction, postAction);
+            await CreateIfNotExistsAsync(aspNetCoreSamlSampleTrustUpPartyName, getAction, postAction);
         }
+
+        private async Task CreateOAuthTokenExchangeForSamlDownPartyAsync()
+        {
+            Func<string, Task> getAction = async (name) =>
+            {
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+            };
+
+            Func<string, Task> postAction = async (name) =>
+            {
+                var oauthDownParty = new OAuthDownParty
+                {
+                    Name = name,
+                    AllowUpPartyNames = new[] { aspNetCoreSamlSampleTrustUpPartyName },
+                    Client = new OAuthDownClient
+                    {
+                        ResourceScopes = new[]
+                        {
+                            // Scope to API1.
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "some_access" } },
+                        },
+                        AccessTokenLifetime = 600, // 10 minutes
+                        ClientAuthenticationMethod = ClientAuthenticationMethods.PrivateKeyJwt,
+                        ClientKeys = new[] { GetCertificateInfoKey("CN=TokenExchangeAspnetcoreSamlSample, O=test corp.cer") }
+                    }
+                };
+
+                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+            };
+
+            await CreateIfNotExistsAsync(oauthTokenExchangeForSamlDownPartyName, getAction, postAction);
+        }        
 
         private JwtWithCertificateInfo GetCertificateInfoKey(string file)
         {

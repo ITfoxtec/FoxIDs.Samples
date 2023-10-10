@@ -139,11 +139,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     public enum ClientAuthenticationMethods
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ClientSecretBasic")]
-        ClientSecretBasic = 0,
-
         [System.Runtime.Serialization.EnumMember(Value = @"ClientSecretPost")]
-        ClientSecretPost = 1,
+        ClientSecretPost = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ClientSecretBasic")]
+        ClientSecretBasic = 1,
 
         [System.Runtime.Serialization.EnumMember(Value = @"PrivateKeyJwt")]
         PrivateKeyJwt = 2,
@@ -1135,14 +1135,12 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("additionalParameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<OAuthAdditionalParameter> AdditionalParameters { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("responseMode", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(30, MinimumLength = 1)]
+        [Newtonsoft.Json.JsonProperty("responseMode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
         public string ResponseMode { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("responseType", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(30, MinimumLength = 1)]
+        [Newtonsoft.Json.JsonProperty("responseType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(30)]
         public string ResponseType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("authorizeUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1218,6 +1216,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("issuers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Issuers { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("spIssuer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(300)]
+        public string SpIssuer { get; set; }
 
         [Newtonsoft.Json.JsonProperty("keys", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<JwtWithCertificateInfo> Keys { get; set; }
@@ -1843,10 +1845,6 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(500)]
         public string MetadataUrl { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("spIssuer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(300)]
-        public string SpIssuer { get; set; }
-
         [Newtonsoft.Json.JsonProperty("claimTransforms", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<SamlClaimTransform> ClaimTransforms { get; set; }
 
@@ -1868,6 +1866,10 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("issuer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(300)]
         public string Issuer { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("spIssuer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(300)]
+        public string SpIssuer { get; set; }
 
         [Newtonsoft.Json.JsonProperty("authnRequestBinding", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]

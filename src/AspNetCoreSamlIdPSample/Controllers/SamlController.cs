@@ -84,7 +84,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
             var saml2AuthnRequest = new Saml2AuthnRequest(saml2Config);            
             try
             {
-                requestBinding.Unbind(Request.ToGenericHttpRequest(), saml2AuthnRequest);
+                requestBinding.Unbind(Request.ToGenericHttpRequest(validate: true), saml2AuthnRequest);
 
                 // ****  Handle user login e.g. in GUI ****
                 // Test user with session index and claims
@@ -139,7 +139,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
         [Route("Logout")]
         public async Task<IActionResult> Logout()
         {
-            if (new Saml2PostBinding().IsRequest(Request.ToGenericHttpRequest()))
+            if (new Saml2PostBinding().IsRequest(Request.ToGenericHttpRequest(validate: true)))
             {
                 return await LogoutInternal();
             }
@@ -158,7 +158,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
             saml2LogoutRequest.SignatureValidationCertificates = new X509Certificate2[] { relyingParty.SignatureValidationCertificate };
             try
             {
-                requestBinding.Unbind(Request.ToGenericHttpRequest(), saml2LogoutRequest);
+                requestBinding.Unbind(Request.ToGenericHttpRequest(validate: true), saml2LogoutRequest);
 
                 await idPSessionCookieRepository.DeleteAsync();
 
@@ -178,7 +178,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
 
             var saml2LogoutResponse = new Saml2LogoutResponse(saml2Config);
             saml2LogoutResponse.SignatureValidationCertificates = new X509Certificate2[] { relyingParty.SignatureValidationCertificate };
-            responseBinding.Unbind(Request.ToGenericHttpRequest(), saml2LogoutResponse);
+            responseBinding.Unbind(Request.ToGenericHttpRequest(validate: true), saml2LogoutResponse);
 
             return Redirect(Url.Content("~/"));
         }
@@ -203,17 +203,17 @@ namespace AspNetCoreSamlIdPSample.Controllers
 
         private string ReadRelyingPartyFromLoginRequest<T>(Saml2Binding<T> binding)
         {
-            return binding.ReadSamlRequest(Request.ToGenericHttpRequest(), new Saml2AuthnRequest(saml2Config))?.Issuer;
+            return binding.ReadSamlRequest(Request.ToGenericHttpRequest(validate: true), new Saml2AuthnRequest(saml2Config))?.Issuer;
         }
 
         private string ReadRelyingPartyFromLogoutRequest<T>(Saml2Binding<T> binding)
         {
-            return binding.ReadSamlRequest(Request.ToGenericHttpRequest(), new Saml2LogoutRequest(saml2Config))?.Issuer;
+            return binding.ReadSamlRequest(Request.ToGenericHttpRequest(validate: true), new Saml2LogoutRequest(saml2Config))?.Issuer;
         }
 
         private string ReadRelyingPartyFromLogoutResponse<T>(Saml2Binding<T> binding)
         {
-            return binding.ReadSamlResponse(Request.ToGenericHttpRequest(), new Saml2LogoutResponse(saml2Config))?.Issuer;
+            return binding.ReadSamlResponse(Request.ToGenericHttpRequest(validate: true), new Saml2LogoutResponse(saml2Config))?.Issuer;
         }
 
         private IActionResult LoginResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, RelyingParty relyingParty, string sessionIndex = null, IEnumerable<Claim> claims = null)

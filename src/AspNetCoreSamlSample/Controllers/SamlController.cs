@@ -125,12 +125,12 @@ namespace AspNetCoreSamlSample.Controllers
             var binding = new Saml2PostBinding();
             var saml2AuthnResponse = new Saml2AuthnResponse(saml2Config);
 
-            binding.ReadSamlResponse(Request.ToGenericHttpRequest(), saml2AuthnResponse);
+            binding.ReadSamlResponse(Request.ToGenericHttpRequest(validate: true), saml2AuthnResponse);
             if (saml2AuthnResponse.Status != Saml2StatusCodes.Success)
             {
                 throw new AuthenticationException($"SAML Response status: {saml2AuthnResponse.Status}");
             }
-            binding.Unbind(Request.ToGenericHttpRequest(), saml2AuthnResponse);
+            binding.Unbind(Request.ToGenericHttpRequest(validate: true), saml2AuthnResponse);
 
             await saml2AuthnResponse.CreateSession(HttpContext, claimsTransform: (claimsPrincipal) => ClaimsTransform.Transform(claimsPrincipal));
 
@@ -169,7 +169,7 @@ namespace AspNetCoreSamlSample.Controllers
         public IActionResult LoggedOut()
         {
             var binding = new Saml2PostBinding();
-            binding.Unbind(Request.ToGenericHttpRequest(), new Saml2LogoutResponse(saml2Config));
+            binding.Unbind(Request.ToGenericHttpRequest(validate: true), new Saml2LogoutResponse(saml2Config));
 
             return Redirect(Url.Content("~/"));
         }
@@ -184,7 +184,7 @@ namespace AspNetCoreSamlSample.Controllers
             var logoutRequest = new Saml2LogoutRequest(saml2Config, User);
             try
             {
-                requestBinding.Unbind(Request.ToGenericHttpRequest(), logoutRequest);
+                requestBinding.Unbind(Request.ToGenericHttpRequest(validate: true), logoutRequest);
                 status = Saml2StatusCodes.Success;
                 await idPSelectionCookieRepository.DeleteAsync();
                 await logoutRequest.DeleteSession(HttpContext);

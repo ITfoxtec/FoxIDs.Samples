@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorOidcPkceSample", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerOidcOpSample", "src\IdentityServerOidcOpSample\IdentityServerOidcOpSample.csproj", "{923D85B3-6F08-4813-929B-F3E50E7ED391}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientGrantConsoleSample", "src\NetCoreClientGrantConsoleSample\NetCoreClientGrantConsoleSample.csproj", "{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientCredentialGrantConsoleSample", "src\NetCoreClientCredentialGrantConsoleSample\NetCoreClientCredentialGrantConsoleSample.csproj", "{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "down-parties", "down-parties", "{BBD711D8-51DE-41F5-9D3C-81A445FA8E80}"
 EndProject
@@ -45,7 +45,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBFFAspNetOidcSample.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreOidcAuthCodeAllUpPartiesSample", "src\AspNetCoreOidcAuthCodeAllUpPartiesSample\AspNetCoreOidcAuthCodeAllUpPartiesSample.csproj", "{FD18F270-2441-4CCB-A6FB-CB586D004E7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreApiOAuthTwoIdPsSample", "src\AspNetCoreApiOAuthTwoIdPsSample\AspNetCoreApiOAuthTwoIdPsSample.csproj", "{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApiOAuthTwoIdPsSample", "src\AspNetCoreApiOAuthTwoIdPsSample\AspNetCoreApiOAuthTwoIdPsSample.csproj", "{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientCredentialGrantAssertionConsoleSample", "src\NetCoreClientCredentialGrantAssertionConsoleSample\NetCoreClientCredentialGrantAssertionConsoleSample.csproj", "{83C7142C-268F-44BA-92F3-03236BF76801}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApi2Sample", "src\AspNetCoreApi2Sample\AspNetCoreApi2Sample.csproj", "{C41057D7-0396-4222-9845-CCBB41809025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +117,14 @@ Global
 		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83C7142C-268F-44BA-92F3-03236BF76801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83C7142C-268F-44BA-92F3-03236BF76801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83C7142C-268F-44BA-92F3-03236BF76801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83C7142C-268F-44BA-92F3-03236BF76801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C41057D7-0396-4222-9845-CCBB41809025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C41057D7-0396-4222-9845-CCBB41809025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C41057D7-0396-4222-9845-CCBB41809025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C41057D7-0396-4222-9845-CCBB41809025}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,6 +147,8 @@ Global
 		{57EC6665-6592-4C8D-8F40-764B834B6F51} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{FD18F270-2441-4CCB-A6FB-CB586D004E7E} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
+		{83C7142C-268F-44BA-92F3-03236BF76801} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
+		{C41057D7-0396-4222-9845-CCBB41809025} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

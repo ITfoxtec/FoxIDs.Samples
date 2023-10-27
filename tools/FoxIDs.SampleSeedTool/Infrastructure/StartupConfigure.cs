@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Net.Http;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 
 namespace FoxIDs.SampleSeedTool.Infrastructure
 {

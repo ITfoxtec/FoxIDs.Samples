@@ -11,13 +11,12 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="ITfoxtec.Identity" Version="2.5.7" />
+		<PackageReference Include="ITfoxtec.Identity" Version="2.5.34" />
 		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.6.10" />
 		<PackageReference Include="NSwag.MSBuild" Version="13.15.10">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="UrlCombine" Version="2.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -33,6 +32,15 @@
 		</None>
 		<None Update="AspNetCoreSamlSample-test-sign-cert.crt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="CN=AspNetCoreApi1Sample, O=test corp.cer">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="CN=NetCoreClientAssertionGrantConsoleSample, O=test corp.cer">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="CN=TokenExchangeAspnetcoreSamlSample, O=test corp.cer">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="identityserver-tempkey.jwk">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

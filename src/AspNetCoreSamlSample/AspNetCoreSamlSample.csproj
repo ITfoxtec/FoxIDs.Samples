@@ -5,12 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ITfoxtec.Identity.Saml2" Version="4.8.1" />
-    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.8.1" />
+    <PackageReference Include="ITfoxtec.Identity.Saml2" Version="4.10.2" />
+    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.10.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FoxIDs.SampleHelperLibrary\FoxIDs.SampleHelperLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CN=TokenExchangeAspnetcoreSamlSample, O=test corp.pfx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -19,7 +19,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using FoxIDs.SampleHelperLibrary.Models;
 using FoxIDs.SampleHelperLibrary.Repository;
 using Microsoft.Extensions.Hosting;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthorizationCodeSample.Identity;
 
 namespace AspNetCoreOidcAuthorizationCodeSample
@@ -120,6 +120,9 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     options.SaveTokens = true;
                     // False to support refresh token renewal.
                     options.UseTokenLifetime = false;
+
+                    // To show the acr claim in the User.Claims collection
+                    options.ClaimActions.Remove("acr");
 
                     // Scope to the application it self.
                     //options.Scope.Add("aspnetcore_oidcauthcode_sample");

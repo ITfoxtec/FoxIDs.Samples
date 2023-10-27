@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
 using System;
 using Microsoft.AspNetCore.Http;
-using UrlCombineLib;
+using ITfoxtec.Identity.Util;
 
 namespace BlazorBFFAspNetOidcSample.Server.Controllers
 {

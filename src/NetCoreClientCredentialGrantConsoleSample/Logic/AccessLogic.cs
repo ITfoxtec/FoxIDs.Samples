@@ -1,9 +1,9 @@
 ﻿using ITfoxtec.Identity.Helpers;
-using NetCoreClientGrantConsoleSample.Models;
+using NetCoreClientCredentialGrantConsoleSample.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace NetCoreClientGrantConsoleSample.Logic
+namespace NetCoreClientCredentialGrantConsoleSample.Logic
 {
     public class AccessLogic
     {

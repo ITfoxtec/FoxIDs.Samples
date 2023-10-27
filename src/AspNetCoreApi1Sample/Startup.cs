@@ -1,9 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AspNetCoreApi1Sample.Models;
 using AspNetCoreApi1Sample.Policys;
 using ITfoxtec.Identity;
+using ITfoxtec.Identity.Discovery;
+using ITfoxtec.Identity.Helpers;
+using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,8 +20,11 @@ namespace AspNetCoreApi1Sample
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public static IWebHostEnvironment AppEnvironment { get; private set; }
+
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
+            AppEnvironment = env;
             Configuration = configuration;
         }
 
@@ -27,6 +34,20 @@ namespace AspNetCoreApi1Sample
         public void ConfigureServices(IServiceCollection services)
         {
             var identitySettings = services.BindConfig<IdentitySettings>(Configuration, nameof(IdentitySettings));
+            services.BindConfig<AppSettings>(Configuration, nameof(AppSettings));
+
+            services.AddSingleton((serviceProvider) =>
+            {
+                var settings = serviceProvider.GetService<IdentitySettings>();
+                var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+
+                return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(identitySettings.AuthorityWithoutUpParty, IdentityConstants.OidcDiscovery.Path));
+            });
+
+            services.AddTransient<TokenExecuteHelper>();
+
+            services.AddHttpClient();
+            services.AddHttpContextAccessor();
 
             services.AddCors();
 

@@ -1822,23 +1822,23 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         public SamlMetadataContactPersonTypes ContactType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("company", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        [System.ComponentModel.DataAnnotations.StringLength(8000)]
         public string Company { get; set; }
 
         [Newtonsoft.Json.JsonProperty("givenName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        [System.ComponentModel.DataAnnotations.StringLength(8000)]
         public string GivenName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("surname", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        [System.ComponentModel.DataAnnotations.StringLength(8000)]
         public string Surname { get; set; }
 
         [Newtonsoft.Json.JsonProperty("emailAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        [System.ComponentModel.DataAnnotations.StringLength(8000)]
         public string EmailAddress { get; set; }
 
         [Newtonsoft.Json.JsonProperty("telephoneNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        [System.ComponentModel.DataAnnotations.StringLength(8000)]
         public string TelephoneNumber { get; set; }
 
     }
@@ -1869,14 +1869,14 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     {
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(1000, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.StringLength(8000, MinimumLength = 1)]
         public string Name { get; set; }
 
         [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsRequired { get; set; }
 
         [Newtonsoft.Json.JsonProperty("nameFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        [System.ComponentModel.DataAnnotations.StringLength(8000)]
         public string NameFormat { get; set; }
 
     }
@@ -1891,7 +1891,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(1000, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.StringLength(8000, MinimumLength = 1)]
         public string Name { get; set; }
 
     }

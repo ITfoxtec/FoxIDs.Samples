@@ -3,12 +3,10 @@ using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Helpers;
 using ITfoxtec.Identity.Messages;
-using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
@@ -43,7 +41,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> CallAspNetCoreApi1Sample()
+        public async Task<IActionResult> CallApi1()
         {
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
 

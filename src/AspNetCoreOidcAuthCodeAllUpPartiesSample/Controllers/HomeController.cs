@@ -57,7 +57,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
                 throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'.");
             }
 
-            ViewBag.Title = "Call AspNetCoreApi1Sample";
+            ViewBag.Title = "Call API1";
             return View("CallApi");
         }
 
@@ -131,7 +131,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
                 ViewBag.Result = $"{ViewBag.Result}{Environment.NewLine}WWWAuthenticate header: {wwwAuthenticateHeader}";
             }
 
-            ViewBag.Title = "Call UserInfo endpoint";
+            ViewBag.Title = "Call User Info";
             return View("CallApi");
         }
 

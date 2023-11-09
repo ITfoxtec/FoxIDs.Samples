@@ -50,7 +50,7 @@ namespace AspNetCoreApi1Sample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}'.");
             }
         }
 
@@ -68,7 +68,7 @@ namespace AspNetCoreApi1Sample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}', API2 AccessToken '{accessTokenApi2}'.");
             }
         }
 

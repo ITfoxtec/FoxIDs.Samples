@@ -54,7 +54,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'.");
             }
 
             ViewBag.Title = "Call AspNetCoreApi1Sample";
@@ -75,7 +75,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'.");
             }
 
             ViewBag.Title = "Call API1 which call API2";
@@ -105,7 +105,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}', API2 AccessToken '{tokenExchangeResponse.AccessToken}'.");
             }
 
             ViewBag.Title = "Token Exchange + Call Api2";

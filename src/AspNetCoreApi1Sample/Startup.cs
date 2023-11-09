@@ -33,6 +33,8 @@ namespace AspNetCoreApi1Sample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
+
             var identitySettings = services.BindConfig<IdentitySettings>(Configuration, nameof(IdentitySettings));
             services.BindConfig<AppSettings>(Configuration, nameof(AppSettings));
 

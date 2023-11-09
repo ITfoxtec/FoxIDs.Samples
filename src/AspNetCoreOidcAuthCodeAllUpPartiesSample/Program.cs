@@ -13,6 +13,8 @@ using ITfoxtec.Identity.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddApplicationInsightsTelemetry();
+
 var identitySettings = builder.Services.BindConfig<IdentitySettings>(builder.Configuration, nameof(IdentitySettings));
 builder.Services.BindConfig<AppSettings>(builder.Configuration, nameof(AppSettings));
 

@@ -92,7 +92,7 @@ namespace AspNetCoreApi1Sample.Controllers
 
         private X509Certificate2 GetClientCertificate()
         {
-            if (identitySettings.TokenExchangeClientCertificateThumbprint.IsNullOrWhiteSpace())
+            if (!identitySettings.TokenExchangeClientCertificateThumbprint.IsNullOrEmpty())
             {
                 return CertificateUtil.Load(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindByThumbprint, identitySettings.TokenExchangeClientCertificateThumbprint);
             }

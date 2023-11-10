@@ -16,15 +16,20 @@
         }
     </dl>
 
+    @{
+        var idToken = await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
+        var accessToken = await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+        var refreshToken = await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+    }
     <h4>User tokens</h4>
     <dl>
         <dt>id token</dt>
-        <dd>@await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken)</dd>
+        <dd>@idToken&nbsp;(<a href="javascript:navigator.clipboard.writeText('@idToken')">click&nbsp;to&nbsp;copy</a>)</dd>
 
         <dt>access token</dt>
-        <dd>@await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken)</dd>
+        <dd>@accessToken&nbsp;(<a href="javascript:navigator.clipboard.writeText('@accessToken')">click&nbsp;to&nbsp;copy</a>)</dd>
 
         <dt>refresh token</dt>
-        <dd>@await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken)</dd>
+        <dd>@refreshToken</dd>
     </dl>
 </p>

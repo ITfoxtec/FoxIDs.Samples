@@ -3,12 +3,11 @@ using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Helpers;
 using ITfoxtec.Identity.Messages;
-using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
@@ -43,7 +42,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> CallAspNetCoreApi1Sample()
+        public async Task<IActionResult> CallApi1()
         {
             var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
 
@@ -55,10 +54,10 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'.");
             }
 
-            ViewBag.Title = "Call AspNetCoreApi1Sample";
+            ViewBag.Title = "Call API1";
             return View("CallApi");
         }
 
@@ -76,7 +75,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API. API URL='{apiUrl}', StatusCode='{response.StatusCode}'.");
             }
 
             ViewBag.Title = "Call API1 which call API2";
@@ -106,7 +105,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}', API2 AccessToken '{tokenExchangeResponse.AccessToken}'.");
             }
 
             ViewBag.Title = "Token Exchange + Call Api2";
@@ -132,7 +131,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
                 ViewBag.Result = $"{ViewBag.Result}{Environment.NewLine}WWWAuthenticate header: {wwwAuthenticateHeader}";
             }
 
-            ViewBag.Title = "Call UserInfo endpoint";
+            ViewBag.Title = "Call User Info";
             return View("CallApi");
         }
 
@@ -144,7 +143,13 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            var exception = exceptionHandlerPathFeature?.Error;
+
+            var errorViewModel = new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier };
+            errorViewModel.TechnicalErrors = exception != null ? new List<string>(exception.ToString().Split('\n')) : null;
+
+            return View(errorViewModel);
         }
     }
 }

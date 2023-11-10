@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using AspNetCoreApi1Sample.Policys;
 using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
@@ -11,7 +13,6 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using AspNetCoreApi1Sample.Models;
 using System.Net.Http;
 using ITfoxtec.Identity.Util;
-using System.IO;
 
 namespace AspNetCoreApi1Sample.Controllers
 {
@@ -49,7 +50,7 @@ namespace AspNetCoreApi1Sample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}'.");
             }
         }
 
@@ -67,7 +68,7 @@ namespace AspNetCoreApi1Sample.Controllers
             }
             else
             {
-                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}'");
+                throw new Exception($"Unable to call API2. API URL='{apiUrl}', StatusCode='{response.StatusCode}', API2 AccessToken '{accessTokenApi2}'.");
             }
         }
 
@@ -84,10 +85,21 @@ namespace AspNetCoreApi1Sample.Controllers
                 SubjectTokenType = IdentityConstants.TokenTypeIdentifiers.AccessToken
             };
 
-            var clientCertificate = CertificateUtil.Load(Path.Combine(Startup.AppEnvironment.ContentRootPath, identitySettings.TokenExchangeClientCertificateFile), identitySettings.TokenExchangeClientCertificatePassword);
-            var tokenExchangeResponse = await tokenExecuteHelper.ExecuteTokenRequestWithAssertionClientCredentialGrantAsync<TokenExchangeRequest, TokenExchangeResponse>(clientCertificate, identitySettings.ClientId, tokenEndpoint: oidcDiscovery.TokenEndpoint, tokenRequest: tokenExchangeRequest);
+            var tokenExchangeResponse = await tokenExecuteHelper.ExecuteTokenRequestWithAssertionClientCredentialGrantAsync<TokenExchangeRequest, TokenExchangeResponse>(GetClientCertificate(), identitySettings.ClientId, tokenEndpoint: oidcDiscovery.TokenEndpoint, tokenRequest: tokenExchangeRequest);
 
             return tokenExchangeResponse.AccessToken;
+        }
+
+        private X509Certificate2 GetClientCertificate()
+        {
+            if (!identitySettings.TokenExchangeClientCertificateThumbprint.IsNullOrEmpty())
+            {
+                return CertificateUtil.Load(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindByThumbprint, identitySettings.TokenExchangeClientCertificateThumbprint);
+            }
+            else
+            {
+                return CertificateUtil.Load(Path.Combine(Startup.AppEnvironment.ContentRootPath, identitySettings.TokenExchangeClientCertificateFile), identitySettings.TokenExchangeClientCertificatePassword);
+            }
         }
     }
 }

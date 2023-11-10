@@ -2,12 +2,18 @@
     ViewData["Title"] = "Default";
 }
 <h2>@ViewData["Title"]</h2>
+<strong>Default page, the user is not require to be authenticated</strong>
 
-<h3>User claims</h3>
-<dl>
-    @foreach (var claim in User.Claims)
-    {
-        <dt>@claim.Type</dt>
-        <dd style="padding-left: 10px">@claim.Value</dd>
-    }
-</dl>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <h4>ID token claims</h4>
+        <dl>
+            @foreach (var claim in User.Claims)
+            {
+                <dt>@claim.Type</dt>
+                <dd style="padding-left: 10px">@claim.Value</dd>
+            }
+        </dl>
+    </p>
+}

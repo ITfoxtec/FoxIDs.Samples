@@ -17,19 +17,19 @@ namespace System.Net.Http
 
         public static Task<HttpResponseMessage> GetAsync(this HttpClient client, string requestUri, string token)
         {
-            client.SetToken(token);
+            client.SetAuthorizationHeaderBearer(token);
             return client.GetAsync(requestUri);
         }
 
         public static Task<HttpResponseMessage> GetAsync(this HttpClient client, string requestUri, string token, string id)
         {
-            client.SetToken(token);
+            client.SetAuthorizationHeaderBearer(token);
             return client.GetAsync($"{requestUri}{(requestUri.EndsWith("/", StringComparison.InvariantCultureIgnoreCase) ? "" : "/")}{id}");
         }
 
         public static Task<HttpResponseMessage> PostJsonAsync(this HttpClient client, string requestUri, string token, object data)
         {
-            client.SetToken(token);
+            client.SetAuthorizationHeaderBearer(token);
             var request = new HttpRequestMessage(HttpMethod.Post, requestUri);
             request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, MediaTypeNames.Application.Json);
             return client.SendAsync(request);
@@ -37,7 +37,7 @@ namespace System.Net.Http
 
         public static Task<HttpResponseMessage> UpdateJsonAsync(this HttpClient client, string requestUri, string token, object data)
         {
-            client.SetToken(token);
+            client.SetAuthorizationHeaderBearer(token);
             var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
             request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, MediaTypeNames.Application.Json);
             return client.SendAsync(request);
@@ -45,7 +45,7 @@ namespace System.Net.Http
 
         public static Task<HttpResponseMessage> PatchJsonAsync(this HttpClient client, string requestUri, string token, object data)
         {
-            client.SetToken(token);
+            client.SetAuthorizationHeaderBearer(token);
             var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri);
             request.Content = new StringContent(JsonConvert.SerializeObject(data, serializerSettings), Encoding.UTF8, MediaTypeNames.Application.Json);
             return client.SendAsync(request);
@@ -53,13 +53,8 @@ namespace System.Net.Http
 
         public static Task<HttpResponseMessage> DeleteAsync(this HttpClient client, string requestUri, string token, string id)
         {
-            client.SetToken(token);
+            client.SetAuthorizationHeaderBearer(token);
             return client.DeleteAsync($"{requestUri}{(requestUri.EndsWith("/", StringComparison.InvariantCultureIgnoreCase) ? "" : "/")}{id}");
-        }
-
-        private static void SetToken(this HttpClient client, string token)
-        {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(IdentityConstants.TokenTypes.Bearer, token);
         }
     }
 }

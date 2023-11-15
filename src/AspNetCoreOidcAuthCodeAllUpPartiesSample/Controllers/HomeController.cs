@@ -132,6 +132,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
             }
 
             ViewBag.Title = "Call User Info";
+            ViewBag.ResultText = "Access token claims";
             return View("CallApi");
         }
 

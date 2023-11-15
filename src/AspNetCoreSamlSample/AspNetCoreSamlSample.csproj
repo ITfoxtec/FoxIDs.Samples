@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ITfoxtec.Identity.Saml2" Version="4.10.2" />
-    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.10.2" />
+    <PackageReference Include="ITfoxtec.Identity.Saml2" Version="4.10.5" />
+    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.10.5" />
   </ItemGroup>
 
   <ItemGroup>

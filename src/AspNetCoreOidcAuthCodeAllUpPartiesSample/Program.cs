@@ -10,8 +10,11 @@ using System.IdentityModel.Tokens.Jwt;
 using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 using ITfoxtec.Identity.Helpers;
+using Microsoft.IdentityModel.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
 
 builder.Services.AddApplicationInsightsTelemetry();
 

@@ -5,8 +5,11 @@ using AspNetCoreApi2Sample.Policys;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text.Json.Serialization;
 using Microsoft.Net.Http.Headers;
+using Microsoft.IdentityModel.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
 
 builder.Services.AddApplicationInsightsTelemetry();
 

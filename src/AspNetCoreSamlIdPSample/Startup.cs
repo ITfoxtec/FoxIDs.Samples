@@ -14,6 +14,7 @@ using System.Security.Cryptography.X509Certificates;
 using ITfoxtec.Identity;
 using System.IO;
 using ITfoxtec.Identity.Saml2.Util;
+using Microsoft.IdentityModel.Logging;
 
 namespace AspNetCoreSamlIdPSample
 {
@@ -32,6 +33,9 @@ namespace AspNetCoreSamlIdPSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+
+            services.AddApplicationInsightsTelemetry();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

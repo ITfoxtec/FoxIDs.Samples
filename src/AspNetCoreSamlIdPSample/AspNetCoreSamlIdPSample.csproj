@@ -5,8 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ITfoxtec.Identity.Saml2" Version="4.10.5" />
-    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.10.5" />
+    <PackageReference Include="ITfoxtec.Identity.Saml2" Version="4.10.5.4" />
+    <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.10.5.4" />
+	<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
   </ItemGroup>
 
   <ItemGroup>

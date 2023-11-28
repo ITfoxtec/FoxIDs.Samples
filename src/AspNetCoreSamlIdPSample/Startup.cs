@@ -5,13 +5,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
-using ITfoxtec.Identity.Saml2;
-using FoxIDs.SampleHelperLibrary;
 using AspNetCoreSamlIdPSample.Models;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using System;
 using System.Linq;
 using FoxIDs.SampleHelperLibrary.Repository;
+using System.Security.Cryptography.X509Certificates;
+using ITfoxtec.Identity;
+using System.IO;
+using ITfoxtec.Identity.Saml2.Util;
 
 namespace AspNetCoreSamlIdPSample
 {
@@ -68,10 +70,24 @@ namespace AspNetCoreSamlIdPSample
                 }
             });
 
-            services.Configure<Saml2Configuration>(Configuration.GetSection("Saml2"));
-            services.Configure<Saml2Configuration>(saml2Configuration =>
+            services.Configure<Saml2ConfigurationIdP>(Configuration.GetSection("Saml2"));
+            services.Configure<Saml2ConfigurationIdP>(saml2Configuration =>
             {
-                saml2Configuration.SigningCertificate = TestCertificate.GetSelfSignedCertificate(AppEnvironment.ContentRootPath, "test-sign-cert");
+                if (!saml2Configuration.TokenExchangeClientCertificateThumbprint.IsNullOrEmpty())
+                {
+                    saml2Configuration.SigningCertificate = CertificateUtil.Load(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindByThumbprint, saml2Configuration.TokenExchangeClientCertificateThumbprint);
+                }
+                else
+                {
+                    if (saml2Configuration.TokenExchangeClientCertificatePassword.IsNullOrEmpty())
+                    {
+                        saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(AppEnvironment.ContentRootPath, saml2Configuration.TokenExchangeClientCertificateFile));
+                    }
+                    else
+                    {
+                        saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(AppEnvironment.ContentRootPath, saml2Configuration.TokenExchangeClientCertificateFile), saml2Configuration.TokenExchangeClientCertificatePassword);
+                    }
+                }
 
                 saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
             });

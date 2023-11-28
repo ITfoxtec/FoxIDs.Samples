@@ -26,12 +26,12 @@ namespace AspNetCoreSamlIdPSample.Controllers
     [Route("Saml")]
     public class SamlController : Controller
     {
-        private readonly Saml2Configuration saml2Config;
+        private readonly Saml2ConfigurationIdP saml2Config;
         private readonly Settings settings;
         private readonly ILogger<SamlController> logger;
         private readonly IdPSessionCookieRepository idPSessionCookieRepository;
 
-        public SamlController(ILogger<SamlController> logger, IOptionsMonitor<Settings> settingsAccessor, IOptionsMonitor<Saml2Configuration> configAccessor, IdPSessionCookieRepository idPSessionCookieRepository)
+        public SamlController(ILogger<SamlController> logger, IOptionsMonitor<Settings> settingsAccessor, IOptionsMonitor<Saml2ConfigurationIdP> configAccessor, IdPSessionCookieRepository idPSessionCookieRepository)
         {
             saml2Config = configAccessor.CurrentValue;
             settings = settingsAccessor.CurrentValue;

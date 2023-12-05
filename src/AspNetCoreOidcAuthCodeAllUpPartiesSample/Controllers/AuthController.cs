@@ -3,11 +3,18 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using ITfoxtec.Identity;
+using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 
 namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
 {
     public class AuthController : Controller
     {
+        private LogoutMemoryCache logoutMemoryCache;
+        public AuthController(LogoutMemoryCache logoutMemoryCache)
+        {
+            this.logoutMemoryCache = logoutMemoryCache;
+        }
+
         public IActionResult Login()
         {
             var redirectUrl = Url.Action(nameof(HomeController.Secure), "Home");
@@ -22,20 +29,9 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
-        public async Task<IActionResult> FrontChannelLogout([FromQuery(Name = JwtClaimTypes.Issuer)] string issuer, [FromQuery(Name = JwtClaimTypes.SessionId)] string sessionId)
+        public IActionResult FrontChannelLogout([FromQuery(Name = JwtClaimTypes.Issuer)] string issuer, [FromQuery(Name = JwtClaimTypes.SessionId)] string sessionId)
         {
-            if(User.Identity.IsAuthenticated)
-            {
-                if (User.Claims.Where(c => c.Type == JwtClaimTypes.SessionId && c.Issuer == issuer && c.Value == sessionId).Any())
-                {
-                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                }
-                else
-                {
-                    return BadRequest("Invalid issuer and session ID.");
-                }
-            }
-
+            logoutMemoryCache.List.Add(sessionId);
             return Ok();
         }
     }

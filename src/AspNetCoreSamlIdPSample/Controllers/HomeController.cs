@@ -11,10 +11,10 @@ namespace AspNetCoreSamlIdPSample.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly Saml2Configuration saml2Config;
+        private readonly Saml2ConfigurationIdP saml2Config;
         private readonly IdPSessionCookieRepository idPSessionCookieRepository;
 
-        public HomeController(IOptionsMonitor<Saml2Configuration> configAccessor, IdPSessionCookieRepository idPSessionCookieRepository)
+        public HomeController(IOptionsMonitor<Saml2ConfigurationIdP> configAccessor, IdPSessionCookieRepository idPSessionCookieRepository)
         {
             saml2Config = configAccessor.CurrentValue;
             this.idPSessionCookieRepository = idPSessionCookieRepository;

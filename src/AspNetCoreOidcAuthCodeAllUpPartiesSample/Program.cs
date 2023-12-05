@@ -10,8 +10,12 @@ using System.IdentityModel.Tokens.Jwt;
 using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 using ITfoxtec.Identity.Helpers;
+using Microsoft.IdentityModel.Logging;
+using System.Collections.Concurrent;
 
 var builder = WebApplication.CreateBuilder(args);
+
+IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -35,11 +39,22 @@ builder.Services.AddAuthentication(options =>
     })
     .AddCookie(options =>
     {
-        // Required to support Front channel logout
-        options.Cookie.SameSite = SameSiteMode.None;
-
         options.Events.OnValidatePrincipal = async (context) =>
         {
+            var logoutMemoryCache = context.HttpContext.RequestServices.GetService<LogoutMemoryCache>();
+            var sessionId = context.Principal.Claims.Where(c => c.Type == JwtClaimTypes.SessionId).Select(c => c.Value).FirstOrDefault();
+            foreach(var item in logoutMemoryCache.List)
+            {
+                if(sessionId == item)
+                {
+                    logoutMemoryCache.Remove(item);
+                    // Handle FrontChannelLogout
+                    context.RejectPrincipal();
+                    await context.HttpContext.SignOutAsync();
+                    return;
+                }
+            }             
+
             try
             {
                 var expiresUtc = DateTimeOffset.Parse(context.Properties.GetTokenValue("expires_at"));
@@ -104,6 +119,14 @@ builder.Services.AddAuthentication(options =>
         {
             // To require MFA
             //context.ProtocolMessage.AcrValues = "urn:foxids:mfa";
+            // Request a language on login
+            //context.ProtocolMessage.UiLocales = "fr";
+            await Task.FromResult(string.Empty);
+        };
+        options.Events.OnRedirectToIdentityProviderForSignOut = async (context) =>
+        {
+            // Request a language on logout
+            //context.ProtocolMessage.UiLocales = "fr";
             await Task.FromResult(string.Empty);
         };
         options.Events.OnTokenResponseReceived = async (context) =>
@@ -121,6 +144,7 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddTransient<TokenExecuteHelper>();
+builder.Services.AddSingleton<LogoutMemoryCache>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();

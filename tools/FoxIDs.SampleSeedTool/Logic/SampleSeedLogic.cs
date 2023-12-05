@@ -244,7 +244,9 @@ namespace FoxIDs.SampleSeedTool.Logic
                     LogoutRequestBinding = SamlBindingTypes.Post,
                     LogoutResponseBinding = SamlBindingTypes.Post,
                     LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout"),
-                    Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role }
+                    Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role },
+                    SessionLifetime = 36000,
+                    SessionAbsoluteLifetime = 86400,
                 };
 
                 await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
@@ -294,7 +296,9 @@ namespace FoxIDs.SampleSeedTool.Logic
                         UseIdTokenClaims = true,
 
                         ResponseMode = IdentityConstants.ResponseModes.FormPost
-                    }
+                    },
+                    SessionLifetime = 36000,
+                    SessionAbsoluteLifetime = 86400,
                 };
 
                 await foxIDsApiClient.PostOidcUpPartyAsync(oidcUpParty);

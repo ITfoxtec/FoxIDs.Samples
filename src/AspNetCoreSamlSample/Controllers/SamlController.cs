@@ -122,19 +122,19 @@ namespace AspNetCoreSamlSample.Controllers
         [Route("AssertionConsumerService")]
         public async Task<IActionResult> AssertionConsumerService()
         {
-            var binding = new Saml2PostBinding();
+            var httpRequest = Request.ToGenericHttpRequest(validate: true);
             var saml2AuthnResponse = new Saml2AuthnResponse(saml2Config);
 
-            binding.ReadSamlResponse(Request.ToGenericHttpRequest(validate: true), saml2AuthnResponse);
+            httpRequest.Binding.ReadSamlResponse(httpRequest, saml2AuthnResponse);
             if (saml2AuthnResponse.Status != Saml2StatusCodes.Success)
             {
                 throw new AuthenticationException($"SAML Response status: {saml2AuthnResponse.Status}");
             }
-            binding.Unbind(Request.ToGenericHttpRequest(validate: true), saml2AuthnResponse);
+            httpRequest.Binding.Unbind(httpRequest, saml2AuthnResponse);
 
             await saml2AuthnResponse.CreateSession(HttpContext, claimsTransform: (claimsPrincipal) => ClaimsTransform.Transform(claimsPrincipal));
 
-            var relayStateQuery = binding.GetRelayStateQuery();
+            var relayStateQuery = httpRequest.Binding.GetRelayStateQuery();
             if (relayStateQuery.ContainsKey(relayStateLoginType))
             {
                 var loginType = relayStateQuery[relayStateLoginType];
@@ -168,8 +168,8 @@ namespace AspNetCoreSamlSample.Controllers
         [Route("LoggedOut")]
         public IActionResult LoggedOut()
         {
-            var binding = new Saml2PostBinding();
-            binding.Unbind(Request.ToGenericHttpRequest(validate: true), new Saml2LogoutResponse(saml2Config));
+            var httpRequest = Request.ToGenericHttpRequest(validate: true);
+            httpRequest.Binding.Unbind(httpRequest, new Saml2LogoutResponse(saml2Config));
 
             return Redirect(Url.Content("~/"));
         }
@@ -180,11 +180,11 @@ namespace AspNetCoreSamlSample.Controllers
             var loginType = await GetSelectedLoginType();
 
             Saml2StatusCodes status;
-            var requestBinding = new Saml2PostBinding();
+            var httpRequest = Request.ToGenericHttpRequest(validate: true);
             var logoutRequest = new Saml2LogoutRequest(saml2Config, User);
             try
             {
-                requestBinding.Unbind(Request.ToGenericHttpRequest(validate: true), logoutRequest);
+                httpRequest.Binding.Unbind(httpRequest, logoutRequest);
                 status = Saml2StatusCodes.Success;
                 await idPSelectionCookieRepository.DeleteAsync();
                 await logoutRequest.DeleteSession(HttpContext);
@@ -197,7 +197,7 @@ namespace AspNetCoreSamlSample.Controllers
             }
 
             var responsebinding = new Saml2PostBinding();
-            responsebinding.RelayState = requestBinding.RelayState;
+            responsebinding.RelayState = httpRequest.Binding.RelayState;
             var saml2LogoutResponse = new Saml2LogoutResponse(saml2Config)
             {
                 InResponseToAsString = logoutRequest.IdAsString,

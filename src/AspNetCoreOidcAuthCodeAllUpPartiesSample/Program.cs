@@ -119,6 +119,14 @@ builder.Services.AddAuthentication(options =>
         {
             // To require MFA
             //context.ProtocolMessage.AcrValues = "urn:foxids:mfa";
+            // Request a language on login
+            //context.ProtocolMessage.UiLocales = "fr";
+            await Task.FromResult(string.Empty);
+        };
+        options.Events.OnRedirectToIdentityProviderForSignOut = async (context) =>
+        {
+            // Request a language on logout
+            //context.ProtocolMessage.UiLocales = "fr";
             await Task.FromResult(string.Empty);
         };
         options.Events.OnTokenResponseReceived = async (context) =>

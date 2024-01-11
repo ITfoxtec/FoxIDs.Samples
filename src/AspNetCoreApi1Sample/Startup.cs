@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AspNetCoreApi1Sample.Models;
@@ -63,8 +62,6 @@ namespace AspNetCoreApi1Sample
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -72,6 +69,7 @@ namespace AspNetCoreApi1Sample
                     options.Authority = identitySettings.AuthorityWithoutUpParty;
                     options.Audience = identitySettings.ResourceId;
 
+                    options.MapInboundClaims = false;
                     options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
                     options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
 

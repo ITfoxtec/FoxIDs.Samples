@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.Net.Http.Headers;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 
@@ -20,8 +19,6 @@ var identitySettings = builder.Services.BindConfig<IdentitySettings>(builder.Con
 // True to show token validation exception details.
 IdentityModelEventSource.ShowPII = true;
 
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
 builder.Services
     .AddAuthentication()
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme + "1", options =>
@@ -29,6 +26,7 @@ builder.Services
         options.Authority = identitySettings.Authority1;
         options.Audience = identitySettings.ResourceId1;
 
+        options.MapInboundClaims = false;
         options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
         options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
 

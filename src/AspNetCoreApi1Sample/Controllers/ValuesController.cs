@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AspNetCoreApi1Sample.Policys;
+using AspNetCoreApi1Sample.Policies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreApi1Sample.Controllers

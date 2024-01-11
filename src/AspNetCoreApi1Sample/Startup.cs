@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AspNetCoreApi1Sample.Models;
-using AspNetCoreApi1Sample.Policys;
+using AspNetCoreApi1Sample.Policies;
 using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Helpers;
@@ -84,10 +84,7 @@ namespace AspNetCoreApi1Sample
                     };
                 });
 
-            services.AddAuthorization(options =>
-            {
-                Api1SomeAccessScopeAuthorizeAttribute.AddPolicy(options);
-            });
+            services.AddAuthorization(Api1SomeAccessScopeAuthorizeAttribute.AddPolicy);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

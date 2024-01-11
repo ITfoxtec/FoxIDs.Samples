@@ -34,7 +34,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity
             var httpClientFactory = context.HttpContext.RequestServices.GetService<IHttpClientFactory>();
 
             var client = httpClientFactory.CreateClient();
-            var response = await client.SendAsync(request);
+            using var response = await client.SendAsync(request);
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:

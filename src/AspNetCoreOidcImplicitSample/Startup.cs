@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using AspNetCoreOidcImplicitSample.Models;
 using ITfoxtec.Identity;
@@ -46,8 +45,6 @@ namespace AspNetCoreOidcImplicitSample
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
             services
                 .AddAuthentication(options =>
                 {
@@ -72,6 +69,7 @@ namespace AspNetCoreOidcImplicitSample
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
 
+                    options.MapInboundClaims = false;
                     options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
                     options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
 

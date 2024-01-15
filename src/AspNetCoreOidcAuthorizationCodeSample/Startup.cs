@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AspNetCoreOidcAuthorizationCodeSample.Models;
@@ -58,8 +57,6 @@ namespace AspNetCoreOidcAuthorizationCodeSample
             services.AddControllersWithViews();
             services.AddHttpContextAccessor();
             services.AddHttpClient();
-
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services
                 .AddAuthentication(options =>
@@ -131,6 +128,7 @@ namespace AspNetCoreOidcAuthorizationCodeSample
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
 
+                    options.MapInboundClaims = false;
                     options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
                     options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
 

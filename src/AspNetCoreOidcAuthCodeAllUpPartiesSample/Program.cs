@@ -6,12 +6,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 using ITfoxtec.Identity.Helpers;
 using Microsoft.IdentityModel.Logging;
-using System.Collections.Concurrent;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +27,6 @@ builder.Services.AddSingleton((serviceProvider) =>
 
     return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.FoxIDsAuthority, IdentityConstants.OidcDiscovery.Path));
 });
-
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -112,6 +108,7 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("profile");
         options.Scope.Add("email");
 
+        options.MapInboundClaims = false;
         options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
         options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
 

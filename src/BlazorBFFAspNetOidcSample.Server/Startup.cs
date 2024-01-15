@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -60,8 +59,6 @@ namespace BlazorBFFAspNetOidcSample.Server
             {
                 options.HeaderName = Constants.AntiforgeryTokenHeaderName;
             });
-
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services
                 .AddAuthentication(options =>
@@ -130,6 +127,7 @@ namespace BlazorBFFAspNetOidcSample.Server
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
 
+                    options.MapInboundClaims = false;
                     options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
                     options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
 

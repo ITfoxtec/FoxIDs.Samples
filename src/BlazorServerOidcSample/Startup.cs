@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -26,7 +24,6 @@ using FoxIDs.SampleHelperLibrary.Models;
 using FoxIDs.SampleHelperLibrary.Repository;
 using Microsoft.Extensions.Hosting;
 using ITfoxtec.Identity.Util;
-using Microsoft.AspNetCore.Builder;
 
 namespace BlazorServerOidcSample
 {
@@ -69,8 +66,6 @@ namespace BlazorServerOidcSample
             services.AddServerSideBlazor();
             services.AddHttpContextAccessor();
             services.AddHttpClient();
-
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             services
                 .AddAuthentication(options =>
@@ -139,6 +134,7 @@ namespace BlazorServerOidcSample
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
 
+                    options.MapInboundClaims = false;
                     options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
                     options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
 

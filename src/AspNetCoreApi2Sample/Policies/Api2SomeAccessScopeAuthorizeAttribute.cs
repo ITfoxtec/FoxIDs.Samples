@@ -1,7 +1,7 @@
 ﻿using ITfoxtec.Identity;
 using Microsoft.AspNetCore.Authorization;
 
-namespace AspNetCoreApi2Sample.Policys
+namespace AspNetCoreApi2Sample.Policies
 {
     public class Api2SomeAccessScopeAuthorizeAttribute : AuthorizeAttribute
     {

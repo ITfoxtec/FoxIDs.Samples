@@ -34,7 +34,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity
             var httpClientFactory = context.HttpContext.RequestServices.GetService<IHttpClientFactory>();
 
             var client = httpClientFactory.CreateClient();
-            var response = await client.SendAsync(request);
+            using var response = await client.SendAsync(request);
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
@@ -46,6 +46,11 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity
 
                     var oidcDiscoveryKeySet = await oidcDiscoveryHandler.GetOidcDiscoveryKeysAsync();
                     (var newPrincipal, var newSecurityToken) = JwtHandler.ValidateToken(tokenResponse.IdToken, oidcDiscovery.Issuer, oidcDiscoveryKeySet.Keys, identitySettings.ClientId);
+                    var atHash = newPrincipal.Claims.Where(c => c.Type == JwtClaimTypes.AtHash).Single().Value;
+                    if (atHash != await tokenResponse.AccessToken.LeftMostBase64urlEncodedHashAsync(IdentityConstants.Algorithms.Asymmetric.RS256))
+                    {
+                        throw new Exception("Access Token hash claim in ID token do not match the access token.");
+                    }
                     if (context.Principal.Claims.Where(c => c.Type == JwtClaimTypes.Subject).Single().Value != newPrincipal.Claims.Where(c => c.Type == JwtClaimTypes.Subject).Single().Value)
                     {
                         throw new Exception("New principal has invalid sub claim.");

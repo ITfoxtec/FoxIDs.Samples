@@ -1,7 +1,6 @@
 ﻿using ITfoxtec.Identity;
-using System.IdentityModel.Tokens.Jwt;
 using AspNetCoreApi2Sample.Models;
-using AspNetCoreApi2Sample.Policys;
+using AspNetCoreApi2Sample.Policies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text.Json.Serialization;
 using Microsoft.Net.Http.Headers;
@@ -24,8 +23,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -33,6 +30,7 @@ builder.Services
         options.Authority = identitySettings.FoxIDsAuthority;
         options.Audience = identitySettings.ResourceId;
 
+        options.MapInboundClaims = false;
         options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
         options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
 

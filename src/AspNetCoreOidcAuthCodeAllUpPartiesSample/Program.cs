@@ -10,6 +10,7 @@ using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 using ITfoxtec.Identity.Helpers;
 using Microsoft.IdentityModel.Logging;
+using FoxIDs.SampleHelperLibrary.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,15 +1,11 @@
-﻿@inject NavigationManager NavigationManager
-@inject TokenProvider TokenProvider
+﻿@inject TokenProvider TokenProvider
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                    @{
-                        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);                   
-                        NavigationManager.NavigateTo($"login?redirectUri={returnUrl}", forceLoad: true);                    
-                    }
+                    <LoginRedirect></LoginRedirect>
                 </NotAuthorized>
             <Authorizing>
                 Wait...

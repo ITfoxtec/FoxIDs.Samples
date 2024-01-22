@@ -1,0 +1,14 @@
+﻿<h3>LoginRedirect</h3>
+
+@code {
+    [Inject] 
+    NavigationManager? NavigationManager { get; set; }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.NavigateTo($"login?redirectUri={returnUrl}", true);
+
+        return Task.CompletedTask;
+    }
+}

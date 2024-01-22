@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
+using System.Linq;
 
-namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity
+namespace FoxIDs.SampleHelperLibrary.Identity
 {
     public class LogoutMemoryCache
     {
@@ -9,6 +10,11 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity
         public void Remove(string item)
         {
             List = new ConcurrentBag<string>(List.Except(new[] { item }));
+        }
+
+        public void Clear()
+        {
+            List = new ConcurrentBag<string>();
         }
     }
 }

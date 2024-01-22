@@ -3,9 +3,6 @@
 <AuthorizeView>
     <Authorized>
         Hello, @context.User.Identity.Name!
- 
-        @*         <a href="logout">Logout</a>*@
-
         <form method="post" action="logout">
             <button type="submit" class="nav-link btn btn-link">Log out</button>
             <input name="__RequestVerificationToken" type="hidden" value="@TokenProvider.XsrfToken" />

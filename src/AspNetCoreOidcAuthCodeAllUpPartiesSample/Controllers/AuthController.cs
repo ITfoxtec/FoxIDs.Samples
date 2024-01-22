@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using ITfoxtec.Identity;
-using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
+using FoxIDs.SampleHelperLibrary.Identity;
 
 namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
 {

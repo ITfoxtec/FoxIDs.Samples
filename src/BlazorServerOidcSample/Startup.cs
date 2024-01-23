@@ -56,7 +56,6 @@ namespace BlazorServerOidcSample
             });
 
             services.AddScoped<AuthenticationStateProvider, AuthenticationStateValidator>();
-
             services.AddSingleton<LogoutMemoryCache>();
             services.AddScoped<TokenProvider>();
             services.AddSingleton<WeatherForecastService>();

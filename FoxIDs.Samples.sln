@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientCredentialGran
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApi2Sample", "src\AspNetCoreApi2Sample\AspNetCoreApi2Sample.csproj", "{C41057D7-0396-4222-9845-CCBB41809025}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetFrameworkClientCredentialGrantAssertionConsoleSample", "src\NetFrameworkClientCredentialGrantAssertionConsoleSample\NetFrameworkClientCredentialGrantAssertionConsoleSample.csproj", "{6490D857-5138-4210-BEB0-07DD3212E8B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{C41057D7-0396-4222-9845-CCBB41809025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C41057D7-0396-4222-9845-CCBB41809025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C41057D7-0396-4222-9845-CCBB41809025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6490D857-5138-4210-BEB0-07DD3212E8B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6490D857-5138-4210-BEB0-07DD3212E8B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6490D857-5138-4210-BEB0-07DD3212E8B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6490D857-5138-4210-BEB0-07DD3212E8B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{0517BB01-365F-4C80-AAC8-FEFAAAE540F3} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{83C7142C-268F-44BA-92F3-03236BF76801} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{C41057D7-0396-4222-9845-CCBB41809025} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
+		{6490D857-5138-4210-BEB0-07DD3212E8B0} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

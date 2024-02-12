@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientCredentialGran
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApi2Sample", "src\AspNetCoreApi2Sample\AspNetCoreApi2Sample.csproj", "{C41057D7-0396-4222-9845-CCBB41809025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetFrameworkClientCredentialGrantAssertionConsoleSample", "src\NetFrameworkClientCredentialGrantAssertionConsoleSample\NetFrameworkClientCredentialGrantAssertionConsoleSample.csproj", "{6490D857-5138-4210-BEB0-07DD3212E8B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetFramework4.7ClientCredentialGrantAssertionConsoleSample", "src\NetFramework4.7ClientCredentialGrantAssertionConsoleSample\NetFramework4.7ClientCredentialGrantAssertionConsoleSample.csproj", "{6490D857-5138-4210-BEB0-07DD3212E8B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

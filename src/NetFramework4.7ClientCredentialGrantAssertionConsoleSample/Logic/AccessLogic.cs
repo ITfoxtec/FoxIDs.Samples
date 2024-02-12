@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Security.Claims;
 using ITfoxtec.Identity.Saml2.Util;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.IO;
 using System.Text;
 using System.Runtime.Serialization.Json;
 using NetFrameworkClientCredentialGrantAssertionConsoleSample.Models;
-
+using System.IdentityModel.Tokens;
 
 namespace NetFrameworkClientCredentialGrantAssertionConsoleSample.Logic
 {
@@ -79,17 +77,15 @@ namespace NetFrameworkClientCredentialGrantAssertionConsoleSample.Logic
             var clientCertificatePassword = ConfigurationManager.AppSettings["ClientCertificatePassword"];
             var clientCertificate = CertificateUtil.Load(clientCertificateFile, clientCertificatePassword);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Expires = DateTime.Now.AddMinutes(Convert.ToInt32(5)),
-                SigningCredentials = new X509SigningCredentials(clientCertificate, SecurityAlgorithms.RsaSha256Signature),
-                Issuer = clientId,
-                Subject = new ClaimsIdentity(new List<Claim> { new Claim("sub", clientId) }),
-                Audience = tokenEndpoint,
-            };
-
             var tokenHandler = new JwtSecurityTokenHandler();
-            var token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.CreateToken(
+                issuer: clientId, 
+                audience: tokenEndpoint,
+                subject: new ClaimsIdentity(new List<Claim> { new Claim("sub", clientId) }),
+                notBefore: DateTime.Now.AddMinutes(Convert.ToInt32(-5)),
+                expires: DateTime.Now.AddMinutes(Convert.ToInt32(5)),
+                signingCredentials: new X509SigningCredentials(clientCertificate, SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest));
+
             return tokenHandler.WriteToken(token);
         }
 

@@ -80,7 +80,7 @@ namespace AspNetCoreApi1Sample.Controllers
 
             var tokenExchangeRequest = new TokenExchangeRequest
             {
-                Scope = "aspnetcore_api2_sample:some_2_access",
+                Scope = identitySettings.RequestApi2Scope,
                 SubjectToken = accessToken,
                 SubjectTokenType = IdentityConstants.TokenTypeIdentifiers.AccessToken
             };

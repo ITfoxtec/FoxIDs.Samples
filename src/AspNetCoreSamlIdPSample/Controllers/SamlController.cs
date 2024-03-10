@@ -258,7 +258,15 @@ namespace AspNetCoreSamlIdPSample.Controllers
 
         private RelyingParty ValidateRelyingParty(string issuer)
         {
-            return settings.RelyingParties.Where(rp => rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
+            try
+            {
+                return settings.RelyingParties.Where(rp => rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Requested RP Issuer '{issuer}' is not configured in settings.RelyingParties.");
+            }
         }
     }
 }

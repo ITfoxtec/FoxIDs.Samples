@@ -13,4 +13,10 @@
     <ProjectReference Include="..\FoxIDs.SampleHelperLibrary\FoxIDs.SampleHelperLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="CN=AspNetCoreApi1Sample, O=test corp.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

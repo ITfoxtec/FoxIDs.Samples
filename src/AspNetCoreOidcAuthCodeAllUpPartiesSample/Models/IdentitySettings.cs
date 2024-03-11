@@ -8,5 +8,6 @@
         public string ClientSecret { get; set; }
 
         public string RequestApi1Scope { get; set; }
+        public string RequestApi2Scope { get; set; }
     }
 }

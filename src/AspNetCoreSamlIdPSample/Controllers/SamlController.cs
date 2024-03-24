@@ -132,7 +132,6 @@ namespace AspNetCoreSamlIdPSample.Controllers
             yield return new Claim(ClaimTypes.NameIdentifier, idPSession.NameIdentifier);
             yield return new Claim(ClaimTypes.Upn, idPSession.Upn);
             yield return new Claim(ClaimTypes.Email, idPSession.Email);
-            yield return new Claim("https://data.gov.dk/model/core/eid/cprUuid", Guid.NewGuid().ToString());
         }
 
         [Route("Logout")]

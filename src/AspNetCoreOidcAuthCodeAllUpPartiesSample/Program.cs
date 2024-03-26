@@ -126,6 +126,10 @@ builder.Services.AddAuthentication(options =>
             // Request a language on logout
             //context.ProtocolMessage.UiLocales = "fr";
             await Task.FromResult(string.Empty);
+        };    
+        options.Events.OnAuthorizationCodeReceived = async (context) =>
+        {
+            await Task.FromResult(string.Empty);
         };
         options.Events.OnTokenResponseReceived = async (context) =>
         {

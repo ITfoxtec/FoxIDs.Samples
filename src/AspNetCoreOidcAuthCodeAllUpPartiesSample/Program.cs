@@ -90,8 +90,8 @@ builder.Services.AddAuthentication(options =>
     })
     .AddOpenIdConnect(options =>
     {
+        //Accept all SSL/TLS certificates
         //HttpClientHandler handler = new HttpClientHandler();
-        //// Accept all SSL/TLS certificates
         //handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
         //options.BackchannelHttpHandler = handler;
 

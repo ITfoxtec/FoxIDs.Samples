@@ -14,7 +14,8 @@ using FoxIDs.SampleHelperLibrary.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+//To show detail of error and see the problem
+IdentityModelEventSource.ShowPII = true; 
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -89,6 +90,11 @@ builder.Services.AddAuthentication(options =>
     })
     .AddOpenIdConnect(options =>
     {
+        //HttpClientHandler handler = new HttpClientHandler();
+        //// Accept all SSL/TLS certificates
+        //handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        //options.BackchannelHttpHandler = handler;
+
         options.Authority = identitySettings.FoxIDsAuthority;
         options.ClientId = identitySettings.ClientId;
         options.ClientSecret = identitySettings.ClientSecret;

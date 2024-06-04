@@ -266,7 +266,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 var baseUrl = "https://localhost:44346";
 
-                var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JwtWithCertificateInfo>();
+                var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JwkWithCertificateInfo>();
 
                 var oidcUpParty = new OidcUpParty
                 {
@@ -274,7 +274,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     Authority = baseUrl,
                     UpdateState = PartyUpdateStates.Manual,
                     Issuers = new string[] { baseUrl },
-                    Keys = new JwtWithCertificateInfo[] { key },
+                    Keys = new JwkWithCertificateInfo[] { key },
 
                     Client = new OidcUpClient
                     {
@@ -1173,11 +1173,11 @@ namespace FoxIDs.SampleSeedTool.Logic
             await CreateIfNotExistsAsync(oauthTokenExchangeForSamlDownPartyName, getAction, postAction);
         }        
 
-        private JwtWithCertificateInfo GetCertificateInfoKey(string file)
+        private JwkWithCertificateInfo GetCertificateInfoKey(string file)
         {
             var certificate = CertificateUtil.Load(file);
             var jwk = certificate.ToFTJsonWebKey();
-            return jwk.ToJson().ToObject<JwtWithCertificateInfo>();
+            return jwk.ToJson().ToObject<JwkWithCertificateInfo>();
         }
 
         private async Task CreateIfNotExistsAsync(string name, Func<string, Task> getActionAsync, Func<string, Task> postActionAsync)

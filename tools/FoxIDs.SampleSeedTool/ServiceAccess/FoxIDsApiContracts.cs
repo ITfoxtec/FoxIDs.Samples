@@ -314,13 +314,110 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public PartyTypes Type { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isTest", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsTest { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DownPartyTestResultRequest
+    {
+        [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(2000, MinimumLength = 1)]
+        public string State { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(4000, MinimumLength = 1)]
+        public string Code { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DownPartyTestResultResponse
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(50)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
+        public string DisplayName { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("idTokenClaims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ClaimAndValues> IdTokenClaims { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("accessTokenClaims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<ClaimAndValues> AccessTokenClaims { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("idToken", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(256000, MinimumLength = 1)]
+        public string IdToken { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(256000, MinimumLength = 1)]
+        public string AccessToken { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("endSessionUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10240)]
+        public string EndSessionUrl { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DownPartyTestStartRequest
+    {
+        [Newtonsoft.Json.JsonProperty("upPartyNames", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> UpPartyNames { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("claims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Claims { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("redirectUri", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(500, MinimumLength = 1)]
+        public string RedirectUri { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("responseMode", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(30, MinimumLength = 1)]
+        public string ResponseMode { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DownPartyTestStartResponse
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(50)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
+        public string DisplayName { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("testUrl", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(10240, MinimumLength = 1)]
+        public string TestUrl { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("testExpireAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long TestExpireAt { get; set; }
 
     }
 
@@ -745,7 +842,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -872,6 +969,17 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("changePassword", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool ChangePassword { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class NewPartyName
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isUpParty", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsUpParty { get; set; }
 
     }
 
@@ -1106,7 +1214,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1199,7 +1307,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1361,7 +1469,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1386,6 +1494,16 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("allowCorsOrigins", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> AllowCorsOrigins { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isTest", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsTest { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("testUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(10240)]
+        public string TestUrl { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("testExpireAt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long TestExpireAt { get; set; }
 
     }
 
@@ -1478,7 +1596,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1879,7 +1997,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2149,7 +2267,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2508,7 +2626,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2548,7 +2666,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2643,7 +2761,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(100)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+ ]*$")]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]

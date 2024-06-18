@@ -35,11 +35,11 @@ namespace AspNetCoreSamlSample.Controllers
             this.idPSelectionCookieRepository = idPSelectionCookieRepository;
         }
 
+        private string DefaultSite => $"{Request.Scheme}://{Request.Host.ToUriComponent()}";
+
         [Route("Metadata")]
         public IActionResult Metadata()
         {
-            var defaultSite = $"{Request.Scheme}://{Request.Host.ToUriComponent()}/";
-
             var entityDescriptor = new EntityDescriptor(saml2Config);
             entityDescriptor.ValidUntil = 365;
             entityDescriptor.SPSsoDescriptor = new SPSsoDescriptor
@@ -55,12 +55,12 @@ namespace AspNetCoreSamlSample.Controllers
                 //},
                 SingleLogoutServices = new SingleLogoutService[]
                 {
-                    new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri($"{defaultSite}/Saml/SingleLogout"), ResponseLocation = new Uri($"{defaultSite}/Saml/LoggedOut") }
+                    new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri($"{DefaultSite}/Saml/SingleLogout"), ResponseLocation = new Uri($"{DefaultSite}/Saml/LoggedOut") }
                 },
                 NameIDFormats = new Uri[] { NameIdentifierFormats.X509SubjectName },
                 AssertionConsumerServices = new AssertionConsumerService[]
                 {
-                    new AssertionConsumerService {  Binding = ProtocolBindings.HttpPost, Location = new Uri($"{defaultSite}/Saml/AssertionConsumerService") }
+                    new AssertionConsumerService {  Binding = ProtocolBindings.HttpPost, Location = new Uri($"{DefaultSite}/Saml/AssertionConsumerService") }
                 },
                 AttributeConsumingServices = new AttributeConsumingService[]
                 {
@@ -97,6 +97,8 @@ namespace AspNetCoreSamlSample.Controllers
 
             var saml2AuthnRequest = new Saml2AuthnRequest(saml2Config)
             {
+                AssertionConsumerServiceUrl= new Uri($"{DefaultSite}/Saml/AssertionConsumerService"),
+                
                 //ForceAuthn = true,
                 //NameIdPolicy = new NameIdPolicy { AllowCreate = true, Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" },
 

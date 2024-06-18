@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using FoxIDs.SampleHelperLibrary;
 using FoxIDs.SampleHelperLibrary.Repository;
 using ITfoxtec.Identity.Helpers;
+using Microsoft.IdentityModel.Logging;
 
 namespace AspNetCoreSamlSample
 {
@@ -31,6 +32,8 @@ namespace AspNetCoreSamlSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

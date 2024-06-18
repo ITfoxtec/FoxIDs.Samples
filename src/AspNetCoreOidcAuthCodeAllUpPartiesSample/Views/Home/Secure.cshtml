@@ -21,15 +21,21 @@
         var accessToken = await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
         var refreshToken = await ViewContext.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
     }
-    <h4>User tokens</h4>
+    <h4>User Tokens</h4>
     <dl>
-        <dt>id token</dt>
-        <dd>@idToken&nbsp;(<a href="javascript:navigator.clipboard.writeText('@idToken')">click&nbsp;to&nbsp;copy</a>)</dd>
+        <form method="post" action="https://www.foxids.com/tools/jwt" target="_blank">
+            <input type="hidden" name="jwt" value="@idToken" />
+            <dt>ID Token&nbsp;&nbsp;-<input class="btn btn-link pt-0" type="submit" value="Decode ID Token"></></dt>
+            <dd>@idToken</dd>
+        </form>
 
-        <dt>access token - <a href="~/Home/CallUserInfo">show claims</a></dt>
-        <dd>@accessToken&nbsp;(<a href="javascript:navigator.clipboard.writeText('@accessToken')">click&nbsp;to&nbsp;copy</a>)</dd>
+        <form method="post" action="https://www.foxids.com/tools/jwt" target="_blank">
+            <input type="hidden" name="jwt" value="@accessToken" />
+            <dt>Access Token&nbsp;&nbsp;-<input class="btn btn-link pt-0" type="submit" value="Decode Access Token"></></dt>
+            <dd>@accessToken&nbsp;(<a href="~/Home/CallUserInfo">show claims</a>)</dd>
+        </form>
 
-        <dt>refresh token</dt>
+        <dt>Refresh Token</dt>
         <dd>@refreshToken</dd>
     </dl>
 </p>

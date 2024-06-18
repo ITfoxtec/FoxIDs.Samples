@@ -132,7 +132,6 @@ namespace AspNetCoreSamlIdPSample.Controllers
             yield return new Claim(ClaimTypes.NameIdentifier, idPSession.NameIdentifier);
             yield return new Claim(ClaimTypes.Upn, idPSession.Upn);
             yield return new Claim(ClaimTypes.Email, idPSession.Email);
-            yield return new Claim("https://data.gov.dk/model/core/eid/cprUuid", Guid.NewGuid().ToString());
         }
 
         [Route("Logout")]
@@ -258,7 +257,15 @@ namespace AspNetCoreSamlIdPSample.Controllers
 
         private RelyingParty ValidateRelyingParty(string issuer)
         {
-            return settings.RelyingParties.Where(rp => rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
+            try
+            {
+                return settings.RelyingParties.Where(rp => rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Requested RP Issuer '{issuer}' is not configured in settings.RelyingParties.");
+            }
         }
     }
 }

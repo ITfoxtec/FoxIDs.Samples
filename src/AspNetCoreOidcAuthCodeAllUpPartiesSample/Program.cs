@@ -14,7 +14,8 @@ using FoxIDs.SampleHelperLibrary.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+//To show detail of error and see the problem
+IdentityModelEventSource.ShowPII = true; 
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -89,6 +90,11 @@ builder.Services.AddAuthentication(options =>
     })
     .AddOpenIdConnect(options =>
     {
+        //Accept all SSL/TLS certificates
+        //HttpClientHandler handler = new HttpClientHandler();
+        //handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        //options.BackchannelHttpHandler = handler;
+
         options.Authority = identitySettings.FoxIDsAuthority;
         options.ClientId = identitySettings.ClientId;
         options.ClientSecret = identitySettings.ClientSecret;
@@ -104,7 +110,7 @@ builder.Services.AddAuthentication(options =>
 
         // Scope to the application it self, used to do token exchange.
         options.Scope.Add(identitySettings.DownParty);
-        options.Scope.Add("aspnetcore_api1_sample:some_access");
+        options.Scope.Add(identitySettings.RequestApi1Scope);
         options.Scope.Add("offline_access");
         options.Scope.Add("profile");
         options.Scope.Add("email");
@@ -125,6 +131,10 @@ builder.Services.AddAuthentication(options =>
         {
             // Request a language on logout
             //context.ProtocolMessage.UiLocales = "fr";
+            await Task.FromResult(string.Empty);
+        };    
+        options.Events.OnAuthorizationCodeReceived = async (context) =>
+        {
             await Task.FromResult(string.Empty);
         };
         options.Events.OnTokenResponseReceived = async (context) =>

@@ -11,5 +11,7 @@ namespace AspNetCoreApi1Sample.Models
         // Thumbprint OR by file
         public string TokenExchangeClientCertificateFile { get; set; }
         public string TokenExchangeClientCertificatePassword { get; set; }
+
+        public string RequestApi2Scope { get; set; }
     }
 }

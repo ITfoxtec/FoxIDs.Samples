@@ -52,7 +52,7 @@ namespace AspNetCoreSamlSample.Controllers
         {
             var tokenExchangeRequest = new TokenExchangeRequest
             {
-                Scope = "aspnetcore_api1_sample:some_access",
+                Scope = settings.RequestApi1Scope,
                 SubjectToken = User.Identities.First().BootstrapContext as string,
                 SubjectTokenType = IdentityConstants.TokenTypeIdentifiers.Saml2
             };

@@ -26,6 +26,12 @@ namespace ExternalLoginApiSample.Controllers
                 return Problem("Invalid API secret.");
             }
 
+            // Include if only one username type is supported.
+            if (request.UsernameType != ExternalLoginUsernameTypes.Text)
+            {
+                return Problem("Only text based usernames is supported.");
+            }
+
             var claims = ValidateUser(request.Username, request.Password);
             if (claims?.Count() > 0)
             {

@@ -35,8 +35,11 @@ namespace ExternalLoginApiSample.Controllers
             //    return BadRequest("Only text based usernames is supported.");
             //}
 
-            var claims = ValidateByEmailbasedUsername(request.Username, request.Password);
-            //var claims = ValidateByTextbasedUsername(request.Username, request.Password);
+            // Test users with an email as username.
+            //var claims = ValidateByEmailbasedUsername(request.Username, request.Password);
+            // Test users with a text-based username.
+            var claims = ValidateByTextbasedUsername(request.Username, request.Password);
+
             if (claims?.Count() > 0)
             {
                 return Ok(new AuthenticationResponse { Claims = claims });

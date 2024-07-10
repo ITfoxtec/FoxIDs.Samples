@@ -45,7 +45,7 @@ namespace ExternalLoginApiSample.Controllers
                 return Ok(new AuthenticationResponse { Claims = claims });
             }
 
-            // Return HTTP 403 if the username or password combination is invalid.
+            // Return HTTP 403 (Forbidden) if the username or password combination is invalid.
             return StatusCode(StatusCodes.Status403Forbidden, "Invalid username or password.");
         }
 

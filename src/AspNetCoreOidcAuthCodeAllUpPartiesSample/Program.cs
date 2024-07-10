@@ -11,6 +11,7 @@ using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 using ITfoxtec.Identity.Helpers;
 using Microsoft.IdentityModel.Logging;
 using FoxIDs.SampleHelperLibrary.Identity;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,6 +98,7 @@ builder.Services.AddAuthentication(options =>
 
         options.Authority = identitySettings.FoxIDsAuthority;
         options.ClientId = identitySettings.ClientId;
+        // Comment out client secret to use client authentication basic instead of post
         options.ClientSecret = identitySettings.ClientSecret;
 
         options.ResponseType = OpenIdConnectResponseType.Code;
@@ -135,6 +137,10 @@ builder.Services.AddAuthentication(options =>
         };    
         options.Events.OnAuthorizationCodeReceived = async (context) =>
         {
+            // Use client authentication basic instead of post
+            // and comment out client secret
+            // context.Backchannel.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(IdentityConstants.BasicAuthentication.Basic, $"{identitySettings.ClientId.OAuthUrlEncode()}:{identitySettings.ClientSecret.OAuthUrlEncode()}".Base64Encode());
+
             await Task.FromResult(string.Empty);
         };
         options.Events.OnTokenResponseReceived = async (context) =>

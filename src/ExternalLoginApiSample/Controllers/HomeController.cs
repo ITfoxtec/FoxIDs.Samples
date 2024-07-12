@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreApi1Sample.Controllers
 {
@@ -7,7 +8,8 @@ namespace AspNetCoreApi1Sample.Controllers
         [Route("")]
         public ActionResult Index()
         {
-            return Content("ExternalLoginApiSample, navigate to: ./ExternalLoginApi/");
+            var domain = HttpContext.Request.GetDisplayUrl();
+            return Content($"ExternalLoginApiSample</br> The API endpoint is: {domain}ExternalLoginApi", "text/html");
         }
     }
 }

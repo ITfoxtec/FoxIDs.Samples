@@ -12,9 +12,8 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "ExternalLoginApi",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Test"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }

@@ -11,10 +11,12 @@ using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 using ITfoxtec.Identity.Helpers;
 using Microsoft.IdentityModel.Logging;
 using FoxIDs.SampleHelperLibrary.Identity;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+//To show detail of error and see the problem
+IdentityModelEventSource.ShowPII = true; 
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -89,8 +91,14 @@ builder.Services.AddAuthentication(options =>
     })
     .AddOpenIdConnect(options =>
     {
+        //Accept all SSL/TLS certificates
+        //HttpClientHandler handler = new HttpClientHandler();
+        //handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        //options.BackchannelHttpHandler = handler;
+
         options.Authority = identitySettings.FoxIDsAuthority;
         options.ClientId = identitySettings.ClientId;
+        // Comment out client secret to use client authentication basic instead of post
         options.ClientSecret = identitySettings.ClientSecret;
 
         options.ResponseType = OpenIdConnectResponseType.Code;
@@ -104,7 +112,7 @@ builder.Services.AddAuthentication(options =>
 
         // Scope to the application it self, used to do token exchange.
         options.Scope.Add(identitySettings.DownParty);
-        options.Scope.Add("aspnetcore_api1_sample:some_access");
+        options.Scope.Add(identitySettings.RequestApi1Scope);
         options.Scope.Add("offline_access");
         options.Scope.Add("profile");
         options.Scope.Add("email");
@@ -125,6 +133,14 @@ builder.Services.AddAuthentication(options =>
         {
             // Request a language on logout
             //context.ProtocolMessage.UiLocales = "fr";
+            await Task.FromResult(string.Empty);
+        };    
+        options.Events.OnAuthorizationCodeReceived = async (context) =>
+        {
+            // Use client authentication basic instead of post
+            // and comment out client secret
+            // context.Backchannel.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(IdentityConstants.BasicAuthentication.Basic, $"{identitySettings.ClientId.OAuthUrlEncode()}:{identitySettings.ClientSecret.OAuthUrlEncode()}".Base64Encode());
+
             await Task.FromResult(string.Empty);
         };
         options.Events.OnTokenResponseReceived = async (context) =>

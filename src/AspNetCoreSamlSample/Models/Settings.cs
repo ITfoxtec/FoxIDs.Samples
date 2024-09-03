@@ -16,6 +16,8 @@
         public string TokenExchangeClientCertificateFile { get; set; }
         public string TokenExchangeClientCertificatePassword { get; set; }
 
+        public string RequestApi1Scope { get; set; }
+
         public string AspNetCoreApi1SampleUrl { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace IdentityServerOidcOpSample
 {
@@ -22,6 +23,8 @@ namespace IdentityServerOidcOpSample
 
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
+
             var settings = services.BindConfig<IdentitySettings>(Configuration, nameof(IdentitySettings));
             var config = new Config(settings);
 

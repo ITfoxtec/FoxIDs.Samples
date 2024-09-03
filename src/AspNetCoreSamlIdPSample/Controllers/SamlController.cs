@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using FoxIDs.SampleHelperLibrary.Repository;
 using FoxIDs.SampleHelperLibrary.Models;
 using ITfoxtec.Identity.Util;
+using ITfoxtec.Identity.Saml2.Claims;
 
 namespace AspNetCoreSamlIdPSample.Controllers
 {
@@ -100,7 +101,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
                     };
                     await idPSessionCookieRepository.SaveAsync(session);
                 }
-                var claims = CreateClaims(session);
+                var claims = GetClaims(session);
 
                 return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, httpRequest.Binding.RelayState, relyingParty, session.SessionIndex, claims);
             }
@@ -127,11 +128,14 @@ namespace AspNetCoreSamlIdPSample.Controllers
             return loginSaml2Config;
         }
 
-        private IEnumerable<Claim> CreateClaims(IdPSession idPSession)
+        private IEnumerable<Claim> GetClaims(IdPSession idPSession)
         {
             yield return new Claim(ClaimTypes.NameIdentifier, idPSession.NameIdentifier);
             yield return new Claim(ClaimTypes.Upn, idPSession.Upn);
             yield return new Claim(ClaimTypes.Email, idPSession.Email);
+
+            yield return new Claim(Saml2ClaimTypes.NameId, idPSession.NameIdentifier);
+            yield return new Claim(Saml2ClaimTypes.SessionIndex, idPSession.SessionIndex);
         }
 
         [Route("Logout")]
@@ -188,10 +192,8 @@ namespace AspNetCoreSamlIdPSample.Controllers
             var relyingParty = ValidateRelyingParty(session.RelyingPartyIssuer);
 
             var binding = new Saml2PostBinding();
-            var saml2LogoutRequest = new Saml2LogoutRequest(saml2Config, User)
-            {
-                Destination = relyingParty.SingleLogoutDestination
-            };
+            var saml2LogoutRequest = session == null ? new Saml2LogoutRequest(saml2Config) : new Saml2LogoutRequest(saml2Config, new ClaimsPrincipal(new ClaimsIdentity(GetClaims(session), "auth_session", ClaimTypes.NameIdentifier, ClaimTypes.Role)));
+            saml2LogoutRequest.Destination = relyingParty.SingleLogoutDestination;
 
             await idPSessionCookieRepository.DeleteAsync();         
 

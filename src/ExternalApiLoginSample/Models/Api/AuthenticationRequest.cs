@@ -12,5 +12,7 @@ namespace ExternalApiLoginSample.Models.Api
 
         [Required]
         public string Password { get; set; }
+
+        public string SomeCustomId { get; set; }
     }
 }

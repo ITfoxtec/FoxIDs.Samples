@@ -18,6 +18,8 @@ namespace FoxIDs.SampleSeedTool.Logic
         static (string name, string displayName) aspNetCoreSamlIdPSampleUpPartyName => ("aspnetcore_saml_idp_sample", "AspNetCoreSamlIdPSample");
         static (string name, string displayName) identityserverOidcOpUpPartyName => ("identityserver_oidc_op_sample", "IdentityServerOidcOpSample");
 
+        static (string name, string displayName) externalApiLoginSampleUpPartyName => ("external_api_login_sample", "ExternalApiLoginSample");
+
         static (string name, string displayName) aspNetCoreApi1SampleDownPartyName => ("aspnetcore_api1_sample", "AspNetCoreApi1Sample");
         static (string name, string displayName) aspNetCoreApi2SampleDownPartyName => ("aspnetcore_api2_sample", "AspNetCoreApi2Sample");
         static (string name, string displayName) aspNetCoreApiOAuthTwoIdPsSampleDownPartyName => ("aspnetapi_oauth_twoidps_sample", "AspNetCoreApiOAuthTwoIdPsSample");
@@ -55,6 +57,7 @@ namespace FoxIDs.SampleSeedTool.Logic
 
             await CreateAspNetCoreSamlIdPSampleUpPartyAsync();
             await CreateIdentityserverOidcOpUpPartyAsync();
+            await CreateExternalApiLoginSampleUpPartyAsync();
 
             await CreateAspNetCoreApi2SampleDownPartyAsync();
             await CreateAspNetCoreApi1SampleDownPartyAsync();
@@ -215,6 +218,28 @@ namespace FoxIDs.SampleSeedTool.Logic
                 }
             }
 
+            Console.WriteLine("Delete External Login up party sample configuration");
+            var externalLoginUpPartyNames = new[] { externalApiLoginSampleUpPartyName };
+            foreach (var name in externalLoginUpPartyNames)
+            {
+                try
+                {
+                    await foxIDsApiClient.DeleteExternalLoginUpPartyAsync(name.name);
+                    Console.WriteLine($"'{name}' configuration deleted");
+                }
+                catch (FoxIDsApiException ex)
+                {
+                    if (ex.StatusCode == StatusCodes.Status404NotFound)
+                    {
+                        Console.WriteLine($"'{name}' configuration not found");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
             Console.WriteLine(string.Empty);
             Console.WriteLine($"Sample configuration deleted");
         }
@@ -307,6 +332,39 @@ namespace FoxIDs.SampleSeedTool.Logic
             };
 
             await CreateIfNotExistsAsync(identityserverOidcOpUpPartyName, getAction, postAction);
+        }
+
+        private async Task CreateExternalApiLoginSampleUpPartyAsync()
+        {
+            Func<string, Task> getAction = async (name) =>
+            {
+                _ = await foxIDsApiClient.GetExternalLoginUpPartyAsync(name);
+            };
+
+            Func<string, string, Task> postAction = async (name, displayName) =>
+            {
+                var baseUrl = "https://localhost:44352";
+
+                var secret = "zh1othCVwVkfjlvzTWY-S7SFj-RHaLkpJkdMpHSAhFg";
+
+                var externalLoginUpParty = new ExternalLoginUpParty
+                {
+                    Name = name,
+                    DisplayName = displayName,
+                    EnableCancelLogin = true,
+                    ExternalLoginType = ExternalLoginTypes.Api,
+                    UsernameType = ExternalLoginUsernameTypes.Text,
+                    ApiUrl = $"{baseUrl}/ExternalApiLogin",
+                    Secret = secret,
+                    AdditionalParameters = [new OAuthAdditionalParameter { Name = "SomeCustomId", Value = "7" }],
+                    SessionLifetime = 36000,
+                    SessionAbsoluteLifetime = 86400,
+                };
+
+                _ = await foxIDsApiClient.PostExternalLoginUpPartyAsync(externalLoginUpParty);
+            };
+
+            await CreateIfNotExistsAsync(externalApiLoginSampleUpPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreApi2SampleDownPartyAsync()

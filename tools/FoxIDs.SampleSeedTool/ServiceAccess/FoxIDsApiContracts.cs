@@ -380,8 +380,8 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class DownPartyTestStartRequest
     {
-        [Newtonsoft.Json.JsonProperty("upPartyNames", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> UpPartyNames { get; set; }
+        [Newtonsoft.Json.JsonProperty("upParties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UpPartyLink> UpParties { get; set; }
 
         [Newtonsoft.Json.JsonProperty("claims", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Claims { get; set; }
@@ -528,6 +528,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(300)]
         public string Secret { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("additionalParameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<OAuthAdditionalParameter> AdditionalParameters { get; set; }
+
         [Newtonsoft.Json.JsonProperty("enableCancelLogin", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool EnableCancelLogin { get; set; }
 
@@ -590,6 +593,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("linkExternalUser", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LinkExternalUser LinkExternalUser { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<OidcUpPartyProfile> Profiles { get; set; }
 
     }
 
@@ -1378,7 +1384,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         public string Note { get; set; }
 
         [Newtonsoft.Json.JsonProperty("allowUpPartyNames", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete]
         public System.Collections.Generic.ICollection<string> AllowUpPartyNames { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("allowUpParties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UpPartyLink> AllowUpParties { get; set; }
 
         [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public OAuthDownClient Client { get; set; }
@@ -1633,7 +1643,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         public string Note { get; set; }
 
         [Newtonsoft.Json.JsonProperty("allowUpPartyNames", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete]
         public System.Collections.Generic.ICollection<string> AllowUpPartyNames { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("allowUpParties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UpPartyLink> AllowUpParties { get; set; }
 
         [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public OidcDownClient Client { get; set; }
@@ -1743,6 +1757,17 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OidcUpClientProfile
+    {
+        [Newtonsoft.Json.JsonProperty("scopes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Scopes { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("additionalParameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<OAuthAdditionalParameter> AdditionalParameters { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class OidcUpParty
     {
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1839,6 +1864,30 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
 
         [Newtonsoft.Json.JsonProperty("linkExternalUser", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LinkExternalUser LinkExternalUser { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<OidcUpPartyProfile> Profiles { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OidcUpPartyProfile
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(20, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(100, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
+        public string DisplayName { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public OidcUpClientProfile Client { get; set; } = new OidcUpClientProfile();
 
     }
 
@@ -2158,7 +2207,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         public string Note { get; set; }
 
         [Newtonsoft.Json.JsonProperty("allowUpPartyNames", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete]
         public System.Collections.Generic.ICollection<string> AllowUpPartyNames { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("allowUpParties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UpPartyLink> AllowUpParties { get; set; }
 
         [Newtonsoft.Json.JsonProperty("idPIssuer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(300)]
@@ -2579,6 +2632,37 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("linkExternalUser", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LinkExternalUser LinkExternalUser { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<SamlUpPartyProfile> Profiles { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SamlUpPartyProfile
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(20, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(100, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
+        public string DisplayName { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("authnContextComparison", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SamlAuthnContextComparisonTypes AuthnContextComparison { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("authnContextClassReferences", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> AuthnContextClassReferences { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("authnRequestExtensionsXml", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string AuthnRequestExtensionsXml { get; set; }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2790,7 +2874,11 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         public string Note { get; set; }
 
         [Newtonsoft.Json.JsonProperty("allowUpPartyNames", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete]
         public System.Collections.Generic.ICollection<string> AllowUpPartyNames { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("allowUpParties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UpPartyLink> AllowUpParties { get; set; }
 
         [Newtonsoft.Json.JsonProperty("toUpTrackName", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -2890,6 +2978,29 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("linkExternalUser", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LinkExternalUser LinkExternalUser { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<TrackLinkUpPartyProfile> Profiles { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class TrackLinkUpPartyProfile
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(20, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(100, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
+        public string DisplayName { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("selectedUpParties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> SelectedUpParties { get; set; }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2924,6 +3035,42 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public PartyTypes Type { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UpPartyProfile> Profiles { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpPartyLink
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(50, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("profileName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(20)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string ProfileName { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpPartyProfile
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(20, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(100, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
+        public string DisplayName { get; set; }
 
     }
 

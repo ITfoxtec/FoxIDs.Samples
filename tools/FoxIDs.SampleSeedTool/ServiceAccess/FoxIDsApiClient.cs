@@ -37,7 +37,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         public FoxIDsApiClient(System.Net.Http.HttpClient httpClient)
     #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
-            BaseUrl = "https://control.foxids.com";
+            BaseUrl = "https://localhost:44331";
             _httpClient = httpClient;
         }
 
@@ -2061,9 +2061,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> GetExternalloginUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> GetExternalLoginUpPartyAsync(string name)
         {
-            return GetExternalloginUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetExternalLoginUpPartyAsync(name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2073,7 +2073,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> GetExternalloginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> GetExternalLoginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -2183,9 +2183,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <param name="body">API authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> PostExternalloginUpPartyAsync(ExternalLoginUpParty body)
+        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> PostExternalLoginUpPartyAsync(ExternalLoginUpParty body)
         {
-            return PostExternalloginUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostExternalLoginUpPartyAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2195,7 +2195,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <param name="body">API authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> PostExternalloginUpPartyAsync(ExternalLoginUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> PostExternalLoginUpPartyAsync(ExternalLoginUpParty body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -2303,9 +2303,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <param name="body">API authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> PutExternalloginUpPartyAsync(ExternalLoginUpParty body)
+        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> PutExternalLoginUpPartyAsync(ExternalLoginUpParty body)
         {
-            return PutExternalloginUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutExternalLoginUpPartyAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2315,7 +2315,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <param name="body">API authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> PutExternalloginUpPartyAsync(ExternalLoginUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> PutExternalLoginUpPartyAsync(ExternalLoginUpParty body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -2423,9 +2423,9 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteExternalloginUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteExternalLoginUpPartyAsync(string name)
         {
-            return DeleteExternalloginUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteExternalLoginUpPartyAsync(name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2435,7 +2435,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteExternalloginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteExternalLoginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;

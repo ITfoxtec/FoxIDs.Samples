@@ -24,8 +24,8 @@ namespace ExternalApiLoginSample.Controllers
             (var apiId, var apiSecret) = HttpContext.Request.Headers.GetAuthorizationHeaderBasic();
             if (!VerifyApiIdAndSecret(apiId, apiSecret))
             {
-                // Return HTTP 401 if the API call is rejected.
-                return Unauthorized("Invalid API ID or secret.");
+                // Return HTTP 401 and an error (required) if the API call is rejected.
+                return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidAPIIDOrSecret, ErrorDescription = "Invalid API ID or secret." });
             }
 
             // Include if only one username type is supported.
@@ -38,15 +38,21 @@ namespace ExternalApiLoginSample.Controllers
             // Test users with an email as username.
             //var claims = ValidateByEmailbasedUsername(request.Username, request.Password);
             // Test users with a text-based username.
-            var claims = ValidateByTextbasedUsername(request.Username, request.Password);
+            var claims = ValidateByTextbasedUsername(request.Username, request.Password)?.ToList();
 
             if (claims?.Count() > 0)
             {
+                // Your own custom ID added as an additional parameter.
+                if (!request.SomeCustomId.IsNullOrWhiteSpace())
+                {
+                    claims.Add(new ClaimValue { Type = "SomeCustomId", Value = request.SomeCustomId });
+                }
+
                 return Ok(new AuthenticationResponse { Claims = claims });
             }
 
-            // Return HTTP 403 (Forbidden) if the username or password combination is invalid.
-            return StatusCode(StatusCodes.Status403Forbidden, "Invalid username or password.");
+            // Return HTTP 400 or 401 or 403 and an error (required) if the username or password combination is invalid.
+            return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidUsernameOrPassword, ErrorDescription = "Invalid username or password." });
         }
 
         private bool VerifyApiIdAndSecret(string apiId, string apiSecret)

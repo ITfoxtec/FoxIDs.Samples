@@ -1,4 +1,4 @@
-﻿namespace ExternalLoginApiSample.Models.Api
+﻿namespace ExternalApiLoginSample.Models.Api
 {
     public class AuthenticationResponse
     {

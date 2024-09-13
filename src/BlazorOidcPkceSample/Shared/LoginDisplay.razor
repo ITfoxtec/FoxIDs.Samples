@@ -3,7 +3,7 @@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
+        Hello, @context.User.Claims.Where(c => c.Type == "sub").Select(c => c.Value).FirstOrDefault()
         <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
     </Authorized>
     <NotAuthorized>

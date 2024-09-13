@@ -15,6 +15,7 @@ using System.Security.Cryptography.X509Certificates;
 using AspNetCoreSamlSample.Models;
 using FoxIDs.SampleHelperLibrary.Repository;
 using FoxIDs.SampleHelperLibrary.Models;
+using System.Security.Authentication.ExtendedProtection;
 
 namespace AspNetCoreSamlSample.Controllers
 {
@@ -64,7 +65,7 @@ namespace AspNetCoreSamlSample.Controllers
                 },
                 AttributeConsumingServices = new AttributeConsumingService[]
                 {
-                    new AttributeConsumingService { ServiceName = new ServiceName("Some SP", "en"), RequestedAttributes = CreateRequestedAttributes() }
+                    new AttributeConsumingService { ServiceNames = new[] { new LocalizedNameType("Some SP", "en") }, RequestedAttributes = CreateRequestedAttributes() }
                 },
             };
             entityDescriptor.ContactPerson = new ContactPerson(ContactTypes.Administrative)

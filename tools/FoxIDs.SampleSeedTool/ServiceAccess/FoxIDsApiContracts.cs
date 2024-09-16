@@ -595,7 +595,27 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess.Contracts
         public LinkExternalUser LinkExternalUser { get; set; }
 
         [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<OidcUpPartyProfile> Profiles { get; set; }
+        public System.Collections.Generic.ICollection<ExternalLoginUpPartyProfile> Profiles { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ExternalLoginUpPartyProfile
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(20, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w\-]*$")]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.StringLength(100, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
+        public string DisplayName { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("additionalParameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<OAuthAdditionalParameter> AdditionalParameters { get; set; }
 
     }
 

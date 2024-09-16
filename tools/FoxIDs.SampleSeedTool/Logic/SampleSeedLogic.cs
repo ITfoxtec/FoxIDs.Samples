@@ -358,8 +358,16 @@ namespace FoxIDs.SampleSeedTool.Logic
                     Secret = secret,
                     AdditionalParameters = [new OAuthAdditionalParameter { Name = "SomeCustomId", Value = "7" }],
                     SessionLifetime = 36000,
-                    SessionAbsoluteLifetime = 86400,
+                    SessionAbsoluteLifetime = 86400
                 };
+
+                // Add profile with another SomeCustomId value
+                externalLoginUpParty.Profiles = [new ExternalLoginUpPartyProfile
+                {
+                    DisplayName = $"{displayName} - SomeCustomId:4",
+                    Name = "c_id",
+                    AdditionalParameters = [new OAuthAdditionalParameter { Name = "SomeCustomId", Value = "4" }],
+                }];
 
                 _ = await foxIDsApiClient.PostExternalLoginUpPartyAsync(externalLoginUpParty);
             };

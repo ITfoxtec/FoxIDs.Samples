@@ -97,6 +97,8 @@ namespace AspNetCoreSamlIdPSample.Controllers
                         NameIdentifier = "12345",
                         Upn = "12345@email.test",
                         Email = "some@email.test",
+                        CustomId = "123abc",
+                        CustomName = "Test Users Custom Full Name",
                         SessionIndex = Guid.NewGuid().ToString()
                     };
                     await idPSessionCookieRepository.SaveAsync(session);
@@ -133,6 +135,9 @@ namespace AspNetCoreSamlIdPSample.Controllers
             yield return new Claim(ClaimTypes.NameIdentifier, idPSession.NameIdentifier);
             yield return new Claim(ClaimTypes.Upn, idPSession.Upn);
             yield return new Claim(ClaimTypes.Email, idPSession.Email);
+
+            yield return new Claim("http://schemas.test.org/claims/CustomID", idPSession.CustomId);
+            yield return new Claim("http://schemas.test.org/claims/customname", idPSession.CustomName);
 
             yield return new Claim(Saml2ClaimTypes.NameId, idPSession.NameIdentifier);
             yield return new Claim(Saml2ClaimTypes.SessionIndex, idPSession.SessionIndex);

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExternalLoginApiSample.Models.Api
+namespace ExternalApiLoginSample.Models.Api
 {
     public class AuthenticationRequest
     {
@@ -12,5 +12,7 @@ namespace ExternalLoginApiSample.Models.Api
 
         [Required]
         public string Password { get; set; }
+
+        public string SomeCustomId { get; set; }
     }
 }

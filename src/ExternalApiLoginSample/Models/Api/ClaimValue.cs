@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExternalLoginApiSample.Models.Api
+namespace ExternalApiLoginSample.Models.Api
 {
     public class ClaimValue
     {

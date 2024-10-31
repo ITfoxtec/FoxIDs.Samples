@@ -9,7 +9,7 @@ namespace AspNetCoreApi1Sample.Controllers
         public ActionResult Index()
         {
             var domain = HttpContext.Request.GetDisplayUrl();
-            return Content($"ExternalLoginApiSample</br> The API endpoint is: {domain}ExternalLoginApi", "text/html");
+            return Content($"ExternalApiLoginSample</br> The API endpoint is: {domain}ExternalApiLogin", "text/html");
         }
     }
 }

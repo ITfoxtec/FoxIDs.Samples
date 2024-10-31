@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "https://localhost:44352/ExternalLoginApi/Authentication",
+			"name": "https://localhost:44352/ExternalApiLogin/Authentication",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -36,14 +36,14 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44352/ExternalLoginApi/Authentication",
+					"raw": "https://localhost:44352/ExternalApiLogin/Authentication",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "44352",
 					"path": [
-						"ExternalLoginApi",
+						"ExternalApiLogin",
 						"Authentication"
 					]
 				}

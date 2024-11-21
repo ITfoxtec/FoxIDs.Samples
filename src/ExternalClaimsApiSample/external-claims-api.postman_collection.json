@@ -1,0 +1,54 @@
+{
+	"info": {
+		"_postman_id": "33266877-6830-4fc1-82ae-9001c9f9e998",
+		"name": "External Login API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19093410"
+	},
+	"item": [
+		{
+			"name": "https://localhost:44352/ExternalClaims/Claims",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "zh1othCVwVkfjlvzTWY-S7SFj-RHaLkpJkdMpHSAhFg",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "external_login",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameType\": 200,\r\n    \"username\": \"user1\",\r\n    \"password\": \"testpass1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44352/ExternalClaims/Claims",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44352",
+					"path": [
+						"ExternalClaims",
+						"Claims"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

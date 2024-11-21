@@ -1,4 +1,4 @@
-﻿namespace ExternalApiLoginSample.Models
+﻿namespace ExternalLoginApiSample.Models
 {
     public class AppSettings
     {

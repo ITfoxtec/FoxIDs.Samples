@@ -53,7 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApi2Sample", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetFramework4.7ClientCredentialGrantAssertionConsoleSample", "src\NetFramework4.7ClientCredentialGrantAssertionConsoleSample\NetFramework4.7ClientCredentialGrantAssertionConsoleSample.csproj", "{6490D857-5138-4210-BEB0-07DD3212E8B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalApiLoginSample", "src\ExternalApiLoginSample\ExternalApiLoginSample.csproj", "{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalLoginApiSample", "src\ExternalLoginApiSample\ExternalLoginApiSample.csproj", "{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External APIs", "External APIs", "{CA8922BB-B413-4DD6-AEE1-047310D43938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -162,7 +164,8 @@ Global
 		{83C7142C-268F-44BA-92F3-03236BF76801} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{C41057D7-0396-4222-9845-CCBB41809025} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{6490D857-5138-4210-BEB0-07DD3212E8B0} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
-		{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A} = {02BEC832-D782-4BD8-ACC7-B79064D6D9A1}
+		{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
+		{CA8922BB-B413-4DD6-AEE1-047310D43938} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

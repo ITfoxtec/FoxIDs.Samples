@@ -1,12 +1,12 @@
-﻿using ExternalApiLoginSample.Models;
-using ExternalApiLoginSample.Models.Api;
+﻿using ExternalLoginApiSample.Models;
+using ExternalLoginApiSample.Models.Api;
 using ITfoxtec.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExternalApiLoginSample.Controllers
+namespace ExternalLoginApiSample.Controllers
 {
     [ApiController]
-    [Route("ExternalApiLogin/[controller]")]
+    [Route("ExternalLogin/[controller]")]
     public class AuthenticationController : ControllerBase
     {
         private readonly ILogger<AuthenticationController> logger;

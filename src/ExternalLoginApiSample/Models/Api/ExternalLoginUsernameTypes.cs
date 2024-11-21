@@ -1,4 +1,4 @@
-﻿namespace ExternalApiLoginSample.Models.Api
+﻿namespace ExternalLoginApiSample.Models.Api
 {
     public enum ExternalLoginUsernameTypes
     {

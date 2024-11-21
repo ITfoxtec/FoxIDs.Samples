@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExternalApiLoginSample.Models.Api
+namespace ExternalLoginApiSample.Models.Api
 {
     public class AuthenticationRequest
     {

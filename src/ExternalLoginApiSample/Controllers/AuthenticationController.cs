@@ -25,7 +25,7 @@ namespace ExternalLoginApiSample.Controllers
             if (!VerifyApiIdAndSecret(apiId, apiSecret))
             {
                 // Return HTTP 401 and an error (required) if the API call is rejected.
-                return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidAPIIDOrSecret, ErrorDescription = "Invalid API ID or secret." });
+                return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidApiIdOrSecret, ErrorDescription = "Invalid API ID or secret." });
             }
 
             // Include if only one username type is supported.
@@ -97,6 +97,14 @@ namespace ExternalLoginApiSample.Controllers
                     new ClaimValue
                     {
                         Type = JwtClaimTypes.Role, Value = "admin_access"
+                    },
+                    new ClaimValue
+                    {
+                        Type = JwtClaimTypes.Role, Value = "read_access"
+                    },
+                    new ClaimValue
+                    {
+                        Type = JwtClaimTypes.Role, Value = "write_access"
                     }];
             }
 
@@ -128,6 +136,14 @@ namespace ExternalLoginApiSample.Controllers
                     new ClaimValue
                     {
                         Type = JwtClaimTypes.Role, Value = "admin_access"
+                    },
+                    new ClaimValue
+                    {
+                        Type = JwtClaimTypes.Role, Value = "read_access"
+                    },
+                    new ClaimValue
+                    {
+                        Type = JwtClaimTypes.Role, Value = "write_access"
                     }];
             }
 

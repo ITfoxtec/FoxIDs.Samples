@@ -55,7 +55,7 @@ namespace ExternalClaimsApiSample.Controllers
                 },
                 //new ClaimValue
                 //{
-                //    Type = JwtClaimTypes.Email, Value = email
+                //    Type = JwtClaimTypes.Email, Value = "my@test.org"
                 //},
                 //new ClaimValue
                 //{
@@ -78,7 +78,7 @@ namespace ExternalClaimsApiSample.Controllers
 
         private bool VerifyApiIdAndSecret(string apiId, string apiSecret)
         {
-            if (!"external_login".Equals(apiId, StringComparison.Ordinal))
+            if (!"external_claims".Equals(apiId, StringComparison.Ordinal))
             {
                 logger.LogError("Invalid API ID.");
                 return false;

@@ -21,6 +21,10 @@ namespace FoxIDs.SampleSeedTool.Models
         [Required]
         public string FoxIDsEndpoint { get; set; }
         /// <summary>
+        /// Set to false if you have configured a custom domain.
+        /// </summary>
+        public bool IncludeTenantInUrl { get; set; }
+        /// <summary>
         /// Sample seed tool tenant.
         /// </summary>
         [Required]

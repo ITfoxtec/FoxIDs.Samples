@@ -2,18 +2,18 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
-using ITfoxtec.Identity;
-using FoxIDs.SampleHelperLibrary.Identity;
+//using ITfoxtec.Identity;
+//using FoxIDs.SampleHelperLibrary.Identity;
 
 namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
 {
     public class AuthController : Controller
     {
-        private LogoutMemoryCache logoutMemoryCache;
-        public AuthController(LogoutMemoryCache logoutMemoryCache)
-        {
-            this.logoutMemoryCache = logoutMemoryCache;
-        }
+        //private LogoutMemoryCache logoutMemoryCache;
+        //public AuthController(LogoutMemoryCache logoutMemoryCache)
+        //{
+        //    this.logoutMemoryCache = logoutMemoryCache;
+        //}
 
         public IActionResult Login()
         {
@@ -29,10 +29,10 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
-        public IActionResult FrontChannelLogout([FromQuery(Name = JwtClaimTypes.Issuer)] string issuer, [FromQuery(Name = JwtClaimTypes.SessionId)] string sessionId)
-        {
-            logoutMemoryCache.List.Add(sessionId);
-            return Ok();
-        }
+        //public IActionResult FrontChannelLogout([FromQuery(Name = JwtClaimTypes.Issuer)] string issuer, [FromQuery(Name = JwtClaimTypes.SessionId)] string sessionId)
+        //{
+        //    logoutMemoryCache.List.Add(sessionId);
+        //    return Ok();
+        //}
     }
 }

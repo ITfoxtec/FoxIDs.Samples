@@ -5,9 +5,11 @@ using ITfoxtec.Identity;
 using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace FoxIDs.SampleSeedTool.Logic
 {
@@ -66,8 +68,9 @@ namespace FoxIDs.SampleSeedTool.Logic
             await CreateNetCoreClientGrantConsoleSampleDownPartyAsync();
             await CreateNetCoreClientAssertionGrantConsoleSampleDownPartyAsync();
 
-            await CreateAspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyAsync();
             await CreateAspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyAsync();
+            await CreateAspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyAsync();
+
             await CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync();
             await CreateAspNetCoreOidcImplicitSampleDownPartyAsync();
             await CreateBffAspNetCoreOidcSampleDownPartyAsync();
@@ -553,7 +556,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     DisplayName = displayName,
                     Note = $"Trust {aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName} to enable token exchange trust through up-party instead of the default in same track trust.",
                     UpdateState = PartyUpdateStates.Automatic,
-                    Authority = UrlCombine.Combine(settings.FoxIDsEndpoint, new[] { settings.Tenant, settings.Track, aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName.name }),
+                    Authority = GetUrl([aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName.name]),
                     SpIssuer = aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName.name,
                     Client = new OAuthUpClient
                     {
@@ -1212,7 +1215,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     Name = name,
                     DisplayName = displayName,
                     UpdateState = PartyUpdateStates.Automatic,
-                    MetadataUrl = UrlCombine.Combine(settings.FoxIDsEndpoint, new[] { settings.Tenant, settings.Track, aspNetCoreSamlSampleDownPartyName.name, "saml", "idpmetadata" }),
+                    MetadataUrl = GetUrl([ aspNetCoreSamlSampleDownPartyName.name, "saml", "idpmetadata" ]),
                     // The SP issuer can be configured to match an external application (service provider)
                     SpIssuer = aspNetCoreSamlSampleDownIssuer,
                 };
@@ -1286,6 +1289,20 @@ namespace FoxIDs.SampleSeedTool.Logic
                     throw;
                 }
             }
+        }
+
+        private string GetUrl(string[] postElements)
+        {
+            var elements = new List<string>();
+
+            if (settings.IncludeTenantInUrl)
+            {
+                elements.Add(settings.Tenant);
+            }
+            elements.Add(settings.Track);
+            elements.AddRange(postElements);
+
+            return UrlCombine.Combine(settings.FoxIDsEndpoint, elements.ToArray());
         }
     }
 }

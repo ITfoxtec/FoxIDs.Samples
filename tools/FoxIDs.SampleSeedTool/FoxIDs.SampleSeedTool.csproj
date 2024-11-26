@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<AssemblyName>SampleSeedTool</AssemblyName>
 		<StartupObject></StartupObject>
 		<RootNamespace>FoxIDs.SampleSeedTool</RootNamespace>
@@ -11,9 +11,9 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="ITfoxtec.Identity" Version="2.10.2" />
-		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.0.0" />
-		<PackageReference Include="NSwag.MSBuild" Version="14.0.7">
+		<PackageReference Include="ITfoxtec.Identity" Version="2.12.0" />
+		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.1.0" />
+		<PackageReference Include="NSwag.MSBuild" Version="14.2.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

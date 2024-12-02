@@ -20,7 +20,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         static (string name, string displayName) aspNetCoreSamlIdPSampleUpPartyName => ("aspnetcore_saml_idp_sample", "AspNetCoreSamlIdPSample");
         static (string name, string displayName) identityserverOidcOpUpPartyName => ("identityserver_oidc_op_sample", "IdentityServerOidcOpSample");
 
-        static (string name, string displayName) externalApiLoginSampleUpPartyName => ("external_api_login_sample", "ExternalApiLoginSample");
+        static (string name, string displayName) externalLoginApiSampleUpPartyName => ("external_login_api_sample", "ExternalLoginApiSample");
 
         static (string name, string displayName) aspNetCoreApi1SampleDownPartyName => ("aspnetcore_api1_sample", "AspNetCoreApi1Sample");
         static (string name, string displayName) aspNetCoreApi2SampleDownPartyName => ("aspnetcore_api2_sample", "AspNetCoreApi2Sample");
@@ -222,7 +222,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             }
 
             Console.WriteLine("Delete External Login up party sample configuration");
-            var externalLoginUpPartyNames = new[] { externalApiLoginSampleUpPartyName };
+            var externalLoginUpPartyNames = new[] { externalLoginApiSampleUpPartyName };
             foreach (var name in externalLoginUpPartyNames)
             {
                 try
@@ -375,7 +375,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                 _ = await foxIDsApiClient.PostExternalLoginUpPartyAsync(externalLoginUpParty);
             };
 
-            await CreateIfNotExistsAsync(externalApiLoginSampleUpPartyName, getAction, postAction);
+            await CreateIfNotExistsAsync(externalLoginApiSampleUpPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreApi2SampleDownPartyAsync()

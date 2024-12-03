@@ -92,13 +92,20 @@ namespace AspNetCoreApi1Sample.Controllers
 
         private X509Certificate2 GetClientCertificate()
         {
-            if (!identitySettings.TokenExchangeClientCertificateThumbprint.IsNullOrEmpty())
+            try
             {
-                return CertificateUtil.Load(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindByThumbprint, identitySettings.TokenExchangeClientCertificateThumbprint);
+                if (!identitySettings.TokenExchangeClientCertificateThumbprint.IsNullOrEmpty())
+                {
+                    return CertificateUtil.Load(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindByThumbprint, identitySettings.TokenExchangeClientCertificateThumbprint);
+                }
+                else
+                {
+                    return CertificateUtil.Load(Path.Combine(Startup.AppEnvironment.ContentRootPath, identitySettings.TokenExchangeClientCertificateFile), identitySettings.TokenExchangeClientCertificatePassword);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return CertificateUtil.Load(Path.Combine(Startup.AppEnvironment.ContentRootPath, identitySettings.TokenExchangeClientCertificateFile), identitySettings.TokenExchangeClientCertificatePassword);
+                throw new Exception($"Load certificate '{identitySettings.TokenExchangeClientCertificateFile}' error, path '{Startup.AppEnvironment.ContentRootPath}'.", ex);
             }
         }
     }

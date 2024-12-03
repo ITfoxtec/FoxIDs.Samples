@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text.Json.Serialization;
 using Microsoft.Net.Http.Headers;
 using Microsoft.IdentityModel.Logging;
+using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
+
+app.UseMiddleware<ProxyHeadersMiddleware>();
 
 app.UseHttpsRedirection();
 

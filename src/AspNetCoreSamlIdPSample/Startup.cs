@@ -15,6 +15,7 @@ using ITfoxtec.Identity;
 using System.IO;
 using ITfoxtec.Identity.Saml2.Util;
 using Microsoft.IdentityModel.Logging;
+using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
 
 namespace AspNetCoreSamlIdPSample
 {
@@ -116,6 +117,8 @@ namespace AspNetCoreSamlIdPSample
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ProxyHeadersMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

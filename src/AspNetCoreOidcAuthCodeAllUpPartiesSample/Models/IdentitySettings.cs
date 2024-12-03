@@ -1,6 +1,8 @@
-﻿namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Models
+﻿using FoxIDs.SampleHelperLibrary.Models;
+
+namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Models
 {
-    public class IdentitySettings
+    public class IdentitySettings : LibrarySettings
     {
         public string FoxIDsAuthority { get; set; }
         public string ClientId => DownParty;

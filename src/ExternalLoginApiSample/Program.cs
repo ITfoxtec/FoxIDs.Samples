@@ -1,4 +1,5 @@
 using ExternalLoginApiSample.Models;
+using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddControllers()
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseMiddleware<ProxyHeadersMiddleware>();
 
 app.UseHttpsRedirection();
 

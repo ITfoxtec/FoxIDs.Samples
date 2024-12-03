@@ -4,7 +4,7 @@ using ITfoxtec.Identity.Util;
 
 namespace FoxIDs.SampleHelperLibrary.Models
 {
-    public class FoxIDsSettings
+    public class FoxIDsSettings : LibrarySettings
     {
         public string Authority => FoxIDsEndpoint == null ? null : UrlCombine.Combine(FoxIDsEndpoint, GetAuthorityElements(true).ToArray());
         public string AuthorityWithoutUpParty => FoxIDsEndpoint == null ? null : UrlCombine.Combine(FoxIDsEndpoint, GetAuthorityElements(false).ToArray());

@@ -60,10 +60,10 @@ namespace AspNetCoreSamlIdPSample.Controllers
                 {
                     new SingleSignOnService { Binding = ProtocolBindings.HttpRedirect, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Login")) }
                 },
-                //SingleLogoutServices = new SingleLogoutService[]
-                //{
-                //    new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Logout")) }
-                //},
+                SingleLogoutServices = new SingleLogoutService[]
+                {
+                    new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Logout")) }
+                },
                 NameIDFormats = new Uri[] { NameIdentifierFormats.X509SubjectName },
             };
             entityDescriptor.ContactPersons = new [] { 

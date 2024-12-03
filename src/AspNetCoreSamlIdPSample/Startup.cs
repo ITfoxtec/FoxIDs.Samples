@@ -16,6 +16,7 @@ using System.IO;
 using ITfoxtec.Identity.Saml2.Util;
 using Microsoft.IdentityModel.Logging;
 using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
+using FoxIDs.SampleHelperLibrary.Models;
 
 namespace AspNetCoreSamlIdPSample
 {
@@ -74,6 +75,9 @@ namespace AspNetCoreSamlIdPSample
                     }
                 }
             });
+
+            // Add LibrarySettings for ProxyHeadersMiddleware
+            services.BindConfig<Settings>(Configuration, nameof(Settings));
 
             services.Configure<Saml2ConfigurationIdP>(Configuration.GetSection("Saml2"));
             services.Configure<Saml2ConfigurationIdP>(saml2Configuration =>

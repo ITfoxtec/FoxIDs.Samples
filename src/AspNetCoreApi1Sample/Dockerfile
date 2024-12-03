@@ -20,5 +20,5 @@ RUN dotnet publish "AspNetCoreApi1Sample.csproj" -c $BUILD_CONFIGURATION -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY "src/AspNetCoreApi1Sample/CN=AspNetCoreApi1Sample, O=test corp.pfx" .
+COPY "src/AspNetCoreApi1Sample/Certificates/." .
 ENTRYPOINT ["dotnet", "AspNetCoreApi1Sample.dll"]

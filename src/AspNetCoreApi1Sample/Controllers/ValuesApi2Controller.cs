@@ -92,25 +92,26 @@ namespace AspNetCoreApi1Sample.Controllers
 
         private X509Certificate2 GetClientCertificate()
         {
-            try
+            if (!identitySettings.TokenExchangeClientCertificateThumbprint.IsNullOrEmpty())
             {
-                if (!identitySettings.TokenExchangeClientCertificateThumbprint.IsNullOrEmpty())
-                {
-                    return CertificateUtil.Load(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindByThumbprint, identitySettings.TokenExchangeClientCertificateThumbprint);
-                }
-                else
-                {
-                    return CertificateUtil.Load(Path.Combine(Startup.AppEnvironment.ContentRootPath, identitySettings.TokenExchangeClientCertificateFile), identitySettings.TokenExchangeClientCertificatePassword);
-                }
+                return CertificateUtil.Load(StoreName.My, StoreLocation.CurrentUser, X509FindType.FindByThumbprint, identitySettings.TokenExchangeClientCertificateThumbprint);
             }
-            catch (Exception ex)
+            else
             {
-                foreach (var path in Directory.GetFiles(Startup.AppEnvironment.ContentRootPath))
+                var parth = Path.Combine(Startup.AppEnvironment.ContentRootPath, "Certificates");
+                try
                 {
-                    Console.WriteLine(path); // full path
-                    Console.WriteLine(Path.GetFileName(path)); // file name
+                    return CertificateUtil.Load(Path.Combine(parth, identitySettings.TokenExchangeClientCertificateFile), identitySettings.TokenExchangeClientCertificatePassword);
                 }
-                throw new Exception($"Load certificate '{identitySettings.TokenExchangeClientCertificateFile}' error, path '{Startup.AppEnvironment.ContentRootPath}'.", ex);
+                catch (Exception ex)
+                {
+                    foreach (var path in Directory.GetFiles(Startup.AppEnvironment.ContentRootPath))
+                    {
+                        Console.WriteLine(path); // full path
+                        Console.WriteLine(Path.GetFileName(path)); // file name
+                    }
+                    throw new Exception($"Load certificate '{identitySettings.TokenExchangeClientCertificateFile}' error, path '{parth}'.", ex);
+                }
             }
         }
     }

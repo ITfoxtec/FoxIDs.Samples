@@ -105,6 +105,11 @@ namespace AspNetCoreApi1Sample.Controllers
             }
             catch (Exception ex)
             {
+                foreach (var path in Directory.GetFiles(Startup.AppEnvironment.ContentRootPath))
+                {
+                    Console.WriteLine(path); // full path
+                    Console.WriteLine(Path.GetFileName(path)); // file name
+                }
                 throw new Exception($"Load certificate '{identitySettings.TokenExchangeClientCertificateFile}' error, path '{Startup.AppEnvironment.ContentRootPath}'.", ex);
             }
         }

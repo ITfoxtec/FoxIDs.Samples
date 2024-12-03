@@ -84,13 +84,20 @@ namespace AspNetCoreSamlIdPSample
                 }
                 else
                 {
-                    if (saml2Configuration.TokenExchangeClientCertificatePassword.IsNullOrEmpty())
+                    try
                     {
-                        saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(AppEnvironment.ContentRootPath, saml2Configuration.TokenExchangeClientCertificateFile));
+                        if (saml2Configuration.TokenExchangeClientCertificatePassword.IsNullOrEmpty())
+                        {
+                            saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(AppEnvironment.ContentRootPath, saml2Configuration.TokenExchangeClientCertificateFile));
+                        }
+                        else
+                        {
+                            saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(AppEnvironment.ContentRootPath, saml2Configuration.TokenExchangeClientCertificateFile), saml2Configuration.TokenExchangeClientCertificatePassword);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(AppEnvironment.ContentRootPath, saml2Configuration.TokenExchangeClientCertificateFile), saml2Configuration.TokenExchangeClientCertificatePassword);
+                        throw new Exception($"Load certificate '{saml2Configuration.TokenExchangeClientCertificateFile}' error, path '{AppEnvironment.ContentRootPath}'.", ex);
                     }
                 }
 

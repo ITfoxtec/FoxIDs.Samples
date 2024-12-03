@@ -48,6 +48,10 @@ namespace FoxIDs.SampleHelperLibrary.Infrastructure.Hosting
         protected void ReadSchemeFromHeader(HttpContext context)
         {
             var settings = context.RequestServices.GetService<LibrarySettings>();
+            if (settings == null)
+            {
+                throw new Exception($"A settings object of type '{nameof(LibrarySettings)}' is missing.");
+            }
             if (settings.TrustProxySchemeHeader)
             {
                 string schemeHeader = context.Request.Headers["X-Forwarded-Scheme"];

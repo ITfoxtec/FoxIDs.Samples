@@ -17,7 +17,12 @@ namespace FoxIDs.SampleHelperLibrary
                 CreateSelfSignedCertificate(path, cn);
             }
 
+#if NET60
             return CertificateUtil.Load(pfxFile);
+#else
+            return CertificateUtil.Load(pfxFile, loadPkcs12: true);
+
+#endif
         }
 
         private static void CreateSelfSignedCertificate(string path, string cn)

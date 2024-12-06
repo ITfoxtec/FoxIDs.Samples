@@ -11,7 +11,7 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="ITfoxtec.Identity" Version="2.12.0" />
+		<PackageReference Include="ITfoxtec.Identity" Version="2.13.6" />
 		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.1.0" />
 		<PackageReference Include="NSwag.MSBuild" Version="14.2.0">
 			<PrivateAssets>all</PrivateAssets>

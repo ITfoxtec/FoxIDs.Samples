@@ -93,7 +93,7 @@ namespace AspNetCoreSamlIdPSample
                     {
                         if (saml2Configuration.TokenExchangeClientCertificatePassword.IsNullOrEmpty())
                         {
-                            saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(parth, saml2Configuration.TokenExchangeClientCertificateFile));
+                            saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(parth, saml2Configuration.TokenExchangeClientCertificateFile), loadPkcs12: true);
                         }
                         else
                         {

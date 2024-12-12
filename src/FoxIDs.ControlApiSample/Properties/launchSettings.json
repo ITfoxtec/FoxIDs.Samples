@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "FoxIDs.SampleSeedTool": {
+    "FoxIDs.ControlApiSample": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

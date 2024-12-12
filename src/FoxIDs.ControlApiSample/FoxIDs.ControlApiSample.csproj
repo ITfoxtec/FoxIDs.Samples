@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net9.0</TargetFramework>
+		<AssemblyName>FoxIDs.ControlApiSample</AssemblyName>
+		<StartupObject></StartupObject>
+		<RootNamespace>FoxIDs.ControlApiSample</RootNamespace>
+		<GenerateCode>False</GenerateCode>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="ITfoxtec.Identity" Version="2.13.6" />
+		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.1.0" />
+		<PackageReference Include="NSwag.MSBuild" Version="14.2.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="appsettings*json">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="AspNetCoreSamlSample-test-sign-cert.crt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="CN=AspNetCoreApi1Sample, O=test corp.cer">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="CN=NetCoreClientAssertionGrantConsoleSample, O=test corp.cer">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="CN=TokenExchangeAspnetcoreSamlSample, O=test corp.cer">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="identityserver-tempkey.jwk">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">
+		<Exec Command="$(NSwagExe_Net80) run ServiceAccess\nswag.json /variables:Configuration=$(Configuration)" />
+	</Target>
+
+</Project>

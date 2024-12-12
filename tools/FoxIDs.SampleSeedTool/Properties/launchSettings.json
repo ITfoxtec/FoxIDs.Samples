@@ -2,11 +2,9 @@
   "profiles": {
     "FoxIDs.SampleSeedTool": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:55285;http://localhost:55286"
+      }
     }
   }
 }

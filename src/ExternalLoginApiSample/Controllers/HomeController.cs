@@ -14,7 +14,7 @@ namespace AspNetCoreApi1Sample.Controllers
             var hrml =
 @$"ExternalLoginApiSample</br>
 The API endpoint is: {endpoint}<br>
-- with authentication action: {endpoint}/Authentication ";
+- with 'authentication' action: {endpoint}/Authentication ";
 
             return Content(hrml, "text/html");
         }

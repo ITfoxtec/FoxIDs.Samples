@@ -9,6 +9,8 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Models
         public string DownParty { get; set; }
         public string ClientSecret { get; set; }
 
+        public bool IncludeApiScope { get; set; }
+
         public string RequestApi1Scope { get; set; }
         public string RequestApi2Scope { get; set; }
     }

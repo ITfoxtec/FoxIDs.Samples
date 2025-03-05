@@ -112,7 +112,10 @@ builder.Services.AddAuthentication(options =>
 
         // Scope to the application it self, used to do token exchange.
         options.Scope.Add(identitySettings.DownParty);
-        options.Scope.Add(identitySettings.RequestApi1Scope);
+        if (identitySettings.IncludeApiScope)
+        {
+            options.Scope.Add(identitySettings.RequestApi1Scope);
+        }
         options.Scope.Add("offline_access");
         options.Scope.Add("profile");
         options.Scope.Add("email");

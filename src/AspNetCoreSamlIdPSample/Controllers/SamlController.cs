@@ -139,6 +139,8 @@ namespace AspNetCoreSamlIdPSample.Controllers
             yield return new Claim("http://schemas.test.org/claims/CustomID", idPSession.CustomId);
             yield return new Claim("http://schemas.test.org/claims/customname", idPSession.CustomName);
 
+            yield return new Claim("space claim test", "Test value");
+
             yield return new Claim(Saml2ClaimTypes.NameId, idPSession.NameIdentifier);
             yield return new Claim(Saml2ClaimTypes.SessionIndex, idPSession.SessionIndex);
         }

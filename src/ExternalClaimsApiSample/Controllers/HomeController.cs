@@ -14,7 +14,7 @@ namespace AspNetCoreApi1Sample.Controllers
             var hrml =
 @$"ExternalClaimsApiSample</br>
 The API endpoint is: {endpoint}<br>
-- with authentication action: {endpoint}/Authentication ";
+- with 'claims' action: {endpoint}/Claims ";
 
             return Content(hrml, "text/html");
         }

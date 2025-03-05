@@ -5,7 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ITfoxtec.Identity" Version="2.13.6" />
+		<PackageReference Include="ITfoxtec.Identity" Version="2.13.9" />
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 

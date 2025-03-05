@@ -16,7 +16,6 @@ using System.IO;
 using ITfoxtec.Identity.Saml2.Util;
 using Microsoft.IdentityModel.Logging;
 using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
-using FoxIDs.SampleHelperLibrary.Models;
 
 namespace AspNetCoreSamlIdPSample
 {

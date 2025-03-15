@@ -145,7 +145,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
         {
             yield return $"app_name={HttpUtility.UrlEncode(idPInitiatedViewModel.ApplicationName.ToLower())}";
             yield return $"app_type={idPInitiatedViewModel.ApplicationType.ToLower()}";
-            if ("oidc".Equals(idPInitiatedViewModel.ApplicationType, StringComparison.OrdinalIgnoreCase))
+            if (!idPInitiatedViewModel.ApplicationRedirectURL.IsNullOrWhiteSpace())
             {
                 yield return $"app_redirect={HttpUtility.UrlEncode(idPInitiatedViewModel.ApplicationRedirectURL)}";
             }

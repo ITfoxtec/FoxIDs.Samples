@@ -1,0 +1,64 @@
+﻿@model IdPInitiatedViewModel
+@{
+    ViewBag.Title = "IdP Initiated Login";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <blockquote>
+            <p>Select the authentication method and fill in the name of the application that the request should be redirected to after successful login.</p>
+            <h3>Test data</h3>
+            <p>
+                <strong>SAML 2.0 sample application</strong>
+                <div>Application: aspnetcore_saml_sample</div>
+                <i>The application redirect URL is optional</i>
+                <div>Application type: saml2</div>
+            </p>
+            <p>
+                <strong>OpenID Connect sample application</strong>
+                <div>Application: aspnet_oidc_allup_sample</div>
+                <div>Application redirect URL: https://localhost:44349/home/secure</div>
+                <i>The redirect URL need to be configured as a redirect URL for the application.</i>
+                <div>Application type: oidc</div>
+            </p>
+        </blockquote>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label asp-for="RelyingPartyIssuer" class="control-label"></label>
+                <select asp-for="RelyingPartyIssuer" asp-items="@Model.RelyingPartyIssuers" class="form-control"></select>
+                <span asp-validation-for="RelyingPartyIssuer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationName" class="label-control"></label>
+                <input asp-for="ApplicationName" autocomplete="off" class="form-control input-control" autofocus />
+                <span asp-validation-for="ApplicationName"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationRedirectURL" class="label-control"></label>
+                <input asp-for="ApplicationRedirectURL" autocomplete="off" class="form-control input-control" autofocus />
+                <span asp-validation-for="ApplicationRedirectURL"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationType" class="label-control"></label>
+                <input asp-for="ApplicationType" autocomplete="off" class="form-control input-control" autofocus />
+                <span asp-validation-for="ApplicationType"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

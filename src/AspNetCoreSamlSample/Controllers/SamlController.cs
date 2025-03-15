@@ -11,11 +11,8 @@ using AspNetCoreSamlSample.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Authentication;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
-using System.Security.Cryptography.X509Certificates;
 using AspNetCoreSamlSample.Models;
-using FoxIDs.SampleHelperLibrary.Repository;
 using FoxIDs.SampleHelperLibrary.Models;
-using System.Security.Authentication.ExtendedProtection;
 
 namespace AspNetCoreSamlSample.Controllers
 {
@@ -24,16 +21,13 @@ namespace AspNetCoreSamlSample.Controllers
     public class SamlController : Controller
     {
         const string relayStateReturnUrl = "ReturnUrl";
-        const string relayStateLoginType = "LoginType";
         private readonly Settings settings;
         private readonly Saml2Configuration saml2Config;
-        private readonly IdPSelectionCookieRepository idPSelectionCookieRepository;
 
-        public SamlController(IOptionsMonitor<Settings> Settings, IOptionsMonitor<Saml2Configuration> configAccessor, IdPSelectionCookieRepository idPSelectionCookieRepository)
+        public SamlController(IOptionsMonitor<Settings> Settings, IOptionsMonitor<Saml2Configuration> configAccessor)
         {
             settings = Settings.CurrentValue;
             saml2Config = configAccessor.CurrentValue;
-            this.idPSelectionCookieRepository = idPSelectionCookieRepository;
         }
 
         private string DefaultSite => $"{Request.Scheme}://{Request.Host.ToUriComponent()}";
@@ -46,27 +40,27 @@ namespace AspNetCoreSamlSample.Controllers
             entityDescriptor.SPSsoDescriptor = new SPSsoDescriptor
             {
                 WantAssertionsSigned = true,
-                SigningCertificates = new X509Certificate2[]
-                {
+                SigningCertificates =
+                [
                     saml2Config.SigningCertificate
-                },
-                //EncryptionCertificates = new X509Certificate2[]
-                //{
-                //    config.DecryptionCertificate
-                //},
-                SingleLogoutServices = new SingleLogoutService[]
-                {
+                ],
+                //EncryptionCertificates =
+                //[
+                //    saml2Config.DecryptionCertificate
+                //],
+                SingleLogoutServices =
+                [
                     new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri($"{DefaultSite}/Saml/SingleLogout"), ResponseLocation = new Uri($"{DefaultSite}/Saml/LoggedOut") }
-                },
-                NameIDFormats = new Uri[] { NameIdentifierFormats.X509SubjectName },
-                AssertionConsumerServices = new AssertionConsumerService[]
-                {
+                ],
+                NameIDFormats = [NameIdentifierFormats.X509SubjectName],
+                AssertionConsumerServices =
+                [
                     new AssertionConsumerService {  Binding = ProtocolBindings.HttpPost, Location = new Uri($"{DefaultSite}/Saml/AssertionConsumerService") }
-                },
-                AttributeConsumingServices = new AttributeConsumingService[]
-                {
-                    new AttributeConsumingService { ServiceNames = new[] { new LocalizedNameType("Some SP", "en") }, RequestedAttributes = CreateRequestedAttributes() }
-                },
+                ],
+                AttributeConsumingServices =
+                [
+                    new AttributeConsumingService { ServiceNames = [new LocalizedNameType("Some SP", "en")], RequestedAttributes = CreateRequestedAttributes() }
+                ],
             };
             entityDescriptor.ContactPerson = new ContactPerson(ContactTypes.Administrative)
             {
@@ -93,7 +87,6 @@ namespace AspNetCoreSamlSample.Controllers
             binding.SetRelayStateQuery(new Dictionary<string, string>
             {
                 { relayStateReturnUrl, returnUrl ?? Url.Content("~/") },
-                { relayStateLoginType, loginType.HasValue ? loginType.Value.ToString() : LoginType.FoxIDsLogin.ToString() }
             });
 
             var saml2AuthnRequest = new Saml2AuthnRequest(saml2Config)
@@ -135,14 +128,9 @@ namespace AspNetCoreSamlSample.Controllers
             }
             httpRequest.Binding.Unbind(httpRequest, saml2AuthnResponse);
 
-            await saml2AuthnResponse.CreateSession(HttpContext, claimsTransform: (claimsPrincipal) => ClaimsTransform.Transform(claimsPrincipal));
+            await saml2AuthnResponse.CreateSession(HttpContext, claimsTransform: ClaimsTransform.Transform);
 
             var relayStateQuery = httpRequest.Binding.GetRelayStateQuery();
-            if (relayStateQuery.ContainsKey(relayStateLoginType))
-            {
-                var loginType = relayStateQuery[relayStateLoginType];
-                await idPSelectionCookieRepository.SaveAsync(loginType);
-            }
             var returnUrl = relayStateQuery.ContainsKey(relayStateReturnUrl) ? relayStateQuery[relayStateReturnUrl] : Url.Content("~/");
             return Redirect(returnUrl);
         }
@@ -159,10 +147,6 @@ namespace AspNetCoreSamlSample.Controllers
             var binding = new Saml2PostBinding();
             var saml2LogoutRequest = new Saml2LogoutRequest(saml2Config, User);
 
-            var loginType = await GetSelectedLoginType();
-            saml2LogoutRequest.Destination = AddUpParty(saml2LogoutRequest.Destination, loginType);
-
-            await idPSelectionCookieRepository.DeleteAsync();
             await saml2LogoutRequest.DeleteSession(HttpContext);
 
             return binding.Bind(saml2LogoutRequest).ToActionResult();
@@ -180,8 +164,6 @@ namespace AspNetCoreSamlSample.Controllers
         [Route("SingleLogout")]
         public async Task<IActionResult> SingleLogout()
         {
-            var loginType = await GetSelectedLoginType();
-
             Saml2StatusCodes status;
             var httpRequest = Request.ToGenericHttpRequest(validate: true);
             var logoutRequest = new Saml2LogoutRequest(saml2Config, User);
@@ -189,7 +171,6 @@ namespace AspNetCoreSamlSample.Controllers
             {
                 httpRequest.Binding.Unbind(httpRequest, logoutRequest);
                 status = Saml2StatusCodes.Success;
-                await idPSelectionCookieRepository.DeleteAsync();
                 await logoutRequest.DeleteSession(HttpContext);
             }
             catch (Exception exc)
@@ -206,12 +187,11 @@ namespace AspNetCoreSamlSample.Controllers
                 InResponseToAsString = logoutRequest.IdAsString,
                 Status = status,
             };
-            saml2LogoutResponse.Destination = AddUpParty(saml2LogoutResponse.Destination, loginType);
             return responsebinding.Bind(saml2LogoutResponse).ToActionResult();
         }
 
         private Uri AddUpParty(Uri destination, LoginType loginType)
-        {
+        {         
             var upParty = GetUpParty(loginType);
             return new Uri(destination.OriginalString.Replace($"/{settings.DownParty}/", $"/{settings.DownParty}({upParty})/"));
         }
@@ -233,21 +213,6 @@ namespace AspNetCoreSamlSample.Controllers
                 default:
                     throw new NotImplementedException("LoginType not implemented.");
             }
-        }
-
-        private async Task<LoginType> GetSelectedLoginType()
-        {
-            var loginTypeValue = await idPSelectionCookieRepository.GetAsync();
-            if (!string.IsNullOrEmpty(loginTypeValue))
-            {
-                LoginType loginType;
-                if (Enum.TryParse(loginTypeValue, true, out loginType))
-                {
-                    return loginType;
-                }
-            }
-
-            throw new InvalidOperationException("Unable to read Login Type from IdP session cookie.");
         }
     }
 }

@@ -35,3 +35,7 @@ body {
         display: none;
     }
 }
+
+.field-validation-error {
+    color: red;
+}

@@ -1,5 +1,3 @@
-using System;
-
 namespace AspNetCoreSamlIdPSample.Models
 {
     public class ErrorViewModel

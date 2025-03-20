@@ -143,7 +143,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
 
         private IEnumerable<string> GetRelayState(IdPInitiatedViewModel idPInitiatedViewModel)
         {
-            yield return $"app_name={HttpUtility.UrlEncode(idPInitiatedViewModel.ApplicationName.ToLower())}";
+            yield return $"app_name={idPInitiatedViewModel.ApplicationName.ToLower()}";
             yield return $"app_type={idPInitiatedViewModel.ApplicationType.ToLower()}";
             if (!idPInitiatedViewModel.ApplicationRedirectURL.IsNullOrWhiteSpace())
             {

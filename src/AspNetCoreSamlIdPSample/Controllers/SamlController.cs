@@ -103,7 +103,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
         [Route("IdPInitiated")]
         public IActionResult IdPInitiated()
         {
-            return base.View(new IdPInitiatedViewModel { RelyingPartyIssuers = GetRelyingPartyListItems() });
+            return base.View(new IdPInitiatedViewModel { RelyingPartyIssuers = GetRelyingPartyListItems(), OnlineSample = settings.OnlineSample });
         }
 
         [HttpPost("IdPInitiated")]
@@ -117,6 +117,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
             if (!ModelState.IsValid)
             {
                 idPInitiatedViewModel.RelyingPartyIssuers = GetRelyingPartyListItems();
+                idPInitiatedViewModel.OnlineSample = settings.OnlineSample;
                 return View(idPInitiatedViewModel);
             }
 

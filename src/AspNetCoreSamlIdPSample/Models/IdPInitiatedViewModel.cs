@@ -25,6 +25,8 @@ namespace AspNetCoreSamlIdPSample.Models
         [Display(Name = "Application type ('oidc' or 'saml2')")]
         [Required]
         [MaxLength(10)]
-        public string ApplicationType { get; set; } 
+        public string ApplicationType { get; set; }
+
+        public bool OnlineSample { get; set; }
     }
 }

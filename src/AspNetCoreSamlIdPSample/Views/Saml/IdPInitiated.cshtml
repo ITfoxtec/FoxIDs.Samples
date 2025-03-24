@@ -10,19 +10,32 @@
         <blockquote>
             <p>Select the authentication method and fill in the name of the application that the request should be redirected to after successful login.</p>
             <h3>Test data</h3>
-            <p>
-                <strong>SAML 2.0 sample application</strong>
-                <div>Application: aspnetcore_saml_sample</div>
-                <i>The application redirect URL is optional</i>
-                <div>Application type: saml2</div>
-            </p>
-            <p>
-                <strong>OpenID Connect sample application</strong>
-                <div>Application: aspnet_oidc_allup_sample</div>
-                <div>Application redirect URL local: https://localhost:44349/home/secure and online: https://aspnetoidcsample.itfoxtec.com/home/secure</div>
-                <i>The redirect URL need to be configured as a redirect URL for the application.</i>
-                <div>Application type: oidc</div>
-            </p>
+            @if (Model.OnlineSample) 
+            {
+                <p>
+                    <strong>OpenID Connect sample application</strong>
+                    <div>Application: aspnet_oidc_allup_online_sample</div>
+                    <div>Application redirect URL: https://aspnetoidcsample.itfoxtec.com/home/secure</div>
+                    <i>The redirect URL need to be configured as a redirect URL for the application.</i>
+                    <div>Application type: oidc</div>
+                </p>
+            }
+            else
+            {
+                <p>
+                    <strong>SAML 2.0 sample application</strong>
+                    <div>Application: aspnetcore_saml_sample</div>
+                    <i>The application redirect URL is optional</i>
+                    <div>Application type: saml2</div>
+                </p>
+                <p>
+                    <strong>OpenID Connect sample application</strong>
+                    <div>Application: aspnet_oidc_allup_sample</div>
+                    <div>Application redirect URL: https://localhost:44349/home/secure</div>
+                    <i>The redirect URL need to be configured as a redirect URL for the application.</i>
+                    <div>Application type: oidc</div>
+                </p>
+            }
         </blockquote>
     </div>
 </div>

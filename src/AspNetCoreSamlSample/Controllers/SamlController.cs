@@ -193,7 +193,7 @@ namespace AspNetCoreSamlSample.Controllers
         private Uri AddUpParty(Uri destination, LoginType loginType)
         {         
             var upParty = GetUpParty(loginType);
-            return new Uri(destination.OriginalString.Replace($"/{settings.DownParty}/", $"/{settings.DownParty}({upParty})/"));
+            return new Uri(destination.OriginalString.Replace($"/{settings.DownParty}(*)/", $"/{settings.DownParty}({upParty})/"));
         }
 
         private string GetUpParty(LoginType loginType)

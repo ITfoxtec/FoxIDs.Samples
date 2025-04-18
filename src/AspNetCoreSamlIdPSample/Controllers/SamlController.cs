@@ -190,7 +190,7 @@ namespace AspNetCoreSamlIdPSample.Controllers
             yield return new Claim(Saml2ClaimTypes.SessionIndex, idPSession.SessionIndex);
         }
 
-        private IEnumerable<SelectListItem> GetRelyingPartyListItems() => settings.RelyingParties.Select(r => new SelectListItem(r.SingleSignOnDestination.OriginalString, r.Issuer));
+        private IEnumerable<SelectListItem> GetRelyingPartyListItems() => GetRelyingParties().Select(r => new SelectListItem(r.SingleSignOnDestination.OriginalString, r.Issuer));
 
         private IActionResult LoginResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, RelyingParty relyingParty, string sessionIndex = null, IEnumerable<Claim> claims = null)
         {
@@ -331,13 +331,51 @@ namespace AspNetCoreSamlIdPSample.Controllers
         {
             try
             {
-                return settings.RelyingParties.Where(rp => rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
+                return GetRelyingParties().Where(rp => rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
 
             }
             catch (Exception ex)
             {
                 throw new Exception($"Requested RP Issuer '{issuer}' is not configured in settings.RelyingParties.");
             }
+        }
+
+        int metadataValidInSecunds = 10*60*60;
+        private List<RelyingParty> GetRelyingParties()
+        {
+            var now = DateTimeOffset.UtcNow;
+            foreach (var rp in settings.RelyingParties)
+            {
+                if (rp.ValidUntil < now)
+                {
+                    var entityDescriptor = new EntityDescriptor();
+                    entityDescriptor.ReadSPSsoDescriptorFromUrl(new Uri(rp.SpMetadata));
+                    if (entityDescriptor.SPSsoDescriptor != null)
+                    {
+                        rp.Issuer = entityDescriptor.EntityId;
+                        rp.SingleSignOnDestination = entityDescriptor.SPSsoDescriptor.AssertionConsumerServices.First().Location;
+
+                        var singleLogoutService = entityDescriptor.SPSsoDescriptor.SingleLogoutServices.First();
+                        rp.SingleLogoutDestination = singleLogoutService.Location;
+                        rp.SingleLogoutResponseDestination = singleLogoutService.ResponseLocation ?? singleLogoutService.Location;
+
+                        rp.SignatureValidationCertificate = entityDescriptor.SPSsoDescriptor.SigningCertificates.First();
+
+                        if (entityDescriptor.SPSsoDescriptor.EncryptionCertificates?.Count() > 0)
+                        {
+                            rp.EncryptionCertificate = entityDescriptor.SPSsoDescriptor.EncryptionCertificates.First();
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("IdPSsoDescriptor not loaded from metadata.");
+                    }
+
+                    rp.ValidUntil = now.AddSeconds(metadataValidInSecunds);
+                }
+            }
+
+            return settings.RelyingParties;
         }
     }
 }

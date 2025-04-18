@@ -46,34 +46,6 @@ namespace AspNetCoreSamlIdPSample
             });
 
             services.Configure<Settings>(Configuration.GetSection("Settings"));
-            services.Configure<Settings>(settings =>
-            {
-                foreach(var rp in settings.RelyingParties)
-                {
-                    var entityDescriptor = new EntityDescriptor();
-                    entityDescriptor.ReadSPSsoDescriptorFromUrl(new Uri(rp.SpMetadata));
-                    if (entityDescriptor.SPSsoDescriptor != null)
-                    {
-                        rp.Issuer = entityDescriptor.EntityId;
-                        rp.SingleSignOnDestination = entityDescriptor.SPSsoDescriptor.AssertionConsumerServices.First().Location;
-
-                        var singleLogoutService = entityDescriptor.SPSsoDescriptor.SingleLogoutServices.First();
-                        rp.SingleLogoutDestination = singleLogoutService.Location;
-                        rp.SingleLogoutResponseDestination = singleLogoutService.ResponseLocation ?? singleLogoutService.Location;
-
-                        rp.SignatureValidationCertificate = entityDescriptor.SPSsoDescriptor.SigningCertificates.First();
-
-                        if (entityDescriptor.SPSsoDescriptor.EncryptionCertificates?.Count() > 0)
-                        {
-                            rp.EncryptionCertificate = entityDescriptor.SPSsoDescriptor.EncryptionCertificates.First();
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("IdPSsoDescriptor not loaded from metadata.");
-                    }
-                }
-            });
 
             // Add LibrarySettings for ProxyHeadersMiddleware
             services.BindConfig<Settings>(Configuration, nameof(Settings));

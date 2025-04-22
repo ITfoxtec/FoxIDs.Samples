@@ -37,9 +37,9 @@ builder.Services
 
         options.Events = new JwtBearerEvents
         {
-            OnAuthenticationFailed = async (context) =>
+            OnAuthenticationFailed = (context) =>
             {
-                await Task.FromResult(string.Empty);
+                throw new Exception("API 2 authentication failed.", context.Exception);
             }
         };
     });

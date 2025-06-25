@@ -25,12 +25,12 @@ namespace ExternalClaimsApiSample.Controllers
             if (!VerifyApiIdAndSecret(apiId, apiSecret))
             {
                 // Return HTTP 401 and an error (required) if the API call is rejected.
-                return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidApiIdOrSecret, ErrorDescription = "Invalid API ID or secret." });
+                return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidApiIdOrSecret, ErrorMessage = "Invalid API ID or secret." });
             }
 
             if (!(request.Claims?.Count() > 0))
             {
-                throw new Exception("Request claims collection is empty.");
+                logger.LogError("Request claims collection is empty.");
             }
                 
             var claims = GetClaims(request.Claims)?.ToList();
@@ -39,10 +39,14 @@ namespace ExternalClaimsApiSample.Controllers
 
         private IEnumerable<ClaimValue> GetClaims(IEnumerable<ClaimValue> requestClaims)
         {
-            var subValue = requestClaims.Where(c => c.Type == JwtClaimTypes.Email).Select(c => c.Value).FirstOrDefault();
+            var subValue = requestClaims?.Where(c => c.Type == JwtClaimTypes.Email).Select(c => c.Value).FirstOrDefault();
             if(subValue.IsNullOrWhiteSpace())
             {
-                subValue = requestClaims.Where(c => c.Type == JwtClaimTypes.Subject).Select(c => c.Value).FirstOrDefault();
+                subValue = requestClaims?.Where(c => c.Type == JwtClaimTypes.Subject).Select(c => c.Value).FirstOrDefault();
+            }
+            if (subValue.IsNullOrWhiteSpace())
+            {
+                subValue = "unknown";
             }
 
             // Load claims from database

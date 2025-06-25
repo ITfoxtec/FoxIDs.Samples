@@ -1,0 +1,54 @@
+{
+	"info": {
+		"_postman_id": "2cb45da1-bacb-40a0-b856-9e8d2f3252df",
+		"name": "External ExtendedUi API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19093410"
+	},
+	"item": [
+		{
+			"name": "https://localhost:44354/ExternalClaims/Claims",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "R-16k5A8pyYmMKGU75rKA2ovfzT_whubOApsq9kFiBw",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "external_extended_ui",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"claims\": [\r\n        {\r\n            \"type\": \"sub\",\r\n            \"value\": \"1b1ac05e-5937-4939-a49c-0e84a89662df\"\r\n        },\r\n        {\r\n            \"type\": \"email\",\r\n            \"value\": \"some@test.org\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44354/ExtendedUi/Validate",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44354",
+					"path": [
+						"ExternalClaims",
+						"Claims"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

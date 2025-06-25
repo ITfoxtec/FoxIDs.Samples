@@ -68,6 +68,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FoxIDs Control API", "FoxID
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoxIDs.ControlApiSample", "src\FoxIDs.ControlApiSample\FoxIDs.ControlApiSample.csproj", "{99326EFD-A673-496C-A009-483413A4C22B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalExtendedUiApiSample", "src\ExternalExtendedUiApiSample\ExternalExtendedUiApiSample.csproj", "{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,6 +160,10 @@ Global
 		{99326EFD-A673-496C-A009-483413A4C22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99326EFD-A673-496C-A009-483413A4C22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99326EFD-A673-496C-A009-483413A4C22B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,6 +195,7 @@ Global
 		{D890B671-7405-4FB8-8E86-04997FCDF293} = {1C415060-9F5A-4CDE-B14E-1EF3B51C9039}
 		{341BB81B-1FCC-4BB1-8327-52E1E6C2DE58} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
 		{99326EFD-A673-496C-A009-483413A4C22B} = {341BB81B-1FCC-4BB1-8327-52E1E6C2DE58}
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

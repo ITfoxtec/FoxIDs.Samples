@@ -355,7 +355,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     Name = name,
                     DisplayName = displayName,
                     EnableCancelLogin = true,
-                    ExternalLoginType = ExternalLoginTypes.Api,
+                    ExternalLoginType = ExternalConnectTypes.Api,
                     UsernameType = ExternalLoginUsernameTypes.Text,
                     ApiUrl = $"{baseUrl}/ExternalApiLogin",
                     Secret = secret,

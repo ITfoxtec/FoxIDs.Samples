@@ -2,7 +2,6 @@
 using ExternalExtendedUiApiSample.Models.Api;
 using ITfoxtec.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
 
 namespace ExternalExtendedUiApiSample.Controllers
 {

@@ -91,18 +91,18 @@ namespace FoxIDs.SampleSeedTool.Logic
 
             Console.WriteLine("Delete Oidc down party sample configuration");
             var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName, aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName, blazorBffAspNetCoreOidcSampleDownPartyName, blazorOidcAuthCodePkceSampleDownPartyName, blazorServerOidcSampleDownPartyName, oauthTokenExchangeForSamlDownPartyName };
-            foreach (var name in oidcDownPartyNames)
+            foreach (var dpName in oidcDownPartyNames)
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteOidcDownPartyAsync(name.name);
-                    Console.WriteLine($"'{name}' configuration deleted");
+                    await foxIDsApiClient.DeleteOidcDownPartyAsync(dpName.name, settings.Tenant, settings.Track);
+                    Console.WriteLine($"'{dpName}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
                 {
                     if (ex.StatusCode == StatusCodes.Status404NotFound)
                     {
-                        Console.WriteLine($"'{name}' configuration not found");
+                        Console.WriteLine($"'{dpName}' configuration not found");
                     }
                     else
                     {
@@ -117,7 +117,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteOAuthDownPartyAsync(name.name);
+                    await foxIDsApiClient.DeleteOAuthDownPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -139,7 +139,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteSamlDownPartyAsync(name.name);
+                    await foxIDsApiClient.DeleteSamlDownPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -161,7 +161,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteSamlUpPartyAsync(name.name);
+                    await foxIDsApiClient.DeleteSamlUpPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -183,7 +183,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteOAuthUpPartyAsync(name.name);
+                    await foxIDsApiClient.DeleteOAuthUpPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -205,7 +205,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteOidcUpPartyAsync(name.name);
+                    await foxIDsApiClient.DeleteOidcUpPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -227,7 +227,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteExternalLoginUpPartyAsync(name.name);
+                    await foxIDsApiClient.DeleteExternalLoginUpPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -251,7 +251,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -278,7 +278,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     SessionAbsoluteLifetime = 86400,
                 };
 
-                _ = await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
+                _ = await foxIDsApiClient.PostSamlUpPartyAsync(settings.Tenant, settings.Track, samlUpParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreSamlIdPSampleUpPartyName, getAction, postAction);
@@ -288,7 +288,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -331,7 +331,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     SessionAbsoluteLifetime = 86400,
                 };
 
-                _ = await foxIDsApiClient.PostOidcUpPartyAsync(oidcUpParty);
+                _ = await foxIDsApiClient.PostOidcUpPartyAsync(settings.Tenant, settings.Track, oidcUpParty);
             };
 
             await CreateIfNotExistsAsync(identityserverOidcOpUpPartyName, getAction, postAction);
@@ -341,7 +341,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetExternalLoginUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetExternalLoginUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -355,7 +355,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     Name = name,
                     DisplayName = displayName,
                     EnableCancelLogin = true,
-                    ExternalLoginType = ExternalLoginTypes.Api,
+                    ExternalLoginType = ExternalConnectTypes.Api,
                     UsernameType = ExternalLoginUsernameTypes.Text,
                     ApiUrl = $"{baseUrl}/ExternalApiLogin",
                     Secret = secret,
@@ -372,7 +372,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     AdditionalParameters = [new OAuthAdditionalParameter { Name = "SomeCustomId", Value = "4" }],
                 }];
 
-                _ = await foxIDsApiClient.PostExternalLoginUpPartyAsync(externalLoginUpParty);
+                _ = await foxIDsApiClient.PostExternalLoginUpPartyAsync(settings.Tenant, settings.Track, externalLoginUpParty);
             };
 
             await CreateIfNotExistsAsync(externalLoginApiSampleUpPartyName, getAction, postAction);
@@ -382,7 +382,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -397,7 +397,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreApi2SampleDownPartyName, getAction, postAction);
@@ -407,7 +407,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -435,7 +435,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreApi1SampleDownPartyName, getAction, postAction);
@@ -445,7 +445,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -460,7 +460,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreApiOAuthTwoIdPsSampleDownPartyName, getAction, postAction);
@@ -470,7 +470,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -492,10 +492,10 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
 
                 var secret = "MXtV-UmVJqygGUthkG5Q_6SCpmyBpsksvA1kvbE735k";
-                _ = await foxIDsApiClient.PostOAuthClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOAuthClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oauthDownParty.Name,
                     Secrets = [secret],
@@ -510,7 +510,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -534,7 +534,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(netCoreClientAssertionGrantConsoleSampleDownPartyName, getAction, postAction);
@@ -544,7 +544,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -564,7 +564,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOAuthUpPartyAsync(oauthUpParty);
+                _ = await foxIDsApiClient.PostOAuthUpPartyAsync(settings.Tenant, settings.Track, oauthUpParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyName, getAction, postAction);
@@ -574,7 +574,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -660,13 +660,20 @@ namespace FoxIDs.SampleSeedTool.Logic
                         RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
                         RefreshTokenUseOneTime = false,
                         RefreshTokenLifetimeUnlimited = false
-                    }
+                    },
+                    ClaimTransforms = [new OAuthClaimTransform
+                    {
+                        Action = ClaimTransformActions.Replace,
+                        Type = ClaimTransformTypes.Constant,
+                        ClaimOut = "my:claim1",
+                        Transformation = "1234 abcd"
+                    }]
                 };
 
-                _ = await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
 
                 var secret = "IxIruKswG4sQxzOrKlXR58strgZtoyZPG18J3FhzEXI";
-                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oidcDownParty.Name,
                     Secrets = [secret],
@@ -681,7 +688,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -767,10 +774,10 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
 
                 var secret = "KnhiOHuUz1zolY5k4B_r2M3iGkpkJmsmPwQ0RwS5KjM";
-                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oidcDownParty.Name,
                     Secrets = [secret],
@@ -785,7 +792,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -849,7 +856,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreOidcImplicitSampleDownPartyName, getAction, postAction);
@@ -861,7 +868,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -947,10 +954,10 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
 
                 var secret = "wXyFfKVxZXGAIoFrcj-8hXtcPD6CgtjpEhrqGJJe95g";
-                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oidcDownParty.Name,
                     Secrets = [secret],
@@ -965,7 +972,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -1049,7 +1056,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
             };
 
             await CreateIfNotExistsAsync(blazorOidcAuthCodePkceSampleDownPartyName, getAction, postAction);
@@ -1059,7 +1066,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -1145,10 +1152,10 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
 
                 var secret = "rbZ82PSaE0NeRLMy4DNhlP1mnsdcgMfjnF5niufa1w0";
-                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oidcDownParty.Name,
                     Secrets = [secret],
@@ -1163,7 +1170,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetSamlDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetSamlDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -1193,7 +1200,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     IssuedTokenLifetime = 36000 // 10 hours
                 };
 
-                _ = await foxIDsApiClient.PostSamlDownPartyAsync(samlUpParty);
+                _ = await foxIDsApiClient.PostSamlDownPartyAsync(settings.Tenant, settings.Track, samlUpParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreSamlSampleDownPartyName, getAction, postAction);
@@ -1203,7 +1210,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -1220,7 +1227,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     SpIssuer = aspNetCoreSamlSampleDownIssuer,
                 };
 
-                _ = await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
+                _ = await foxIDsApiClient.PostSamlUpPartyAsync(settings.Tenant, settings.Track, samlUpParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreSamlSampleTrustUpPartyName, getAction, postAction);
@@ -1230,7 +1237,7 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
             Func<string, string, Task> postAction = async (name, displayName) =>
@@ -1253,7 +1260,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(oauthTokenExchangeForSamlDownPartyName, getAction, postAction);

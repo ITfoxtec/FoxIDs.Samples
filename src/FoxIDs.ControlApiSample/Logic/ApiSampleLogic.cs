@@ -29,7 +29,7 @@ namespace FoxIDs.ControlApiSample.Logic
             var newPassword = Console.ReadLine();
             Console.WriteLine(string.Empty);
 
-            var user = await foxIDsApiClient.PutUserChangePasswordAsync(new UserChangePasswordRequest
+            var user = await foxIDsApiClient.PutUserChangePasswordAsync(settings.Tenant, settings.Track, new UserChangePasswordRequest
             {
                 Email = email,
                 CurrentPassword = currentPassword,

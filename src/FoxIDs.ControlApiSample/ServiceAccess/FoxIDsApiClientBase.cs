@@ -1,5 +1,4 @@
 ﻿using FoxIDs.ControlApiSample.Logic;
-using FoxIDs.ControlApiSample.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -9,8 +8,7 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 {
     public abstract class FoxIDsApiClientBase
     {
-        protected ApiSampleSettings Settings { get; set; }
-        protected AccessLogic AccessLogic { get; set; }
+        public AccessLogic AccessLogic { get; init; }
 
         protected async Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
         {

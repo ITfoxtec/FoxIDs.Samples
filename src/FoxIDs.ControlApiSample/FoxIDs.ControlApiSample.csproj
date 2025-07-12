@@ -11,9 +11,9 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="ITfoxtec.Identity" Version="2.13.9" />
-		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.1.0" />
-		<PackageReference Include="NSwag.MSBuild" Version="14.2.0">
+		<PackageReference Include="ITfoxtec.Identity" Version="2.13.11" />
+		<PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.3.2" />
+		<PackageReference Include="NSwag.MSBuild" Version="14.4.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -45,7 +45,7 @@
 	</ItemGroup>
 
 	<Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">
-		<Exec Command="$(NSwagExe_Net80) run ServiceAccess\nswag.json /variables:Configuration=$(Configuration)" />
+		<Exec Command="$(NSwagExe_Net90) run ServiceAccess\nswag.json /variables:Configuration=$(Configuration)" />
 	</Target>
 
 </Project>

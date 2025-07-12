@@ -453,10 +453,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.AllowNull)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public PartyTypes Type { get; set; }
+        public PartyTypes? Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("isTest", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsTest { get; set; }
@@ -683,9 +682,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonProperty("elements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<DynamicElement> Elements { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("externalConnectType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("externalConnectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ExternalConnectTypes ExternalConnectType { get; set; }
+        public ExternalConnectTypes? ExternalConnectType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("externalClaimsIn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> ExternalClaimsIn { get; set; }
@@ -767,10 +766,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(200)]
         public string Note { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("externalLoginType", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("externalLoginType", Required = Newtonsoft.Json.Required.AllowNull)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ExternalConnectTypes ExternalLoginType { get; set; }
+        public ExternalConnectTypes? ExternalLoginType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("usernameType", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1772,9 +1770,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ClaimTransformActions Action { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("externalConnectType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("externalConnectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ExternalConnectTypes ExternalConnectType { get; set; }
+        public ExternalConnectTypes? ExternalConnectType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("apiUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(500)]
@@ -1788,9 +1786,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(300)]
         public string SecretLoaded { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("task", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("task", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ClaimTransformTasks Task { get; set; }
+        public ClaimTransformTasks? Task { get; set; }
 
         [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(1000)]
@@ -1800,9 +1798,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(1000)]
         public string ErrorMessage { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("upPartyType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("upPartyType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public PartyTypes UpPartyType { get; set; }
+        public PartyTypes? UpPartyType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("upPartyName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(50)]
@@ -2995,9 +2993,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ClaimTransformActions Action { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("externalConnectType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("externalConnectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ExternalConnectTypes ExternalConnectType { get; set; }
+        public ExternalConnectTypes? ExternalConnectType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("apiUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(500)]
@@ -3011,9 +3009,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(300)]
         public string SecretLoaded { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("task", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("task", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ClaimTransformTasks Task { get; set; }
+        public ClaimTransformTasks? Task { get; set; }
 
         [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(1000)]
@@ -3023,9 +3021,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.StringLength(1000)]
         public string ErrorMessage { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("upPartyType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("upPartyType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public PartyTypes UpPartyType { get; set; }
+        public PartyTypes? UpPartyType { get; set; }
 
         [Newtonsoft.Json.JsonProperty("upPartyName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(50)]
@@ -4177,10 +4175,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess.Contracts
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[\w;:\/\-.,+()\[\]{} ]*$")]
         public string DisplayName { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.AllowNull)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public PartyTypes Type { get; set; }
+        public PartyTypes? Type { get; set; }
 
         [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<UpPartyProfile> Profiles { get; set; }

@@ -2453,9 +2453,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<DownPartyPaginationResponse> GetDownPartiesAsync(string filterName, string paginationToken)
+        public virtual System.Threading.Tasks.Task<DownPartyPaginationResponse> GetDownPartiesAsync(string filterName, string paginationToken, string tenant_name, string track_name)
         {
-            return GetDownPartiesAsync(filterName, paginationToken, System.Threading.CancellationToken.None);
+            return GetDownPartiesAsync(filterName, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2466,8 +2466,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<DownPartyPaginationResponse> GetDownPartiesAsync(string filterName, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<DownPartyPaginationResponse> GetDownPartiesAsync(string filterName, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -2479,8 +2485,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!DownParties"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!DownParties");
+                    // Operation Path: "{tenant_name}/{track_name}/!DownParties"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!DownParties");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -2580,9 +2589,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Down-party test start request.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<DownPartyTestStartResponse> PostDownPartyTestAsync(DownPartyTestStartRequest body)
+        public virtual System.Threading.Tasks.Task<DownPartyTestStartResponse> PostDownPartyTestAsync(string tenant_name, string track_name, DownPartyTestStartRequest body)
         {
-            return PostDownPartyTestAsync(body, System.Threading.CancellationToken.None);
+            return PostDownPartyTestAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2592,8 +2601,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Down-party test start request.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<DownPartyTestStartResponse> PostDownPartyTestAsync(DownPartyTestStartRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<DownPartyTestStartResponse> PostDownPartyTestAsync(string tenant_name, string track_name, DownPartyTestStartRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -2609,8 +2624,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!DownPartyTest"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!DownPartyTest");
+                    // Operation Path: "{tenant_name}/{track_name}/!DownPartyTest"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!DownPartyTest");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -2694,9 +2712,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Down-party test result request.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<DownPartyTestResultResponse> PutDownPartyTestAsync(DownPartyTestResultRequest body)
+        public virtual System.Threading.Tasks.Task<DownPartyTestResultResponse> PutDownPartyTestAsync(string tenant_name, string track_name, DownPartyTestResultRequest body)
         {
-            return PutDownPartyTestAsync(body, System.Threading.CancellationToken.None);
+            return PutDownPartyTestAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2706,8 +2724,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Down-party test result request.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<DownPartyTestResultResponse> PutDownPartyTestAsync(DownPartyTestResultRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<DownPartyTestResultResponse> PutDownPartyTestAsync(string tenant_name, string track_name, DownPartyTestResultRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -2723,8 +2747,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!DownPartyTest"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!DownPartyTest");
+                    // Operation Path: "{tenant_name}/{track_name}/!DownPartyTest"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!DownPartyTest");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -2808,9 +2835,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">External login authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ExternalLoginSecretResponse>> GetExternalLoginSecretUpPartyAsync(string partyName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ExternalLoginSecretResponse>> GetExternalLoginSecretUpPartyAsync(string partyName, string tenant_name, string track_name)
         {
-            return GetExternalLoginSecretUpPartyAsync(partyName, System.Threading.CancellationToken.None);
+            return GetExternalLoginSecretUpPartyAsync(partyName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2820,8 +2847,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">External login authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ExternalLoginSecretResponse>> GetExternalLoginSecretUpPartyAsync(string partyName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ExternalLoginSecretResponse>> GetExternalLoginSecretUpPartyAsync(string partyName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -2833,8 +2866,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalLoginSecretUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalLoginSecretUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalLoginSecretUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalLoginSecretUpParty");
                     urlBuilder_.Append('?');
                     if (partyName != null)
                     {
@@ -2930,9 +2966,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">External login secret for authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthUpParty> PutExternalLoginSecretUpPartyAsync(ExternalLoginSecretRequest body)
+        public virtual System.Threading.Tasks.Task<OAuthUpParty> PutExternalLoginSecretUpPartyAsync(string tenant_name, string track_name, ExternalLoginSecretRequest body)
         {
-            return PutExternalLoginSecretUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutExternalLoginSecretUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2942,8 +2978,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">External login secret for authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthUpParty> PutExternalLoginSecretUpPartyAsync(ExternalLoginSecretRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthUpParty> PutExternalLoginSecretUpPartyAsync(string tenant_name, string track_name, ExternalLoginSecretRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -2959,8 +3001,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalLoginSecretUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalLoginSecretUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalLoginSecretUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalLoginSecretUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -3050,9 +3095,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteExternalLoginSecretUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteExternalLoginSecretUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteExternalLoginSecretUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteExternalLoginSecretUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3062,8 +3107,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteExternalLoginSecretUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteExternalLoginSecretUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -3074,8 +3125,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalLoginSecretUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalLoginSecretUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalLoginSecretUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalLoginSecretUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -3166,9 +3220,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> GetExternalLoginUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> GetExternalLoginUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetExternalLoginUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetExternalLoginUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3178,8 +3232,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> GetExternalLoginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> GetExternalLoginUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -3191,8 +3251,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalLoginUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalLoginUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalLoginUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalLoginUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -3288,9 +3351,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">API authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> PostExternalLoginUpPartyAsync(ExternalLoginUpParty body)
+        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> PostExternalLoginUpPartyAsync(string tenant_name, string track_name, ExternalLoginUpParty body)
         {
-            return PostExternalLoginUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostExternalLoginUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3300,8 +3363,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">API authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> PostExternalLoginUpPartyAsync(ExternalLoginUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> PostExternalLoginUpPartyAsync(string tenant_name, string track_name, ExternalLoginUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -3317,8 +3386,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalLoginUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalLoginUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalLoginUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalLoginUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -3408,9 +3480,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">API authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> PutExternalLoginUpPartyAsync(ExternalLoginUpParty body)
+        public virtual System.Threading.Tasks.Task<ExternalLoginUpParty> PutExternalLoginUpPartyAsync(string tenant_name, string track_name, ExternalLoginUpParty body)
         {
-            return PutExternalLoginUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutExternalLoginUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3420,8 +3492,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">API authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> PutExternalLoginUpPartyAsync(ExternalLoginUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalLoginUpParty> PutExternalLoginUpPartyAsync(string tenant_name, string track_name, ExternalLoginUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -3437,8 +3515,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalLoginUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalLoginUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalLoginUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalLoginUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -3528,9 +3609,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteExternalLoginUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteExternalLoginUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteExternalLoginUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteExternalLoginUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3540,8 +3621,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteExternalLoginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteExternalLoginUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -3552,8 +3639,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalLoginUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalLoginUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalLoginUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalLoginUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -3643,9 +3733,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalUser> GetExternalUserAsync(string upPartyName, string linkClaimValue, string redemptionClaimValue)
+        public virtual System.Threading.Tasks.Task<ExternalUser> GetExternalUserAsync(string upPartyName, string linkClaimValue, string redemptionClaimValue, string tenant_name, string track_name)
         {
-            return GetExternalUserAsync(upPartyName, linkClaimValue, redemptionClaimValue, System.Threading.CancellationToken.None);
+            return GetExternalUserAsync(upPartyName, linkClaimValue, redemptionClaimValue, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3654,8 +3744,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalUser> GetExternalUserAsync(string upPartyName, string linkClaimValue, string redemptionClaimValue, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalUser> GetExternalUserAsync(string upPartyName, string linkClaimValue, string redemptionClaimValue, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (upPartyName == null)
                 throw new System.ArgumentNullException("upPartyName");
 
@@ -3670,8 +3766,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalUser"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalUser");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalUser"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalUser");
                     urlBuilder_.Append('?');
                     urlBuilder_.Append(System.Uri.EscapeDataString("UpPartyName")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(upPartyName, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     if (linkClaimValue != null)
@@ -3772,9 +3871,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">ExternalUser.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalUser> PostExternalUserAsync(ExternalUserRequest body)
+        public virtual System.Threading.Tasks.Task<ExternalUser> PostExternalUserAsync(string tenant_name, string track_name, ExternalUserRequest body)
         {
-            return PostExternalUserAsync(body, System.Threading.CancellationToken.None);
+            return PostExternalUserAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3784,8 +3883,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">ExternalUser.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalUser> PostExternalUserAsync(ExternalUserRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalUser> PostExternalUserAsync(string tenant_name, string track_name, ExternalUserRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -3801,8 +3906,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalUser"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalUser");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalUser"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalUser");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -3894,9 +4002,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">External user.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalUser> PutExternalUserAsync(ExternalUserUpdateRequest body)
+        public virtual System.Threading.Tasks.Task<ExternalUser> PutExternalUserAsync(string tenant_name, string track_name, ExternalUserUpdateRequest body)
         {
-            return PutExternalUserAsync(body, System.Threading.CancellationToken.None);
+            return PutExternalUserAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3908,8 +4016,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">External user.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalUser> PutExternalUserAsync(ExternalUserUpdateRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalUser> PutExternalUserAsync(string tenant_name, string track_name, ExternalUserUpdateRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -3925,8 +4039,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalUser"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalUser");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalUser"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalUser");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -4015,9 +4132,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteExternalUserAsync(string upPartyName, string linkClaimValue, string redemptionClaimValue)
+        public virtual System.Threading.Tasks.Task DeleteExternalUserAsync(string upPartyName, string linkClaimValue, string redemptionClaimValue, string tenant_name, string track_name)
         {
-            return DeleteExternalUserAsync(upPartyName, linkClaimValue, redemptionClaimValue, System.Threading.CancellationToken.None);
+            return DeleteExternalUserAsync(upPartyName, linkClaimValue, redemptionClaimValue, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4026,8 +4143,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteExternalUserAsync(string upPartyName, string linkClaimValue, string redemptionClaimValue, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteExternalUserAsync(string upPartyName, string linkClaimValue, string redemptionClaimValue, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (upPartyName == null)
                 throw new System.ArgumentNullException("upPartyName");
 
@@ -4041,8 +4164,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalUser"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalUser");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalUser"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalUser");
                     urlBuilder_.Append('?');
                     urlBuilder_.Append(System.Uri.EscapeDataString("UpPartyName")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(upPartyName, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     if (linkClaimValue != null)
@@ -4139,9 +4265,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ExternalUserPaginationResponse> GetExternalUsersAsync(string filterValue, string paginationToken)
+        public virtual System.Threading.Tasks.Task<ExternalUserPaginationResponse> GetExternalUsersAsync(string filterValue, string paginationToken, string tenant_name, string track_name)
         {
-            return GetExternalUsersAsync(filterValue, paginationToken, System.Threading.CancellationToken.None);
+            return GetExternalUsersAsync(filterValue, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4152,8 +4278,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ExternalUserPaginationResponse> GetExternalUsersAsync(string filterValue, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ExternalUserPaginationResponse> GetExternalUsersAsync(string filterValue, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -4165,8 +4297,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ExternalUsers"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ExternalUsers");
+                    // Operation Path: "{tenant_name}/{track_name}/!ExternalUsers"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ExternalUsers");
                     urlBuilder_.Append('?');
                     if (filterValue != null)
                     {
@@ -4267,9 +4402,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="failingLoginType">The failing login type.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<RefreshTokenGrant> GetFailingLoginLockAsync(string userIdentifier, FailingLoginTypes? failingLoginType)
+        public virtual System.Threading.Tasks.Task<RefreshTokenGrant> GetFailingLoginLockAsync(string userIdentifier, FailingLoginTypes? failingLoginType, string tenant_name, string track_name)
         {
-            return GetFailingLoginLockAsync(userIdentifier, failingLoginType, System.Threading.CancellationToken.None);
+            return GetFailingLoginLockAsync(userIdentifier, failingLoginType, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4280,8 +4415,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="failingLoginType">The failing login type.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<RefreshTokenGrant> GetFailingLoginLockAsync(string userIdentifier, FailingLoginTypes? failingLoginType, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RefreshTokenGrant> GetFailingLoginLockAsync(string userIdentifier, FailingLoginTypes? failingLoginType, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -4293,8 +4434,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FailingLoginLock"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FailingLoginLock");
+                    // Operation Path: "{tenant_name}/{track_name}/!FailingLoginLock"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FailingLoginLock");
                     urlBuilder_.Append('?');
                     if (userIdentifier != null)
                     {
@@ -4395,9 +4539,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="failingLoginType">The failing login type.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteFailingLoginLockAsync(string userIdentifier, FailingLoginTypes? failingLoginType)
+        public virtual System.Threading.Tasks.Task DeleteFailingLoginLockAsync(string userIdentifier, FailingLoginTypes? failingLoginType, string tenant_name, string track_name)
         {
-            return DeleteFailingLoginLockAsync(userIdentifier, failingLoginType, System.Threading.CancellationToken.None);
+            return DeleteFailingLoginLockAsync(userIdentifier, failingLoginType, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4408,8 +4552,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="failingLoginType">The failing login type.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteFailingLoginLockAsync(string userIdentifier, FailingLoginTypes? failingLoginType, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteFailingLoginLockAsync(string userIdentifier, FailingLoginTypes? failingLoginType, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -4420,8 +4570,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FailingLoginLock"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FailingLoginLock");
+                    // Operation Path: "{tenant_name}/{track_name}/!FailingLoginLock"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FailingLoginLock");
                     urlBuilder_.Append('?');
                     if (userIdentifier != null)
                     {
@@ -4518,9 +4671,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<FailingLoginLockPaginationResponse> GetFailingLoginLocksAsync(string filterUserIdentifier, FailingLoginTypes? filterFailingLoginType, string paginationToken)
+        public virtual System.Threading.Tasks.Task<FailingLoginLockPaginationResponse> GetFailingLoginLocksAsync(string filterUserIdentifier, FailingLoginTypes? filterFailingLoginType, string paginationToken, string tenant_name, string track_name)
         {
-            return GetFailingLoginLocksAsync(filterUserIdentifier, filterFailingLoginType, paginationToken, System.Threading.CancellationToken.None);
+            return GetFailingLoginLocksAsync(filterUserIdentifier, filterFailingLoginType, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4532,8 +4685,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<FailingLoginLockPaginationResponse> GetFailingLoginLocksAsync(string filterUserIdentifier, FailingLoginTypes? filterFailingLoginType, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FailingLoginLockPaginationResponse> GetFailingLoginLocksAsync(string filterUserIdentifier, FailingLoginTypes? filterFailingLoginType, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -4545,8 +4704,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FailingLoginLocks"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FailingLoginLocks");
+                    // Operation Path: "{tenant_name}/{track_name}/!FailingLoginLocks"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FailingLoginLocks");
                     urlBuilder_.Append('?');
                     if (filterUserIdentifier != null)
                     {
@@ -4652,9 +4814,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DownParty>> GetFilterDownPartyAsync(string filterName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DownParty>> GetFilterDownPartyAsync(string filterName, string tenant_name, string track_name)
         {
-            return GetFilterDownPartyAsync(filterName, System.Threading.CancellationToken.None);
+            return GetFilterDownPartyAsync(filterName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4666,8 +4828,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DownParty>> GetFilterDownPartyAsync(string filterName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DownParty>> GetFilterDownPartyAsync(string filterName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -4679,8 +4847,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterDownParty");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -4778,9 +4949,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ExternalUser>> GetFilterExternalUserAsync(string filterValue)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ExternalUser>> GetFilterExternalUserAsync(string filterValue, string tenant_name, string track_name)
         {
-            return GetFilterExternalUserAsync(filterValue, System.Threading.CancellationToken.None);
+            return GetFilterExternalUserAsync(filterValue, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4792,8 +4963,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ExternalUser>> GetFilterExternalUserAsync(string filterValue, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ExternalUser>> GetFilterExternalUserAsync(string filterValue, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -4805,8 +4982,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterExternalUser"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterExternalUser");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterExternalUser"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterExternalUser");
                     urlBuilder_.Append('?');
                     if (filterValue != null)
                     {
@@ -4904,9 +5084,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ResourceName>> GetFilterResourceNameAsync(string filterName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ResourceName>> GetFilterResourceNameAsync(string filterName, string tenant_name, string track_name)
         {
-            return GetFilterResourceNameAsync(filterName, System.Threading.CancellationToken.None);
+            return GetFilterResourceNameAsync(filterName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4918,8 +5098,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ResourceName>> GetFilterResourceNameAsync(string filterName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ResourceName>> GetFilterResourceNameAsync(string filterName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -4931,8 +5117,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterResourceName"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterResourceName");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterResourceName"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterResourceName");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -5031,9 +5220,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Tenant>> GetFilterTenantAsync(string filterName, string filterCustomDomain)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Tenant>> GetFilterTenantAsync(string filterName, string filterCustomDomain, string tenant_name, string track_name)
         {
-            return GetFilterTenantAsync(filterName, filterCustomDomain, System.Threading.CancellationToken.None);
+            return GetFilterTenantAsync(filterName, filterCustomDomain, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5046,8 +5235,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Tenant>> GetFilterTenantAsync(string filterName, string filterCustomDomain, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Tenant>> GetFilterTenantAsync(string filterName, string filterCustomDomain, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -5059,8 +5254,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterTenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterTenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterTenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterTenant");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -5162,9 +5360,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Track>> GetFilterTrackAsync(string filterName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Track>> GetFilterTrackAsync(string filterName, string tenant_name, string track_name)
         {
-            return GetFilterTrackAsync(filterName, System.Threading.CancellationToken.None);
+            return GetFilterTrackAsync(filterName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5176,8 +5374,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Track>> GetFilterTrackAsync(string filterName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Track>> GetFilterTrackAsync(string filterName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -5189,8 +5393,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterTrack"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterTrack");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterTrack"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterTrack");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -5289,9 +5496,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UpParty>> GetFilterUpPartyAsync(string filterName, string filterHrdDomains)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UpParty>> GetFilterUpPartyAsync(string filterName, string filterHrdDomains, string tenant_name, string track_name)
         {
-            return GetFilterUpPartyAsync(filterName, filterHrdDomains, System.Threading.CancellationToken.None);
+            return GetFilterUpPartyAsync(filterName, filterHrdDomains, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5304,8 +5511,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UpParty>> GetFilterUpPartyAsync(string filterName, string filterHrdDomains, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UpParty>> GetFilterUpPartyAsync(string filterName, string filterHrdDomains, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -5317,8 +5530,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterUpParty");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -5422,9 +5638,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UsedBase>> GetFilterUsageAsync(string filterTenantName, int? year, int? month)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UsedBase>> GetFilterUsageAsync(string filterTenantName, int? year, int? month, string tenant_name, string track_name)
         {
-            return GetFilterUsageAsync(filterTenantName, year, month, System.Threading.CancellationToken.None);
+            return GetFilterUsageAsync(filterTenantName, year, month, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5438,8 +5654,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UsedBase>> GetFilterUsageAsync(string filterTenantName, int? year, int? month, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UsedBase>> GetFilterUsageAsync(string filterTenantName, int? year, int? month, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -5451,8 +5673,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterUsage"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterUsage");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterUsage"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterUsage");
                     urlBuilder_.Append('?');
                     if (filterTenantName != null)
                     {
@@ -5558,9 +5783,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Tenant>> GetFilterUsageTenantAsync(string filterName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Tenant>> GetFilterUsageTenantAsync(string filterName, string tenant_name, string track_name)
         {
-            return GetFilterUsageTenantAsync(filterName, System.Threading.CancellationToken.None);
+            return GetFilterUsageTenantAsync(filterName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5572,8 +5797,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Tenant>> GetFilterUsageTenantAsync(string filterName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Tenant>> GetFilterUsageTenantAsync(string filterName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -5585,8 +5816,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterUsageTenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterUsageTenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterUsageTenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterUsageTenant");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -5684,9 +5918,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetFilterUserAsync(string filterEmail)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetFilterUserAsync(string filterEmail, string tenant_name, string track_name)
         {
-            return GetFilterUserAsync(filterEmail, System.Threading.CancellationToken.None);
+            return GetFilterUserAsync(filterEmail, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5698,8 +5932,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetFilterUserAsync(string filterEmail, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<User>> GetFilterUserAsync(string filterEmail, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -5711,8 +5951,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!FilterUser"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!FilterUser");
+                    // Operation Path: "{tenant_name}/{track_name}/!FilterUser"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!FilterUser");
                     urlBuilder_.Append('?');
                     if (filterEmail != null)
                     {
@@ -5808,9 +6051,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LoginUpParty> GetLoginUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<LoginUpParty> GetLoginUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetLoginUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetLoginUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5820,8 +6063,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LoginUpParty> GetLoginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LoginUpParty> GetLoginUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -5833,8 +6082,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!LoginUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!LoginUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!LoginUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!LoginUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -5930,9 +6182,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Login authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LoginUpParty> PostLoginUpPartyAsync(LoginUpParty body)
+        public virtual System.Threading.Tasks.Task<LoginUpParty> PostLoginUpPartyAsync(string tenant_name, string track_name, LoginUpParty body)
         {
-            return PostLoginUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostLoginUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5942,8 +6194,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Login authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LoginUpParty> PostLoginUpPartyAsync(LoginUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LoginUpParty> PostLoginUpPartyAsync(string tenant_name, string track_name, LoginUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -5959,8 +6217,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!LoginUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!LoginUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!LoginUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!LoginUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -6050,9 +6311,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Login authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LoginUpParty> PutLoginUpPartyAsync(LoginUpParty body)
+        public virtual System.Threading.Tasks.Task<LoginUpParty> PutLoginUpPartyAsync(string tenant_name, string track_name, LoginUpParty body)
         {
-            return PutLoginUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutLoginUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6062,8 +6323,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Login authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LoginUpParty> PutLoginUpPartyAsync(LoginUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LoginUpParty> PutLoginUpPartyAsync(string tenant_name, string track_name, LoginUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -6079,8 +6346,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!LoginUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!LoginUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!LoginUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!LoginUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -6170,9 +6440,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteLoginUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteLoginUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteLoginUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteLoginUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6182,8 +6452,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteLoginUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteLoginUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -6194,8 +6470,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!LoginUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!LoginUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!LoginUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!LoginUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -6286,9 +6565,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">First payment.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<MollieFirstPaymentResponse> PostMyMollieFirstPaymentAsync(MollieFirstPaymentRequest body)
+        public virtual System.Threading.Tasks.Task<MollieFirstPaymentResponse> PostMyMollieFirstPaymentAsync(string tenant_name, string track_name, MollieFirstPaymentRequest body)
         {
-            return PostMyMollieFirstPaymentAsync(body, System.Threading.CancellationToken.None);
+            return PostMyMollieFirstPaymentAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6298,8 +6577,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">First payment.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<MollieFirstPaymentResponse> PostMyMollieFirstPaymentAsync(MollieFirstPaymentRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<MollieFirstPaymentResponse> PostMyMollieFirstPaymentAsync(string tenant_name, string track_name, MollieFirstPaymentRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -6315,8 +6600,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!MyMollieFirstPayment"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!MyMollieFirstPayment");
+                    // Operation Path: "{tenant_name}/{track_name}/!MyMollieFirstPayment"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!MyMollieFirstPayment");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -6405,9 +6693,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TenantResponse> GetMyTenantAsync()
+        public virtual System.Threading.Tasks.Task<TenantResponse> GetMyTenantAsync(string tenant_name, string track_name)
         {
-            return GetMyTenantAsync(System.Threading.CancellationToken.None);
+            return GetMyTenantAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6416,8 +6704,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TenantResponse> GetMyTenantAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TenantResponse> GetMyTenantAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -6429,8 +6723,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!MyTenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!MyTenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!MyTenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!MyTenant");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -6520,9 +6817,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Tenant.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TenantResponse> PutMyTenantAsync(MyTenantRequest body)
+        public virtual System.Threading.Tasks.Task<TenantResponse> PutMyTenantAsync(string tenant_name, string track_name, MyTenantRequest body)
         {
-            return PutMyTenantAsync(body, System.Threading.CancellationToken.None);
+            return PutMyTenantAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6532,8 +6829,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Tenant.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TenantResponse> PutMyTenantAsync(MyTenantRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TenantResponse> PutMyTenantAsync(string tenant_name, string track_name, MyTenantRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -6549,8 +6852,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!MyTenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!MyTenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!MyTenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!MyTenant");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -6639,9 +6945,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteMyTenantAsync()
+        public virtual System.Threading.Tasks.Task DeleteMyTenantAsync(string tenant_name, string track_name)
         {
-            return DeleteMyTenantAsync(System.Threading.CancellationToken.None);
+            return DeleteMyTenantAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6650,8 +6956,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteMyTenantAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteMyTenantAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -6662,8 +6974,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!MyTenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!MyTenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!MyTenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!MyTenant");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -6747,9 +7062,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LogResponse> GetMyTenantLogAsync(string trackName, long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics)
+        public virtual System.Threading.Tasks.Task<LogResponse> GetMyTenantLogAsync(string trackName, long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, string tenant_name, string track_name)
         {
-            return GetMyTenantLogAsync(trackName, fromTime, toTime, filter, queryExceptions, queryErrors, queryWarnings, queryTraces, queryEvents, queryMetrics, System.Threading.CancellationToken.None);
+            return GetMyTenantLogAsync(trackName, fromTime, toTime, filter, queryExceptions, queryErrors, queryWarnings, queryTraces, queryEvents, queryMetrics, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6758,8 +7073,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LogResponse> GetMyTenantLogAsync(string trackName, long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LogResponse> GetMyTenantLogAsync(string trackName, long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
 
@@ -6777,8 +7098,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!MyTenantLog"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!MyTenantLog");
+                    // Operation Path: "{tenant_name}/{track_name}/!MyTenantLog"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!MyTenantLog");
                     urlBuilder_.Append('?');
                     if (trackName != null)
                     {
@@ -6909,9 +7233,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetMyTenantLogUsageAsync(string trackName, UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery)
+        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetMyTenantLogUsageAsync(string trackName, UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, string tenant_name, string track_name)
         {
-            return GetMyTenantLogUsageAsync(trackName, timeScope, timeOffset, summarizeLevel, includeTenants, includeTracks, includeUsers, includeLogins, includeTokenRequests, includeAdditional, includeControlApi, onlyDbQuery, System.Threading.CancellationToken.None);
+            return GetMyTenantLogUsageAsync(trackName, timeScope, timeOffset, summarizeLevel, includeTenants, includeTracks, includeUsers, includeLogins, includeTokenRequests, includeAdditional, includeControlApi, onlyDbQuery, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6920,8 +7244,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetMyTenantLogUsageAsync(string trackName, UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetMyTenantLogUsageAsync(string trackName, UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (timeScope == null)
                 throw new System.ArgumentNullException("timeScope");
 
@@ -6939,8 +7269,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!MyTenantLogUsage"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!MyTenantLogUsage");
+                    // Operation Path: "{tenant_name}/{track_name}/!MyTenantLogUsage"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!MyTenantLogUsage");
                     urlBuilder_.Append('?');
                     if (trackName != null)
                     {
@@ -7079,9 +7412,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<MyUser> GetMyUserAsync()
+        public virtual System.Threading.Tasks.Task<MyUser> GetMyUserAsync(string tenant_name, string track_name)
         {
-            return GetMyUserAsync(System.Threading.CancellationToken.None);
+            return GetMyUserAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7090,8 +7423,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<MyUser> GetMyUserAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<MyUser> GetMyUserAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -7103,8 +7442,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!MyUser"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!MyUser");
+                    // Operation Path: "{tenant_name}/{track_name}/!MyUser"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!MyUser");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -7195,9 +7537,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">My user.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<MyUser> PutMyUserAsync(MyUser body)
+        public virtual System.Threading.Tasks.Task<MyUser> PutMyUserAsync(string tenant_name, string track_name, MyUser body)
         {
-            return PutMyUserAsync(body, System.Threading.CancellationToken.None);
+            return PutMyUserAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7208,8 +7550,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">My user.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<MyUser> PutMyUserAsync(MyUser body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<MyUser> PutMyUserAsync(string tenant_name, string track_name, MyUser body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -7225,8 +7573,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!MyUser"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!MyUser");
+                    // Operation Path: "{tenant_name}/{track_name}/!MyUser"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!MyUser");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -7315,9 +7666,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<NewPartyName> GetNewPartyNameAsync(bool? isUpParty)
+        public virtual System.Threading.Tasks.Task<NewPartyName> GetNewPartyNameAsync(bool? isUpParty, string tenant_name, string track_name)
         {
-            return GetNewPartyNameAsync(isUpParty, System.Threading.CancellationToken.None);
+            return GetNewPartyNameAsync(isUpParty, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7326,8 +7677,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<NewPartyName> GetNewPartyNameAsync(bool? isUpParty, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<NewPartyName> GetNewPartyNameAsync(bool? isUpParty, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -7339,8 +7696,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!NewPartyName"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!NewPartyName");
+                    // Operation Path: "{tenant_name}/{track_name}/!NewPartyName"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!NewPartyName");
                     urlBuilder_.Append('?');
                     if (isUpParty != null)
                     {
@@ -7430,9 +7790,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">OAuth 2.0 party name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretResponse>> GetOAuthClientSecretDownPartyAsync(string partyName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretResponse>> GetOAuthClientSecretDownPartyAsync(string partyName, string tenant_name, string track_name)
         {
-            return GetOAuthClientSecretDownPartyAsync(partyName, System.Threading.CancellationToken.None);
+            return GetOAuthClientSecretDownPartyAsync(partyName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7442,8 +7802,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">OAuth 2.0 party name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretResponse>> GetOAuthClientSecretDownPartyAsync(string partyName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretResponse>> GetOAuthClientSecretDownPartyAsync(string partyName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -7455,8 +7821,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthClientSecretDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthClientSecretDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthClientSecretDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthClientSecretDownParty");
                     urlBuilder_.Append('?');
                     if (partyName != null)
                     {
@@ -7552,9 +7921,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth 2.0 client secret for application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthDownParty> PostOAuthClientSecretDownPartyAsync(OAuthClientSecretRequest body)
+        public virtual System.Threading.Tasks.Task<OAuthDownParty> PostOAuthClientSecretDownPartyAsync(string tenant_name, string track_name, OAuthClientSecretRequest body)
         {
-            return PostOAuthClientSecretDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostOAuthClientSecretDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7564,8 +7933,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth 2.0 client secret for application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthDownParty> PostOAuthClientSecretDownPartyAsync(OAuthClientSecretRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthDownParty> PostOAuthClientSecretDownPartyAsync(string tenant_name, string track_name, OAuthClientSecretRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -7581,8 +7956,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthClientSecretDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthClientSecretDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthClientSecretDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthClientSecretDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -7672,9 +8050,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name and secret id.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteOAuthClientSecretDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteOAuthClientSecretDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteOAuthClientSecretDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteOAuthClientSecretDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7684,8 +8062,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name and secret id.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteOAuthClientSecretDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteOAuthClientSecretDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -7696,8 +8080,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthClientSecretDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthClientSecretDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthClientSecretDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthClientSecretDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -7788,9 +8175,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthDownParty> GetOAuthDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<OAuthDownParty> GetOAuthDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetOAuthDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetOAuthDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7800,8 +8187,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthDownParty> GetOAuthDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthDownParty> GetOAuthDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -7813,8 +8206,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -7910,9 +8306,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth 2.0 application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthDownParty> PostOAuthDownPartyAsync(OAuthDownParty body)
+        public virtual System.Threading.Tasks.Task<OAuthDownParty> PostOAuthDownPartyAsync(string tenant_name, string track_name, OAuthDownParty body)
         {
-            return PostOAuthDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostOAuthDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7922,8 +8318,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth 2.0 application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthDownParty> PostOAuthDownPartyAsync(OAuthDownParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthDownParty> PostOAuthDownPartyAsync(string tenant_name, string track_name, OAuthDownParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -7939,8 +8341,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -8030,9 +8435,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth 2.0 application registration.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthDownParty> PutOAuthDownPartyAsync(OAuthDownParty body)
+        public virtual System.Threading.Tasks.Task<OAuthDownParty> PutOAuthDownPartyAsync(string tenant_name, string track_name, OAuthDownParty body)
         {
-            return PutOAuthDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutOAuthDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8042,8 +8447,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth 2.0 application registration.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthDownParty> PutOAuthDownPartyAsync(OAuthDownParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthDownParty> PutOAuthDownPartyAsync(string tenant_name, string track_name, OAuthDownParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -8059,8 +8470,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -8150,9 +8564,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteOAuthDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteOAuthDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteOAuthDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteOAuthDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8162,8 +8576,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteOAuthDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteOAuthDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -8174,8 +8594,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -8266,9 +8689,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthUpParty> GetOAuthUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<OAuthUpParty> GetOAuthUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetOAuthUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetOAuthUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8278,8 +8701,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthUpParty> GetOAuthUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthUpParty> GetOAuthUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -8291,8 +8720,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -8388,9 +8820,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthUpParty> PostOAuthUpPartyAsync(OAuthUpParty body)
+        public virtual System.Threading.Tasks.Task<OAuthUpParty> PostOAuthUpPartyAsync(string tenant_name, string track_name, OAuthUpParty body)
         {
-            return PostOAuthUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostOAuthUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8400,8 +8832,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthUpParty> PostOAuthUpPartyAsync(OAuthUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthUpParty> PostOAuthUpPartyAsync(string tenant_name, string track_name, OAuthUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -8417,8 +8855,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -8508,9 +8949,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthUpParty> PutOAuthUpPartyAsync(OAuthUpParty body)
+        public virtual System.Threading.Tasks.Task<OAuthUpParty> PutOAuthUpPartyAsync(string tenant_name, string track_name, OAuthUpParty body)
         {
-            return PutOAuthUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutOAuthUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8520,8 +8961,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OAuth authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthUpParty> PutOAuthUpPartyAsync(OAuthUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthUpParty> PutOAuthUpPartyAsync(string tenant_name, string track_name, OAuthUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -8537,8 +8984,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -8628,9 +9078,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteOAuthUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteOAuthUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteOAuthUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteOAuthUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8640,8 +9090,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteOAuthUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteOAuthUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -8652,8 +9108,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OAuthUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OAuthUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OAuthUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OAuthUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -8744,9 +9203,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">OIDC authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientKeyResponse>> GetOidcClientKeyUpPartyAsync(string partyName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientKeyResponse>> GetOidcClientKeyUpPartyAsync(string partyName, string tenant_name, string track_name)
         {
-            return GetOidcClientKeyUpPartyAsync(partyName, System.Threading.CancellationToken.None);
+            return GetOidcClientKeyUpPartyAsync(partyName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8756,8 +9215,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">OIDC authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientKeyResponse>> GetOidcClientKeyUpPartyAsync(string partyName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientKeyResponse>> GetOidcClientKeyUpPartyAsync(string partyName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -8769,8 +9234,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientKeyUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientKeyUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientKeyUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientKeyUpParty");
                     urlBuilder_.Append('?');
                     if (partyName != null)
                     {
@@ -8866,9 +9334,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC client key for authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthClientKeyResponse> PostOidcClientKeyUpPartyAsync(OAuthClientKeyRequest body)
+        public virtual System.Threading.Tasks.Task<OAuthClientKeyResponse> PostOidcClientKeyUpPartyAsync(string tenant_name, string track_name, OAuthClientKeyRequest body)
         {
-            return PostOidcClientKeyUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostOidcClientKeyUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8878,8 +9346,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC client key for authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthClientKeyResponse> PostOidcClientKeyUpPartyAsync(OAuthClientKeyRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthClientKeyResponse> PostOidcClientKeyUpPartyAsync(string tenant_name, string track_name, OAuthClientKeyRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -8895,8 +9369,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientKeyUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientKeyUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientKeyUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientKeyUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -8986,9 +9463,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Name is [authentication method name].[key name]</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteOidcClientKeyUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteOidcClientKeyUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteOidcClientKeyUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteOidcClientKeyUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8998,8 +9475,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Name is [authentication method name].[key name]</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteOidcClientKeyUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteOidcClientKeyUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9010,8 +9493,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientKeyUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientKeyUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientKeyUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientKeyUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -9102,9 +9588,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">OIDC application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretResponse>> GetOidcClientSecretDownPartyAsync(string partyName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretResponse>> GetOidcClientSecretDownPartyAsync(string partyName, string tenant_name, string track_name)
         {
-            return GetOidcClientSecretDownPartyAsync(partyName, System.Threading.CancellationToken.None);
+            return GetOidcClientSecretDownPartyAsync(partyName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9114,8 +9600,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">OIDC application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretResponse>> GetOidcClientSecretDownPartyAsync(string partyName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretResponse>> GetOidcClientSecretDownPartyAsync(string partyName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9127,8 +9619,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientSecretDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientSecretDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientSecretDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientSecretDownParty");
                     urlBuilder_.Append('?');
                     if (partyName != null)
                     {
@@ -9224,9 +9719,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC client secret for application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OidcDownParty> PostOidcClientSecretDownPartyAsync(OAuthClientSecretRequest body)
+        public virtual System.Threading.Tasks.Task<OidcDownParty> PostOidcClientSecretDownPartyAsync(string tenant_name, string track_name, OAuthClientSecretRequest body)
         {
-            return PostOidcClientSecretDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostOidcClientSecretDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9236,8 +9731,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC client secret for application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OidcDownParty> PostOidcClientSecretDownPartyAsync(OAuthClientSecretRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OidcDownParty> PostOidcClientSecretDownPartyAsync(string tenant_name, string track_name, OAuthClientSecretRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9253,8 +9754,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientSecretDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientSecretDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientSecretDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientSecretDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -9344,9 +9848,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name and secret id.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteOidcClientSecretDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteOidcClientSecretDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteOidcClientSecretDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteOidcClientSecretDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9356,8 +9860,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name and secret id.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteOidcClientSecretDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteOidcClientSecretDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9368,8 +9878,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientSecretDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientSecretDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientSecretDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientSecretDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -9460,9 +9973,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">OIDC authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretSingleResponse>> GetOidcClientSecretUpPartyAsync(string partyName)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretSingleResponse>> GetOidcClientSecretUpPartyAsync(string partyName, string tenant_name, string track_name)
         {
-            return GetOidcClientSecretUpPartyAsync(partyName, System.Threading.CancellationToken.None);
+            return GetOidcClientSecretUpPartyAsync(partyName, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9472,8 +9985,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="partyName">OIDC authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretSingleResponse>> GetOidcClientSecretUpPartyAsync(string partyName, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<OAuthClientSecretSingleResponse>> GetOidcClientSecretUpPartyAsync(string partyName, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9485,8 +10004,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientSecretUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientSecretUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientSecretUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientSecretUpParty");
                     urlBuilder_.Append('?');
                     if (partyName != null)
                     {
@@ -9582,9 +10104,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC client secret for authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OAuthUpParty> PutOidcClientSecretUpPartyAsync(OAuthClientSecretSingleRequest body)
+        public virtual System.Threading.Tasks.Task<OAuthUpParty> PutOidcClientSecretUpPartyAsync(string tenant_name, string track_name, OAuthClientSecretSingleRequest body)
         {
-            return PutOidcClientSecretUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutOidcClientSecretUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9594,8 +10116,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC client secret for authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OAuthUpParty> PutOidcClientSecretUpPartyAsync(OAuthClientSecretSingleRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OAuthUpParty> PutOidcClientSecretUpPartyAsync(string tenant_name, string track_name, OAuthClientSecretSingleRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9611,8 +10139,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientSecretUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientSecretUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientSecretUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientSecretUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -9702,9 +10233,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteOidcClientSecretUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteOidcClientSecretUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteOidcClientSecretUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteOidcClientSecretUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9714,8 +10245,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteOidcClientSecretUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteOidcClientSecretUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9726,8 +10263,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcClientSecretUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcClientSecretUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcClientSecretUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcClientSecretUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -9818,9 +10358,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OidcDownParty> GetOidcDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<OidcDownParty> GetOidcDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetOidcDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetOidcDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9830,8 +10370,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OidcDownParty> GetOidcDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OidcDownParty> GetOidcDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9843,8 +10389,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -9940,9 +10489,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OidcDownParty> PostOidcDownPartyAsync(OidcDownParty body)
+        public virtual System.Threading.Tasks.Task<OidcDownParty> PostOidcDownPartyAsync(string tenant_name, string track_name, OidcDownParty body)
         {
-            return PostOidcDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostOidcDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9952,8 +10501,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OidcDownParty> PostOidcDownPartyAsync(OidcDownParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OidcDownParty> PostOidcDownPartyAsync(string tenant_name, string track_name, OidcDownParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -9969,8 +10524,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -10060,9 +10618,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC application registration.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OidcDownParty> PutOidcDownPartyAsync(OidcDownParty body)
+        public virtual System.Threading.Tasks.Task<OidcDownParty> PutOidcDownPartyAsync(string tenant_name, string track_name, OidcDownParty body)
         {
-            return PutOidcDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutOidcDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10072,8 +10630,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC application registration.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OidcDownParty> PutOidcDownPartyAsync(OidcDownParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OidcDownParty> PutOidcDownPartyAsync(string tenant_name, string track_name, OidcDownParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -10089,8 +10653,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -10180,9 +10747,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteOidcDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteOidcDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteOidcDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteOidcDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10192,8 +10759,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteOidcDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteOidcDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -10204,8 +10777,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -10296,9 +10872,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OidcUpParty> GetOidcUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<OidcUpParty> GetOidcUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetOidcUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetOidcUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10308,8 +10884,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OidcUpParty> GetOidcUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OidcUpParty> GetOidcUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -10321,8 +10903,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -10418,9 +11003,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OidcUpParty> PostOidcUpPartyAsync(OidcUpParty body)
+        public virtual System.Threading.Tasks.Task<OidcUpParty> PostOidcUpPartyAsync(string tenant_name, string track_name, OidcUpParty body)
         {
-            return PostOidcUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostOidcUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10430,8 +11015,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OidcUpParty> PostOidcUpPartyAsync(OidcUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OidcUpParty> PostOidcUpPartyAsync(string tenant_name, string track_name, OidcUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -10447,8 +11038,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -10539,9 +11133,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<OidcUpParty> PutOidcUpPartyAsync(OidcUpParty body)
+        public virtual System.Threading.Tasks.Task<OidcUpParty> PutOidcUpPartyAsync(string tenant_name, string track_name, OidcUpParty body)
         {
-            return PutOidcUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutOidcUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10552,8 +11146,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">OIDC authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<OidcUpParty> PutOidcUpPartyAsync(OidcUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<OidcUpParty> PutOidcUpPartyAsync(string tenant_name, string track_name, OidcUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -10569,8 +11169,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -10660,9 +11263,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteOidcUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteOidcUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteOidcUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteOidcUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10672,8 +11275,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteOidcUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteOidcUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -10684,8 +11293,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!OidcUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!OidcUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!OidcUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!OidcUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -10775,9 +11387,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PlanInfo>> GetPlanInfoAsync()
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PlanInfo>> GetPlanInfoAsync(string tenant_name, string track_name)
         {
-            return GetPlanInfoAsync(System.Threading.CancellationToken.None);
+            return GetPlanInfoAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10786,8 +11398,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PlanInfo>> GetPlanInfoAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<PlanInfo>> GetPlanInfoAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -10799,8 +11417,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!PlanInfo"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!PlanInfo");
+                    // Operation Path: "{tenant_name}/{track_name}/!PlanInfo"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!PlanInfo");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -10884,9 +11505,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Base64 URL encode certificate and optionally password.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<JwkWithCertificateInfo> PostReadCertificateAsync(CertificateAndPassword body)
+        public virtual System.Threading.Tasks.Task<JwkWithCertificateInfo> PostReadCertificateAsync(string tenant_name, string track_name, CertificateAndPassword body)
         {
-            return PostReadCertificateAsync(body, System.Threading.CancellationToken.None);
+            return PostReadCertificateAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10896,8 +11517,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Base64 URL encode certificate and optionally password.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<JwkWithCertificateInfo> PostReadCertificateAsync(CertificateAndPassword body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<JwkWithCertificateInfo> PostReadCertificateAsync(string tenant_name, string track_name, CertificateAndPassword body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -10913,8 +11540,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ReadCertificate"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ReadCertificate");
+                    // Operation Path: "{tenant_name}/{track_name}/!ReadCertificate"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ReadCertificate");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -10998,9 +11628,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="refreshToken">The refresh token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<RefreshTokenGrant> GetRefreshTokenGrantAsync(string refreshToken)
+        public virtual System.Threading.Tasks.Task<RefreshTokenGrant> GetRefreshTokenGrantAsync(string refreshToken, string tenant_name, string track_name)
         {
-            return GetRefreshTokenGrantAsync(refreshToken, System.Threading.CancellationToken.None);
+            return GetRefreshTokenGrantAsync(refreshToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11010,8 +11640,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="refreshToken">The refresh token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<RefreshTokenGrant> GetRefreshTokenGrantAsync(string refreshToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RefreshTokenGrant> GetRefreshTokenGrantAsync(string refreshToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -11023,8 +11659,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!RefreshTokenGrant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!RefreshTokenGrant");
+                    // Operation Path: "{tenant_name}/{track_name}/!RefreshTokenGrant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!RefreshTokenGrant");
                     urlBuilder_.Append('?');
                     if (refreshToken != null)
                     {
@@ -11120,9 +11759,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="refreshToken">The refresh token.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteRefreshTokenGrantAsync(string refreshToken)
+        public virtual System.Threading.Tasks.Task DeleteRefreshTokenGrantAsync(string refreshToken, string tenant_name, string track_name)
         {
-            return DeleteRefreshTokenGrantAsync(refreshToken, System.Threading.CancellationToken.None);
+            return DeleteRefreshTokenGrantAsync(refreshToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11132,8 +11771,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="refreshToken">The refresh token.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteRefreshTokenGrantAsync(string refreshToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteRefreshTokenGrantAsync(string refreshToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -11144,8 +11789,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!RefreshTokenGrant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!RefreshTokenGrant");
+                    // Operation Path: "{tenant_name}/{track_name}/!RefreshTokenGrant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!RefreshTokenGrant");
                     urlBuilder_.Append('?');
                     if (refreshToken != null)
                     {
@@ -11240,9 +11888,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<RefreshTokenGrantPaginationResponse> GetRefreshTokenGrantsAsync(string filterUserIdentifier, string filterSub, string filterClientId, string filterAuthMethod, string paginationToken)
+        public virtual System.Threading.Tasks.Task<RefreshTokenGrantPaginationResponse> GetRefreshTokenGrantsAsync(string filterUserIdentifier, string filterSub, string filterClientId, string filterAuthMethod, string paginationToken, string tenant_name, string track_name)
         {
-            return GetRefreshTokenGrantsAsync(filterUserIdentifier, filterSub, filterClientId, filterAuthMethod, paginationToken, System.Threading.CancellationToken.None);
+            return GetRefreshTokenGrantsAsync(filterUserIdentifier, filterSub, filterClientId, filterAuthMethod, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11256,8 +11904,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<RefreshTokenGrantPaginationResponse> GetRefreshTokenGrantsAsync(string filterUserIdentifier, string filterSub, string filterClientId, string filterAuthMethod, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RefreshTokenGrantPaginationResponse> GetRefreshTokenGrantsAsync(string filterUserIdentifier, string filterSub, string filterClientId, string filterAuthMethod, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -11269,8 +11923,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!RefreshTokenGrants"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!RefreshTokenGrants");
+                    // Operation Path: "{tenant_name}/{track_name}/!RefreshTokenGrants"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!RefreshTokenGrants");
                     urlBuilder_.Append('?');
                     if (filterUserIdentifier != null)
                     {
@@ -11385,9 +12042,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="authMethod">Filter by the authentication method.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteRefreshTokenGrantsAsync(string userIdentifier, string sub, string clientId, string authMethod)
+        public virtual System.Threading.Tasks.Task DeleteRefreshTokenGrantsAsync(string userIdentifier, string sub, string clientId, string authMethod, string tenant_name, string track_name)
         {
-            return DeleteRefreshTokenGrantsAsync(userIdentifier, sub, clientId, authMethod, System.Threading.CancellationToken.None);
+            return DeleteRefreshTokenGrantsAsync(userIdentifier, sub, clientId, authMethod, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11400,8 +12057,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="authMethod">Filter by the authentication method.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteRefreshTokenGrantsAsync(string userIdentifier, string sub, string clientId, string authMethod, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteRefreshTokenGrantsAsync(string userIdentifier, string sub, string clientId, string authMethod, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -11412,8 +12075,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!RefreshTokenGrants"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!RefreshTokenGrants");
+                    // Operation Path: "{tenant_name}/{track_name}/!RefreshTokenGrants"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!RefreshTokenGrants");
                     urlBuilder_.Append('?');
                     if (userIdentifier != null)
                     {
@@ -11515,9 +12181,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetResourceCulturesAsync(string paginationToken)
+        public virtual System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetResourceCulturesAsync(string paginationToken, string tenant_name, string track_name)
         {
-            return GetResourceCulturesAsync(paginationToken, System.Threading.CancellationToken.None);
+            return GetResourceCulturesAsync(paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11526,8 +12192,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetResourceCulturesAsync(string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetResourceCulturesAsync(string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -11539,8 +12211,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ResourceCultures"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ResourceCultures");
+                    // Operation Path: "{tenant_name}/{track_name}/!ResourceCultures"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ResourceCultures");
                     urlBuilder_.Append('?');
                     if (paginationToken != null)
                     {
@@ -11636,9 +12311,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="filterName">Filter resource name or ID.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetResourceNamesAsync(string filterName, string paginationToken)
+        public virtual System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetResourceNamesAsync(string filterName, string paginationToken, string tenant_name, string track_name)
         {
-            return GetResourceNamesAsync(filterName, paginationToken, System.Threading.CancellationToken.None);
+            return GetResourceNamesAsync(filterName, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11648,8 +12323,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="filterName">Filter resource name or ID.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetResourceNamesAsync(string filterName, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetResourceNamesAsync(string filterName, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -11661,8 +12342,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!ResourceNames"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!ResourceNames");
+                    // Operation Path: "{tenant_name}/{track_name}/!ResourceNames"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!ResourceNames");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -11762,9 +12446,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SamlDownParty> GetSamlDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<SamlDownParty> GetSamlDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetSamlDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetSamlDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11774,8 +12458,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SamlDownParty> GetSamlDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SamlDownParty> GetSamlDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -11787,8 +12477,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -11884,9 +12577,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(SamlDownParty body)
+        public virtual System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(string tenant_name, string track_name, SamlDownParty body)
         {
-            return PostSamlDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostSamlDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11896,8 +12589,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(SamlDownParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SamlDownParty> PostSamlDownPartyAsync(string tenant_name, string track_name, SamlDownParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -11913,8 +12612,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -12004,9 +12706,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 application registration.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SamlDownParty> PutSamlDownPartyAsync(SamlDownParty body)
+        public virtual System.Threading.Tasks.Task<SamlDownParty> PutSamlDownPartyAsync(string tenant_name, string track_name, SamlDownParty body)
         {
-            return PutSamlDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutSamlDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12016,8 +12718,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 application registration.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SamlDownParty> PutSamlDownPartyAsync(SamlDownParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SamlDownParty> PutSamlDownPartyAsync(string tenant_name, string track_name, SamlDownParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12033,8 +12741,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -12124,9 +12835,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteSamlDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteSamlDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteSamlDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteSamlDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12136,8 +12847,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteSamlDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteSamlDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12148,8 +12865,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -12240,9 +12960,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SamlUpParty> GetSamlUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<SamlUpParty> GetSamlUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetSamlUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetSamlUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12252,8 +12972,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SamlUpParty> GetSamlUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SamlUpParty> GetSamlUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12265,8 +12991,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -12362,9 +13091,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(SamlUpParty body)
+        public virtual System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(string tenant_name, string track_name, SamlUpParty body)
         {
-            return PostSamlUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostSamlUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12374,8 +13103,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(SamlUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyAsync(string tenant_name, string track_name, SamlUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12391,8 +13126,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -12482,9 +13220,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SamlUpParty> PutSamlUpPartyAsync(SamlUpParty body)
+        public virtual System.Threading.Tasks.Task<SamlUpParty> PutSamlUpPartyAsync(string tenant_name, string track_name, SamlUpParty body)
         {
-            return PutSamlUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutSamlUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12494,8 +13232,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SamlUpParty> PutSamlUpPartyAsync(SamlUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SamlUpParty> PutSamlUpPartyAsync(string tenant_name, string track_name, SamlUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12511,8 +13255,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -12602,9 +13349,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteSamlUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteSamlUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteSamlUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteSamlUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12614,8 +13361,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteSamlUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteSamlUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12626,8 +13379,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -12718,9 +13474,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 metadata.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyReadMetadataAsync(SamlReadMetadataRequest body)
+        public virtual System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyReadMetadataAsync(string tenant_name, string track_name, SamlReadMetadataRequest body)
         {
-            return PostSamlUpPartyReadMetadataAsync(body, System.Threading.CancellationToken.None);
+            return PostSamlUpPartyReadMetadataAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12730,8 +13486,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">SAML 2.0 metadata.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyReadMetadataAsync(SamlReadMetadataRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<SamlUpParty> PostSamlUpPartyReadMetadataAsync(string tenant_name, string track_name, SamlReadMetadataRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12747,8 +13509,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!SamlUpPartyReadMetadata"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!SamlUpPartyReadMetadata");
+                    // Operation Path: "{tenant_name}/{track_name}/!SamlUpPartyReadMetadata"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!SamlUpPartyReadMetadata");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -12832,9 +13597,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Tenant name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TenantResponse> GetTenantAsync(string name)
+        public virtual System.Threading.Tasks.Task<TenantResponse> GetTenantAsync(string name, string tenant_name, string track_name)
         {
-            return GetTenantAsync(name, System.Threading.CancellationToken.None);
+            return GetTenantAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12844,8 +13609,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Tenant name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TenantResponse> GetTenantAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TenantResponse> GetTenantAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12857,8 +13628,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Tenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Tenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!Tenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Tenant");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -12954,9 +13728,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Tenant.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TenantResponse> PostTenantAsync(CreateTenantRequest body)
+        public virtual System.Threading.Tasks.Task<TenantResponse> PostTenantAsync(string tenant_name, string track_name, CreateTenantRequest body)
         {
-            return PostTenantAsync(body, System.Threading.CancellationToken.None);
+            return PostTenantAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12966,8 +13740,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Tenant.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TenantResponse> PostTenantAsync(CreateTenantRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TenantResponse> PostTenantAsync(string tenant_name, string track_name, CreateTenantRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -12983,8 +13763,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Tenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Tenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!Tenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Tenant");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -13074,9 +13857,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Tenant.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TenantResponse> PutTenantAsync(TenantRequest body)
+        public virtual System.Threading.Tasks.Task<TenantResponse> PutTenantAsync(string tenant_name, string track_name, TenantRequest body)
         {
-            return PutTenantAsync(body, System.Threading.CancellationToken.None);
+            return PutTenantAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13086,8 +13869,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Tenant.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TenantResponse> PutTenantAsync(TenantRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TenantResponse> PutTenantAsync(string tenant_name, string track_name, TenantRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -13103,8 +13892,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Tenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Tenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!Tenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Tenant");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -13194,9 +13986,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Tenant name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTenantAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteTenantAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteTenantAsync(name, System.Threading.CancellationToken.None);
+            return DeleteTenantAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13206,8 +13998,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Tenant name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTenantAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTenantAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -13218,8 +14016,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Tenant"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Tenant");
+                    // Operation Path: "{tenant_name}/{track_name}/!Tenant"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Tenant");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -13309,9 +14110,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LogResponse> GetTenantLogAsync(string tenantName, string trackName, long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics)
+        public virtual System.Threading.Tasks.Task<LogResponse> GetTenantLogAsync(string tenantName, string trackName, long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, string tenant_name, string track_name)
         {
-            return GetTenantLogAsync(tenantName, trackName, fromTime, toTime, filter, queryExceptions, queryErrors, queryWarnings, queryTraces, queryEvents, queryMetrics, System.Threading.CancellationToken.None);
+            return GetTenantLogAsync(tenantName, trackName, fromTime, toTime, filter, queryExceptions, queryErrors, queryWarnings, queryTraces, queryEvents, queryMetrics, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13320,8 +14121,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LogResponse> GetTenantLogAsync(string tenantName, string trackName, long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LogResponse> GetTenantLogAsync(string tenantName, string trackName, long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
 
@@ -13339,8 +14146,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TenantLog"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TenantLog");
+                    // Operation Path: "{tenant_name}/{track_name}/!TenantLog"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TenantLog");
                     urlBuilder_.Append('?');
                     if (tenantName != null)
                     {
@@ -13475,9 +14285,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetTenantLogUsageAsync(string tenantName, string trackName, UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery)
+        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetTenantLogUsageAsync(string tenantName, string trackName, UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, string tenant_name, string track_name)
         {
-            return GetTenantLogUsageAsync(tenantName, trackName, timeScope, timeOffset, summarizeLevel, includeTenants, includeTracks, includeUsers, includeLogins, includeTokenRequests, includeAdditional, includeControlApi, onlyDbQuery, System.Threading.CancellationToken.None);
+            return GetTenantLogUsageAsync(tenantName, trackName, timeScope, timeOffset, summarizeLevel, includeTenants, includeTracks, includeUsers, includeLogins, includeTokenRequests, includeAdditional, includeControlApi, onlyDbQuery, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13486,8 +14296,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetTenantLogUsageAsync(string tenantName, string trackName, UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetTenantLogUsageAsync(string tenantName, string trackName, UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (timeScope == null)
                 throw new System.ArgumentNullException("timeScope");
 
@@ -13505,8 +14321,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TenantLogUsage"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TenantLogUsage");
+                    // Operation Path: "{tenant_name}/{track_name}/!TenantLogUsage"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TenantLogUsage");
                     urlBuilder_.Append('?');
                     if (tenantName != null)
                     {
@@ -13652,9 +14471,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TenantPaginationResponse> GetTenantsAsync(string filterName, string filterCustomDomain, string paginationToken)
+        public virtual System.Threading.Tasks.Task<TenantPaginationResponse> GetTenantsAsync(string filterName, string filterCustomDomain, string paginationToken, string tenant_name, string track_name)
         {
-            return GetTenantsAsync(filterName, filterCustomDomain, paginationToken, System.Threading.CancellationToken.None);
+            return GetTenantsAsync(filterName, filterCustomDomain, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13666,8 +14485,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TenantPaginationResponse> GetTenantsAsync(string filterName, string filterCustomDomain, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TenantPaginationResponse> GetTenantsAsync(string filterName, string filterCustomDomain, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -13679,8 +14504,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Tenants"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Tenants");
+                    // Operation Path: "{tenant_name}/{track_name}/!Tenants"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Tenants");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -13784,9 +14612,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Track name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Track> GetTrackAsync(string name)
+        public virtual System.Threading.Tasks.Task<Track> GetTrackAsync(string name, string tenant_name, string track_name)
         {
-            return GetTrackAsync(name, System.Threading.CancellationToken.None);
+            return GetTrackAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13796,8 +14624,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Track name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Track> GetTrackAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Track> GetTrackAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -13809,8 +14643,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Track"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Track");
+                    // Operation Path: "{tenant_name}/{track_name}/!Track"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Track");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -13906,9 +14743,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Track> PostTrackAsync(Track body)
+        public virtual System.Threading.Tasks.Task<Track> PostTrackAsync(string tenant_name, string track_name, Track body)
         {
-            return PostTrackAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13918,8 +14755,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Track> PostTrackAsync(Track body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Track> PostTrackAsync(string tenant_name, string track_name, Track body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -13935,8 +14778,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Track"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Track");
+                    // Operation Path: "{tenant_name}/{track_name}/!Track"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Track");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -14026,9 +14872,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Track> PutTrackAsync(Track body)
+        public virtual System.Threading.Tasks.Task<Track> PutTrackAsync(string tenant_name, string track_name, Track body)
         {
-            return PutTrackAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14038,8 +14884,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Track> PutTrackAsync(Track body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Track> PutTrackAsync(string tenant_name, string track_name, Track body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14055,8 +14907,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Track"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Track");
+                    // Operation Path: "{tenant_name}/{track_name}/!Track"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Track");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -14146,9 +15001,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Track name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTrackAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteTrackAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteTrackAsync(name, System.Threading.CancellationToken.None);
+            return DeleteTrackAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14158,8 +15013,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Track name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTrackAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTrackAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14170,8 +15031,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Track"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Track");
+                    // Operation Path: "{tenant_name}/{track_name}/!Track"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Track");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -14261,9 +15125,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ClaimMap>> GetTrackClaimMappingAsync()
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ClaimMap>> GetTrackClaimMappingAsync(string tenant_name, string track_name)
         {
-            return GetTrackClaimMappingAsync(System.Threading.CancellationToken.None);
+            return GetTrackClaimMappingAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14272,8 +15136,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ClaimMap>> GetTrackClaimMappingAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ClaimMap>> GetTrackClaimMappingAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14285,8 +15155,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackClaimMapping"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackClaimMapping");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackClaimMapping"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackClaimMapping");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -14382,9 +15255,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Claim mappings.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ClaimMap>> PostTrackClaimMappingAsync(System.Collections.Generic.IEnumerable<ClaimMap> body)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ClaimMap>> PostTrackClaimMappingAsync(string tenant_name, string track_name, System.Collections.Generic.IEnumerable<ClaimMap> body)
         {
-            return PostTrackClaimMappingAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackClaimMappingAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14394,8 +15267,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Claim mappings.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ClaimMap>> PostTrackClaimMappingAsync(System.Collections.Generic.IEnumerable<ClaimMap> body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ClaimMap>> PostTrackClaimMappingAsync(string tenant_name, string track_name, System.Collections.Generic.IEnumerable<ClaimMap> body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14411,8 +15290,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackClaimMapping"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackClaimMapping");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackClaimMapping"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackClaimMapping");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -14501,9 +15383,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyContainedAsync()
+        public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyContainedAsync(string tenant_name, string track_name)
         {
-            return GetTrackKeyContainedAsync(System.Threading.CancellationToken.None);
+            return GetTrackKeyContainedAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14512,8 +15394,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyContainedAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyContainedAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14525,8 +15413,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackKeyContained"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackKeyContained");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackKeyContained"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackKeyContained");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -14616,9 +15507,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track key.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> PutTrackKeyContainedAsync(TrackKeyItemContainedRequest body)
+        public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> PutTrackKeyContainedAsync(string tenant_name, string track_name, TrackKeyItemContainedRequest body)
         {
-            return PutTrackKeyContainedAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackKeyContainedAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14628,8 +15519,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track key.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> PutTrackKeyContainedAsync(TrackKeyItemContainedRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> PutTrackKeyContainedAsync(string tenant_name, string track_name, TrackKeyItemContainedRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14645,8 +15542,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackKeyContained"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackKeyContained");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackKeyContained"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackKeyContained");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -14735,9 +15635,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTrackKeyContainedAsync()
+        public virtual System.Threading.Tasks.Task DeleteTrackKeyContainedAsync(string tenant_name, string track_name)
         {
-            return DeleteTrackKeyContainedAsync(System.Threading.CancellationToken.None);
+            return DeleteTrackKeyContainedAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14746,8 +15646,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTrackKeyContainedAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTrackKeyContainedAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14758,8 +15664,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackKeyContained"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackKeyContained");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackKeyContained"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackKeyContained");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -14844,9 +15753,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track to swap.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> PostTrackKeyContainedSwapAsync(TrackKeyItemContainedSwap body)
+        public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> PostTrackKeyContainedSwapAsync(string tenant_name, string track_name, TrackKeyItemContainedSwap body)
         {
-            return PostTrackKeyContainedSwapAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackKeyContainedSwapAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14856,8 +15765,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track to swap.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> PostTrackKeyContainedSwapAsync(TrackKeyItemContainedSwap body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> PostTrackKeyContainedSwapAsync(string tenant_name, string track_name, TrackKeyItemContainedSwap body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14873,8 +15788,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackKeyContainedSwap"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackKeyContainedSwap");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackKeyContainedSwap"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackKeyContainedSwap");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -14963,9 +15881,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyTypeAsync()
+        public virtual System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyTypeAsync(string tenant_name, string track_name)
         {
-            return GetTrackKeyTypeAsync(System.Threading.CancellationToken.None);
+            return GetTrackKeyTypeAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14974,8 +15892,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyTypeAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackKeyItemsContained> GetTrackKeyTypeAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -14987,8 +15911,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackKeyType"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackKeyType");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackKeyType"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackKeyType");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -15078,9 +16005,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track key.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackKey> PutTrackKeyTypeAsync(TrackKey body)
+        public virtual System.Threading.Tasks.Task<TrackKey> PutTrackKeyTypeAsync(string tenant_name, string track_name, TrackKey body)
         {
-            return PutTrackKeyTypeAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackKeyTypeAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15090,8 +16017,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Track key.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackKey> PutTrackKeyTypeAsync(TrackKey body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackKey> PutTrackKeyTypeAsync(string tenant_name, string track_name, TrackKey body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -15107,8 +16040,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackKeyType"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackKeyType");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackKeyType"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackKeyType");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -15198,9 +16134,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackLinkDownParty> GetTrackLinkDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<TrackLinkDownParty> GetTrackLinkDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetTrackLinkDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetTrackLinkDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15210,8 +16146,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackLinkDownParty> GetTrackLinkDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackLinkDownParty> GetTrackLinkDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -15223,8 +16165,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLinkDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLinkDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLinkDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLinkDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -15320,9 +16265,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Environment Link application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackLinkDownParty> PostTrackLinkDownPartyAsync(TrackLinkDownParty body)
+        public virtual System.Threading.Tasks.Task<TrackLinkDownParty> PostTrackLinkDownPartyAsync(string tenant_name, string track_name, TrackLinkDownParty body)
         {
-            return PostTrackLinkDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackLinkDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15332,8 +16277,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Environment Link application registration.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackLinkDownParty> PostTrackLinkDownPartyAsync(TrackLinkDownParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackLinkDownParty> PostTrackLinkDownPartyAsync(string tenant_name, string track_name, TrackLinkDownParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -15349,8 +16300,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLinkDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLinkDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLinkDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLinkDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -15440,9 +16394,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Environment Link application registration.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackLinkDownParty> PutTrackLinkDownPartyAsync(TrackLinkDownParty body)
+        public virtual System.Threading.Tasks.Task<TrackLinkDownParty> PutTrackLinkDownPartyAsync(string tenant_name, string track_name, TrackLinkDownParty body)
         {
-            return PutTrackLinkDownPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackLinkDownPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15452,8 +16406,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Environment Link application registration.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackLinkDownParty> PutTrackLinkDownPartyAsync(TrackLinkDownParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackLinkDownParty> PutTrackLinkDownPartyAsync(string tenant_name, string track_name, TrackLinkDownParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -15469,8 +16429,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLinkDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLinkDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLinkDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLinkDownParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -15560,9 +16523,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTrackLinkDownPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteTrackLinkDownPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteTrackLinkDownPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteTrackLinkDownPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15572,8 +16535,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Application name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTrackLinkDownPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTrackLinkDownPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -15584,8 +16553,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLinkDownParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLinkDownParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLinkDownParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLinkDownParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -15676,9 +16648,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackLinkUpParty> GetTrackLinkUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task<TrackLinkUpParty> GetTrackLinkUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return GetTrackLinkUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return GetTrackLinkUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15688,8 +16660,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackLinkUpParty> GetTrackLinkUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackLinkUpParty> GetTrackLinkUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -15701,8 +16679,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLinkUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLinkUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLinkUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLinkUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -15798,9 +16779,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Environment Link authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackLinkUpParty> PostTrackLinkUpPartyAsync(TrackLinkUpParty body)
+        public virtual System.Threading.Tasks.Task<TrackLinkUpParty> PostTrackLinkUpPartyAsync(string tenant_name, string track_name, TrackLinkUpParty body)
         {
-            return PostTrackLinkUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackLinkUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15810,8 +16791,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Environment Link authentication method.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackLinkUpParty> PostTrackLinkUpPartyAsync(TrackLinkUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackLinkUpParty> PostTrackLinkUpPartyAsync(string tenant_name, string track_name, TrackLinkUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -15827,8 +16814,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLinkUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLinkUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLinkUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLinkUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -15918,9 +16908,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Environment Link authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackLinkUpParty> PutTrackLinkUpPartyAsync(TrackLinkUpParty body)
+        public virtual System.Threading.Tasks.Task<TrackLinkUpParty> PutTrackLinkUpPartyAsync(string tenant_name, string track_name, TrackLinkUpParty body)
         {
-            return PutTrackLinkUpPartyAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackLinkUpPartyAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15930,8 +16920,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Environment Link authentication method.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackLinkUpParty> PutTrackLinkUpPartyAsync(TrackLinkUpParty body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackLinkUpParty> PutTrackLinkUpPartyAsync(string tenant_name, string track_name, TrackLinkUpParty body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -15947,8 +16943,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLinkUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLinkUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLinkUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLinkUpParty");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -16038,9 +17037,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTrackLinkUpPartyAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteTrackLinkUpPartyAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteTrackLinkUpPartyAsync(name, System.Threading.CancellationToken.None);
+            return DeleteTrackLinkUpPartyAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16050,8 +17049,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Authentication method name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTrackLinkUpPartyAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTrackLinkUpPartyAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -16062,8 +17067,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLinkUpParty"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLinkUpParty");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLinkUpParty"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLinkUpParty");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -16153,9 +17161,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LogResponse> GetTrackLogAsync(long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics)
+        public virtual System.Threading.Tasks.Task<LogResponse> GetTrackLogAsync(long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, string tenant_name, string track_name)
         {
-            return GetTrackLogAsync(fromTime, toTime, filter, queryExceptions, queryErrors, queryWarnings, queryTraces, queryEvents, queryMetrics, System.Threading.CancellationToken.None);
+            return GetTrackLogAsync(fromTime, toTime, filter, queryExceptions, queryErrors, queryWarnings, queryTraces, queryEvents, queryMetrics, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16164,8 +17172,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LogResponse> GetTrackLogAsync(long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LogResponse> GetTrackLogAsync(long fromTime, long toTime, string filter, bool? queryExceptions, bool? queryErrors, bool? queryWarnings, bool? queryTraces, bool? queryEvents, bool? queryMetrics, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
 
@@ -16183,8 +17197,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLog"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLog");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLog"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLog");
                     urlBuilder_.Append('?');
                     urlBuilder_.Append(System.Uri.EscapeDataString("FromTime")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(fromTime, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     urlBuilder_.Append(System.Uri.EscapeDataString("ToTime")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(toTime, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
@@ -16311,9 +17328,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LogSettings> GetTrackLogSettingAsync()
+        public virtual System.Threading.Tasks.Task<LogSettings> GetTrackLogSettingAsync(string tenant_name, string track_name)
         {
-            return GetTrackLogSettingAsync(System.Threading.CancellationToken.None);
+            return GetTrackLogSettingAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16322,8 +17339,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LogSettings> GetTrackLogSettingAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LogSettings> GetTrackLogSettingAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -16335,8 +17358,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLogSetting"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLogSetting");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLogSetting"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLogSetting");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -16432,9 +17458,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Log settings.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LogSettings> PostTrackLogSettingAsync(LogSettings body)
+        public virtual System.Threading.Tasks.Task<LogSettings> PostTrackLogSettingAsync(string tenant_name, string track_name, LogSettings body)
         {
-            return PostTrackLogSettingAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackLogSettingAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16444,8 +17470,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Log settings.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LogSettings> PostTrackLogSettingAsync(LogSettings body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LogSettings> PostTrackLogSettingAsync(string tenant_name, string track_name, LogSettings body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -16461,8 +17493,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLogSetting"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLogSetting");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLogSetting"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLogSetting");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -16551,9 +17586,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LogStreams> GetTrackLogStreamsSettingsAsync()
+        public virtual System.Threading.Tasks.Task<LogStreams> GetTrackLogStreamsSettingsAsync(string tenant_name, string track_name)
         {
-            return GetTrackLogStreamsSettingsAsync(System.Threading.CancellationToken.None);
+            return GetTrackLogStreamsSettingsAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16562,8 +17597,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LogStreams> GetTrackLogStreamsSettingsAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LogStreams> GetTrackLogStreamsSettingsAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -16575,8 +17616,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLogStreamsSettings"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLogStreamsSettings");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLogStreamsSettings"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLogStreamsSettings");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -16672,9 +17716,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">All log stream settings.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<LogStreams> PostTrackLogStreamsSettingsAsync(LogStreams body)
+        public virtual System.Threading.Tasks.Task<LogStreams> PostTrackLogStreamsSettingsAsync(string tenant_name, string track_name, LogStreams body)
         {
-            return PostTrackLogStreamsSettingsAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackLogStreamsSettingsAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16684,8 +17728,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">All log stream settings.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<LogStreams> PostTrackLogStreamsSettingsAsync(LogStreams body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<LogStreams> PostTrackLogStreamsSettingsAsync(string tenant_name, string track_name, LogStreams body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -16701,8 +17751,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLogStreamsSettings"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLogStreamsSettings");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLogStreamsSettings"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLogStreamsSettings");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -16791,9 +17844,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetTrackLogUsageAsync(UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery)
+        public virtual System.Threading.Tasks.Task<UsageLogResponse> GetTrackLogUsageAsync(UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, string tenant_name, string track_name)
         {
-            return GetTrackLogUsageAsync(timeScope, timeOffset, summarizeLevel, includeTenants, includeTracks, includeUsers, includeLogins, includeTokenRequests, includeAdditional, includeControlApi, onlyDbQuery, System.Threading.CancellationToken.None);
+            return GetTrackLogUsageAsync(timeScope, timeOffset, summarizeLevel, includeTenants, includeTracks, includeUsers, includeLogins, includeTokenRequests, includeAdditional, includeControlApi, onlyDbQuery, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16802,8 +17855,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetTrackLogUsageAsync(UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UsageLogResponse> GetTrackLogUsageAsync(UsageLogTimeScopes timeScope, int? timeOffset, UsageLogSummarizeLevels summarizeLevel, bool? includeTenants, bool? includeTracks, bool? includeUsers, bool? includeLogins, bool? includeTokenRequests, bool? includeAdditional, bool? includeControlApi, bool? onlyDbQuery, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (timeScope == null)
                 throw new System.ArgumentNullException("timeScope");
 
@@ -16821,8 +17880,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackLogUsage"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackLogUsage");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackLogUsage"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackLogUsage");
                     urlBuilder_.Append('?');
                     urlBuilder_.Append(System.Uri.EscapeDataString("TimeScope")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(timeScope, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     if (timeOffset != null)
@@ -16958,9 +18020,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="resourceId">Resource id.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ResourceItem> GetTrackOnlyResourceAsync(int? resourceId)
+        public virtual System.Threading.Tasks.Task<ResourceItem> GetTrackOnlyResourceAsync(int? resourceId, string tenant_name, string track_name)
         {
-            return GetTrackOnlyResourceAsync(resourceId, System.Threading.CancellationToken.None);
+            return GetTrackOnlyResourceAsync(resourceId, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16970,8 +18032,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="resourceId">Resource id.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ResourceItem> GetTrackOnlyResourceAsync(int? resourceId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ResourceItem> GetTrackOnlyResourceAsync(int? resourceId, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -16983,8 +18051,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackOnlyResource"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackOnlyResource");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackOnlyResource"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackOnlyResource");
                     urlBuilder_.Append('?');
                     if (resourceId != null)
                     {
@@ -17080,9 +18151,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Resource item.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackResourceItem> PutTrackOnlyResourceAsync(TrackResourceItem body)
+        public virtual System.Threading.Tasks.Task<TrackResourceItem> PutTrackOnlyResourceAsync(string tenant_name, string track_name, TrackResourceItem body)
         {
-            return PutTrackOnlyResourceAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackOnlyResourceAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17092,8 +18163,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Resource item.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackResourceItem> PutTrackOnlyResourceAsync(TrackResourceItem body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackResourceItem> PutTrackOnlyResourceAsync(string tenant_name, string track_name, TrackResourceItem body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -17109,8 +18186,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackOnlyResource"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackOnlyResource");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackOnlyResource"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackOnlyResource");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -17200,9 +18280,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="resourceId">Resource id.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTrackOnlyResourceAsync(int? resourceId)
+        public virtual System.Threading.Tasks.Task DeleteTrackOnlyResourceAsync(int? resourceId, string tenant_name, string track_name)
         {
-            return DeleteTrackOnlyResourceAsync(resourceId, System.Threading.CancellationToken.None);
+            return DeleteTrackOnlyResourceAsync(resourceId, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17212,8 +18292,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="resourceId">Resource id.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTrackOnlyResourceAsync(int? resourceId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTrackOnlyResourceAsync(int? resourceId, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -17224,8 +18310,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackOnlyResource"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackOnlyResource");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackOnlyResource"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackOnlyResource");
                     urlBuilder_.Append('?');
                     if (resourceId != null)
                     {
@@ -17316,9 +18405,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Resource name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackResourceName> PutTrackOnlyResourceNameAsync(TrackResourceName body)
+        public virtual System.Threading.Tasks.Task<TrackResourceName> PutTrackOnlyResourceNameAsync(string tenant_name, string track_name, TrackResourceName body)
         {
-            return PutTrackOnlyResourceNameAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackOnlyResourceNameAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17328,8 +18417,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Resource name.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackResourceName> PutTrackOnlyResourceNameAsync(TrackResourceName body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackResourceName> PutTrackOnlyResourceNameAsync(string tenant_name, string track_name, TrackResourceName body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -17345,8 +18440,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackOnlyResourceName"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackOnlyResourceName");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackOnlyResourceName"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackOnlyResourceName");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -17436,9 +18534,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Resource name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTrackOnlyResourceNameAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteTrackOnlyResourceNameAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteTrackOnlyResourceNameAsync(name, System.Threading.CancellationToken.None);
+            return DeleteTrackOnlyResourceNameAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17448,8 +18546,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Resource name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTrackOnlyResourceNameAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTrackOnlyResourceNameAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -17460,8 +18564,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackOnlyResourceName"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackOnlyResourceName");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackOnlyResourceName"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackOnlyResourceName");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -17552,9 +18659,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="filterName">Filter environment only resource name or ID.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetTrackOnlyResourceNamesAsync(string filterName, string paginationToken)
+        public virtual System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetTrackOnlyResourceNamesAsync(string filterName, string paginationToken, string tenant_name, string track_name)
         {
-            return GetTrackOnlyResourceNamesAsync(filterName, paginationToken, System.Threading.CancellationToken.None);
+            return GetTrackOnlyResourceNamesAsync(filterName, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17564,8 +18671,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="filterName">Filter environment only resource name or ID.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetTrackOnlyResourceNamesAsync(string filterName, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ResourceNamePaginationResponse> GetTrackOnlyResourceNamesAsync(string filterName, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -17577,8 +18690,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackOnlyResourceNames"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackOnlyResourceNames");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackOnlyResourceNames"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackOnlyResourceNames");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -17678,9 +18794,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="resourceId">Resource id.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ResourceItem> GetTrackResourceAsync(int? resourceId)
+        public virtual System.Threading.Tasks.Task<ResourceItem> GetTrackResourceAsync(int? resourceId, string tenant_name, string track_name)
         {
-            return GetTrackResourceAsync(resourceId, System.Threading.CancellationToken.None);
+            return GetTrackResourceAsync(resourceId, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17690,8 +18806,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="resourceId">Resource id.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ResourceItem> GetTrackResourceAsync(int? resourceId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ResourceItem> GetTrackResourceAsync(int? resourceId, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -17703,8 +18825,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackResource"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackResource");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackResource"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackResource");
                     urlBuilder_.Append('?');
                     if (resourceId != null)
                     {
@@ -17800,9 +18925,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Resource item.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackResourceItem> PutTrackResourceAsync(TrackResourceItem body)
+        public virtual System.Threading.Tasks.Task<TrackResourceItem> PutTrackResourceAsync(string tenant_name, string track_name, TrackResourceItem body)
         {
-            return PutTrackResourceAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackResourceAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17812,8 +18937,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Resource item.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackResourceItem> PutTrackResourceAsync(TrackResourceItem body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackResourceItem> PutTrackResourceAsync(string tenant_name, string track_name, TrackResourceItem body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -17829,8 +18960,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackResource"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackResource");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackResource"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackResource");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -17920,9 +19054,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="resourceId">Resource id.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTrackResourceAsync(int? resourceId)
+        public virtual System.Threading.Tasks.Task DeleteTrackResourceAsync(int? resourceId, string tenant_name, string track_name)
         {
-            return DeleteTrackResourceAsync(resourceId, System.Threading.CancellationToken.None);
+            return DeleteTrackResourceAsync(resourceId, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17932,8 +19066,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="resourceId">Resource id.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTrackResourceAsync(int? resourceId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTrackResourceAsync(int? resourceId, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -17944,8 +19084,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackResource"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackResource");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackResource"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackResource");
                     urlBuilder_.Append('?');
                     if (resourceId != null)
                     {
@@ -18035,9 +19178,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ResourceSettings> GetTrackResourceSettingAsync()
+        public virtual System.Threading.Tasks.Task<ResourceSettings> GetTrackResourceSettingAsync(string tenant_name, string track_name)
         {
-            return GetTrackResourceSettingAsync(System.Threading.CancellationToken.None);
+            return GetTrackResourceSettingAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18046,8 +19189,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ResourceSettings> GetTrackResourceSettingAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ResourceSettings> GetTrackResourceSettingAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -18059,8 +19208,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackResourceSetting"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackResourceSetting");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackResourceSetting"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackResourceSetting");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -18156,9 +19308,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Resource settings.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ResourceSettings> PostTrackResourceSettingAsync(ResourceSettings body)
+        public virtual System.Threading.Tasks.Task<ResourceSettings> PostTrackResourceSettingAsync(string tenant_name, string track_name, ResourceSettings body)
         {
-            return PostTrackResourceSettingAsync(body, System.Threading.CancellationToken.None);
+            return PostTrackResourceSettingAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18168,8 +19320,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Resource settings.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ResourceSettings> PostTrackResourceSettingAsync(ResourceSettings body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ResourceSettings> PostTrackResourceSettingAsync(string tenant_name, string track_name, ResourceSettings body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -18185,8 +19343,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackResourceSetting"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackResourceSetting");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackResourceSetting"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackResourceSetting");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -18277,9 +19438,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackPaginationResponse> GetTracksAsync(string filterName, string paginationToken)
+        public virtual System.Threading.Tasks.Task<TrackPaginationResponse> GetTracksAsync(string filterName, string paginationToken, string tenant_name, string track_name)
         {
-            return GetTracksAsync(filterName, paginationToken, System.Threading.CancellationToken.None);
+            return GetTracksAsync(filterName, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18290,8 +19451,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackPaginationResponse> GetTracksAsync(string filterName, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackPaginationResponse> GetTracksAsync(string filterName, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -18303,8 +19470,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Tracks"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Tracks");
+                    // Operation Path: "{tenant_name}/{track_name}/!Tracks"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Tracks");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -18403,9 +19573,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ResourceItem> GetTrackSendEmailAsync()
+        public virtual System.Threading.Tasks.Task<ResourceItem> GetTrackSendEmailAsync(string tenant_name, string track_name)
         {
-            return GetTrackSendEmailAsync(System.Threading.CancellationToken.None);
+            return GetTrackSendEmailAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18414,8 +19584,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ResourceItem> GetTrackSendEmailAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ResourceItem> GetTrackSendEmailAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -18427,8 +19603,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackSendEmail"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackSendEmail");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackSendEmail"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackSendEmail");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -18524,9 +19703,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Send email.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TrackResourceItem> PutTrackSendEmailAsync(SendEmail body)
+        public virtual System.Threading.Tasks.Task<TrackResourceItem> PutTrackSendEmailAsync(string tenant_name, string track_name, SendEmail body)
         {
-            return PutTrackSendEmailAsync(body, System.Threading.CancellationToken.None);
+            return PutTrackSendEmailAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18536,8 +19715,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Send email.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TrackResourceItem> PutTrackSendEmailAsync(SendEmail body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TrackResourceItem> PutTrackSendEmailAsync(string tenant_name, string track_name, SendEmail body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -18553,8 +19738,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackSendEmail"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackSendEmail");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackSendEmail"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackSendEmail");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -18643,9 +19831,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteTrackSendEmailAsync()
+        public virtual System.Threading.Tasks.Task DeleteTrackSendEmailAsync(string tenant_name, string track_name)
         {
-            return DeleteTrackSendEmailAsync(System.Threading.CancellationToken.None);
+            return DeleteTrackSendEmailAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18654,8 +19842,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteTrackSendEmailAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteTrackSendEmailAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -18666,8 +19860,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!TrackSendEmail"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!TrackSendEmail");
+                    // Operation Path: "{tenant_name}/{track_name}/!TrackSendEmail"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!TrackSendEmail");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -18754,9 +19951,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UpPartyPaginationResponse> GetUpPartiesAsync(string filterName, string filterHrdDomains, string paginationToken)
+        public virtual System.Threading.Tasks.Task<UpPartyPaginationResponse> GetUpPartiesAsync(string filterName, string filterHrdDomains, string paginationToken, string tenant_name, string track_name)
         {
-            return GetUpPartiesAsync(filterName, filterHrdDomains, paginationToken, System.Threading.CancellationToken.None);
+            return GetUpPartiesAsync(filterName, filterHrdDomains, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18768,8 +19965,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UpPartyPaginationResponse> GetUpPartiesAsync(string filterName, string filterHrdDomains, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UpPartyPaginationResponse> GetUpPartiesAsync(string filterName, string filterHrdDomains, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -18781,8 +19984,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!UpParties"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!UpParties");
+                    // Operation Path: "{tenant_name}/{track_name}/!UpParties"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!UpParties");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -18885,9 +20091,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Used> GetUsageAsync(string tenantName, System.DateTimeOffset periodBeginDate, System.DateTimeOffset? periodEndDate)
+        public virtual System.Threading.Tasks.Task<Used> GetUsageAsync(string tenantName, System.DateTimeOffset periodBeginDate, System.DateTimeOffset? periodEndDate, string tenant_name, string track_name)
         {
-            return GetUsageAsync(tenantName, periodBeginDate, periodEndDate, System.Threading.CancellationToken.None);
+            return GetUsageAsync(tenantName, periodBeginDate, periodEndDate, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18896,8 +20102,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Used> GetUsageAsync(string tenantName, System.DateTimeOffset periodBeginDate, System.DateTimeOffset? periodEndDate, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Used> GetUsageAsync(string tenantName, System.DateTimeOffset periodBeginDate, System.DateTimeOffset? periodEndDate, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             if (tenantName == null)
                 throw new System.ArgumentNullException("tenantName");
 
@@ -18915,8 +20127,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Usage"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Usage");
+                    // Operation Path: "{tenant_name}/{track_name}/!Usage"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Usage");
                     urlBuilder_.Append('?');
                     urlBuilder_.Append(System.Uri.EscapeDataString("TenantName")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(tenantName, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     urlBuilder_.Append(System.Uri.EscapeDataString("PeriodBeginDate")).Append('=').Append(System.Uri.EscapeDataString(periodBeginDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture))).Append('&');
@@ -19014,9 +20229,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Usage request.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Used> PostUsageAsync(UpdateUsageRequest body)
+        public virtual System.Threading.Tasks.Task<Used> PostUsageAsync(string tenant_name, string track_name, UpdateUsageRequest body)
         {
-            return PostUsageAsync(body, System.Threading.CancellationToken.None);
+            return PostUsageAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19026,8 +20241,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Usage request.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Used> PostUsageAsync(UpdateUsageRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Used> PostUsageAsync(string tenant_name, string track_name, UpdateUsageRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -19043,8 +20264,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Usage"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Usage");
+                    // Operation Path: "{tenant_name}/{track_name}/!Usage"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Usage");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -19134,9 +20358,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Usage request.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Used> PutUsageAsync(UpdateUsageRequest body)
+        public virtual System.Threading.Tasks.Task<Used> PutUsageAsync(string tenant_name, string track_name, UpdateUsageRequest body)
         {
-            return PutUsageAsync(body, System.Threading.CancellationToken.None);
+            return PutUsageAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19146,8 +20370,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Usage request.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Used> PutUsageAsync(UpdateUsageRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Used> PutUsageAsync(string tenant_name, string track_name, UpdateUsageRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -19163,8 +20393,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Usage"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Usage");
+                    // Operation Path: "{tenant_name}/{track_name}/!Usage"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Usage");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -19254,9 +20487,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Usage name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteUsageAsync(string name)
+        public virtual System.Threading.Tasks.Task DeleteUsageAsync(string name, string tenant_name, string track_name)
         {
-            return DeleteUsageAsync(name, System.Threading.CancellationToken.None);
+            return DeleteUsageAsync(name, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19266,8 +20499,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="name">Usage name.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteUsageAsync(string name, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteUsageAsync(string name, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -19278,8 +20517,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Usage"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Usage");
+                    // Operation Path: "{tenant_name}/{track_name}/!Usage"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Usage");
                     urlBuilder_.Append('?');
                     if (name != null)
                     {
@@ -19370,9 +20612,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Usage invoicing action.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Used> PostUsageInvoicingActionAsync(UsageInvoicingAction body)
+        public virtual System.Threading.Tasks.Task<Used> PostUsageInvoicingActionAsync(string tenant_name, string track_name, UsageInvoicingAction body)
         {
-            return PostUsageInvoicingActionAsync(body, System.Threading.CancellationToken.None);
+            return PostUsageInvoicingActionAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19382,8 +20624,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Usage invoicing action.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Used> PostUsageInvoicingActionAsync(UsageInvoicingAction body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Used> PostUsageInvoicingActionAsync(string tenant_name, string track_name, UsageInvoicingAction body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -19399,8 +20647,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!UsageInvoicingAction"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!UsageInvoicingAction");
+                    // Operation Path: "{tenant_name}/{track_name}/!UsageInvoicingAction"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!UsageInvoicingAction");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -19493,9 +20744,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UsedBasePaginationResponse> GetUsagesAsync(string filterTenantName, int? year, int? month, string paginationToken)
+        public virtual System.Threading.Tasks.Task<UsedBasePaginationResponse> GetUsagesAsync(string filterTenantName, int? year, int? month, string paginationToken, string tenant_name, string track_name)
         {
-            return GetUsagesAsync(filterTenantName, year, month, paginationToken, System.Threading.CancellationToken.None);
+            return GetUsagesAsync(filterTenantName, year, month, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19508,8 +20759,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UsedBasePaginationResponse> GetUsagesAsync(string filterTenantName, int? year, int? month, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UsedBasePaginationResponse> GetUsagesAsync(string filterTenantName, int? year, int? month, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -19521,8 +20778,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Usages"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Usages");
+                    // Operation Path: "{tenant_name}/{track_name}/!Usages"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Usages");
                     urlBuilder_.Append('?');
                     if (filterTenantName != null)
                     {
@@ -19631,9 +20891,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<TenantPaginationResponse> GetUsageTenantsAsync(string filterName, string paginationToken)
+        public virtual System.Threading.Tasks.Task<TenantPaginationResponse> GetUsageTenantsAsync(string filterName, string paginationToken, string tenant_name, string track_name)
         {
-            return GetUsageTenantsAsync(filterName, paginationToken, System.Threading.CancellationToken.None);
+            return GetUsageTenantsAsync(filterName, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19644,8 +20904,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<TenantPaginationResponse> GetUsageTenantsAsync(string filterName, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TenantPaginationResponse> GetUsageTenantsAsync(string filterName, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -19657,8 +20923,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!UsageTenants"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!UsageTenants");
+                    // Operation Path: "{tenant_name}/{track_name}/!UsageTenants"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!UsageTenants");
                     urlBuilder_.Append('?');
                     if (filterName != null)
                     {
@@ -19760,9 +21029,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="username">Users username.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<User> GetUserAsync(string email, string phone, string username)
+        public virtual System.Threading.Tasks.Task<User> GetUserAsync(string email, string phone, string username, string tenant_name, string track_name)
         {
-            return GetUserAsync(email, phone, username, System.Threading.CancellationToken.None);
+            return GetUserAsync(email, phone, username, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19774,8 +21043,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="username">Users username.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<User> GetUserAsync(string email, string phone, string username, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<User> GetUserAsync(string email, string phone, string username, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -19787,8 +21062,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!User"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!User");
+                    // Operation Path: "{tenant_name}/{track_name}/!User"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!User");
                     urlBuilder_.Append('?');
                     if (email != null)
                     {
@@ -19892,9 +21170,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">User.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<User> PostUserAsync(CreateUserRequest body)
+        public virtual System.Threading.Tasks.Task<User> PostUserAsync(string tenant_name, string track_name, CreateUserRequest body)
         {
-            return PostUserAsync(body, System.Threading.CancellationToken.None);
+            return PostUserAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19904,8 +21182,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">User.</param>
         /// <returns>Created</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<User> PostUserAsync(CreateUserRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<User> PostUserAsync(string tenant_name, string track_name, CreateUserRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -19921,8 +21205,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!User"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!User");
+                    // Operation Path: "{tenant_name}/{track_name}/!User"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!User");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -20012,9 +21299,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">User.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<User> PutUserAsync(UserRequest body)
+        public virtual System.Threading.Tasks.Task<User> PutUserAsync(string tenant_name, string track_name, UserRequest body)
         {
-            return PutUserAsync(body, System.Threading.CancellationToken.None);
+            return PutUserAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20024,8 +21311,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">User.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<User> PutUserAsync(UserRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<User> PutUserAsync(string tenant_name, string track_name, UserRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -20041,8 +21334,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!User"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!User");
+                    // Operation Path: "{tenant_name}/{track_name}/!User"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!User");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -20134,9 +21430,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="username">User username.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteUserAsync(string email, string phone, string username)
+        public virtual System.Threading.Tasks.Task DeleteUserAsync(string email, string phone, string username, string tenant_name, string track_name)
         {
-            return DeleteUserAsync(email, phone, username, System.Threading.CancellationToken.None);
+            return DeleteUserAsync(email, phone, username, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20148,8 +21444,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="username">User username.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteUserAsync(string email, string phone, string username, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteUserAsync(string email, string phone, string username, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -20160,8 +21462,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!User"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!User");
+                    // Operation Path: "{tenant_name}/{track_name}/!User"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!User");
                     urlBuilder_.Append('?');
                     if (email != null)
                     {
@@ -20260,9 +21565,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">User with current and new password.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<User> PutUserChangePasswordAsync(UserChangePasswordRequest body)
+        public virtual System.Threading.Tasks.Task<User> PutUserChangePasswordAsync(string tenant_name, string track_name, UserChangePasswordRequest body)
         {
-            return PutUserChangePasswordAsync(body, System.Threading.CancellationToken.None);
+            return PutUserChangePasswordAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20272,8 +21577,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">User with current and new password.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<User> PutUserChangePasswordAsync(UserChangePasswordRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<User> PutUserChangePasswordAsync(string tenant_name, string track_name, UserChangePasswordRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -20289,8 +21600,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!UserChangePassword"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!UserChangePassword");
+                    // Operation Path: "{tenant_name}/{track_name}/!UserChangePassword"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!UserChangePassword");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -20379,9 +21693,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UserControlProfile> GetUserControlProfileAsync()
+        public virtual System.Threading.Tasks.Task<UserControlProfile> GetUserControlProfileAsync(string tenant_name, string track_name)
         {
-            return GetUserControlProfileAsync(System.Threading.CancellationToken.None);
+            return GetUserControlProfileAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20390,8 +21704,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UserControlProfile> GetUserControlProfileAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UserControlProfile> GetUserControlProfileAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -20403,8 +21723,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!UserControlProfile"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!UserControlProfile");
+                    // Operation Path: "{tenant_name}/{track_name}/!UserControlProfile"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!UserControlProfile");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -20494,9 +21817,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">User control profile.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UserControlProfile> PutUserControlProfileAsync(UserControlProfile body)
+        public virtual System.Threading.Tasks.Task<UserControlProfile> PutUserControlProfileAsync(string tenant_name, string track_name, UserControlProfile body)
         {
-            return PutUserControlProfileAsync(body, System.Threading.CancellationToken.None);
+            return PutUserControlProfileAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20506,8 +21829,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">User control profile.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UserControlProfile> PutUserControlProfileAsync(UserControlProfile body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UserControlProfile> PutUserControlProfileAsync(string tenant_name, string track_name, UserControlProfile body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -20523,8 +21852,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!UserControlProfile"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!UserControlProfile");
+                    // Operation Path: "{tenant_name}/{track_name}/!UserControlProfile"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!UserControlProfile");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -20613,9 +21945,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteUserControlProfileAsync()
+        public virtual System.Threading.Tasks.Task DeleteUserControlProfileAsync(string tenant_name, string track_name)
         {
-            return DeleteUserControlProfileAsync(System.Threading.CancellationToken.None);
+            return DeleteUserControlProfileAsync(tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20624,8 +21956,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// </summary>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteUserControlProfileAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteUserControlProfileAsync(string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -20636,8 +21974,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!UserControlProfile"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!UserControlProfile");
+                    // Operation Path: "{tenant_name}/{track_name}/!UserControlProfile"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!UserControlProfile");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -20726,9 +22067,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UserPaginationResponse> GetUsersAsync(string filterEmail, string filterPhone, string filterUsername, string filterUserId, string paginationToken)
+        public virtual System.Threading.Tasks.Task<UserPaginationResponse> GetUsersAsync(string filterEmail, string filterPhone, string filterUsername, string filterUserId, string paginationToken, string tenant_name, string track_name)
         {
-            return GetUsersAsync(filterEmail, filterPhone, filterUsername, filterUserId, paginationToken, System.Threading.CancellationToken.None);
+            return GetUsersAsync(filterEmail, filterPhone, filterUsername, filterUserId, paginationToken, tenant_name, track_name, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20742,8 +22083,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="paginationToken">The pagination token.</param>
         /// <returns>OK</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UserPaginationResponse> GetUsersAsync(string filterEmail, string filterPhone, string filterUsername, string filterUserId, string paginationToken, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UserPaginationResponse> GetUsersAsync(string filterEmail, string filterPhone, string filterUsername, string filterUserId, string paginationToken, string tenant_name, string track_name, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -20755,8 +22102,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Users"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Users");
+                    // Operation Path: "{tenant_name}/{track_name}/!Users"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Users");
                     urlBuilder_.Append('?');
                     if (filterEmail != null)
                     {
@@ -20868,9 +22218,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Users.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task PutUsersAsync(UsersRequest body)
+        public virtual System.Threading.Tasks.Task PutUsersAsync(string tenant_name, string track_name, UsersRequest body)
         {
-            return PutUsersAsync(body, System.Threading.CancellationToken.None);
+            return PutUsersAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20880,8 +22230,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Users.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task PutUsersAsync(UsersRequest body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task PutUsersAsync(string tenant_name, string track_name, UsersRequest body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -20896,8 +22252,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Users"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Users");
+                    // Operation Path: "{tenant_name}/{track_name}/!Users"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Users");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -20976,9 +22335,9 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Delete specified users.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task DeleteUsersAsync(UsersDelete body)
+        public virtual System.Threading.Tasks.Task DeleteUsersAsync(string tenant_name, string track_name, UsersDelete body)
         {
-            return DeleteUsersAsync(body, System.Threading.CancellationToken.None);
+            return DeleteUsersAsync(tenant_name, track_name, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20988,8 +22347,14 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
         /// <param name="body">Delete specified users.</param>
         /// <returns>No Content</returns>
         /// <exception cref="FoxIDsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteUsersAsync(UsersDelete body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task DeleteUsersAsync(string tenant_name, string track_name, UsersDelete body, System.Threading.CancellationToken cancellationToken)
         {
+            if (tenant_name == null)
+                throw new System.ArgumentNullException("tenant_name");
+
+            if (track_name == null)
+                throw new System.ArgumentNullException("track_name");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
@@ -21004,8 +22369,11 @@ namespace FoxIDs.ControlApiSample.ServiceAccess
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "[tenant_name]/[track_name]/!Users"
-                    urlBuilder_.Append("[tenant_name]/[track_name]/!Users");
+                    // Operation Path: "{tenant_name}/{track_name}/!Users"
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(tenant_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('/');
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(track_name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/!Users");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 

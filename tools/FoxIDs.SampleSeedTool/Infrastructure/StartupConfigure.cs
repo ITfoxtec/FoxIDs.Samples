@@ -55,7 +55,11 @@ namespace FoxIDs.SampleSeedTool.Infrastructure
                 var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
                 var accessLogic = serviceProvider.GetService<AccessLogic>();
 
-                return new FoxIDsApiClient(settings, httpClientFactory, accessLogic);
+                return new FoxIDsApiClient(httpClientFactory.CreateClient())
+                {
+                    BaseUrl = settings.FoxIDsConsolApiEndpoint,
+                    AccessLogic = accessLogic
+                };
             });
         }
 

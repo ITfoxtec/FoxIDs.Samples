@@ -1,4 +1,5 @@
 using ExternalPasswordApiSample.Models;
+using FoxIDs.SampleHelperLibrary.Middleware; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,8 @@ builder.Services.AddSwaggerGen(o =>
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
-
+// Log raw HTTP requests in Development
+app.UseWhen(_ => builder.Environment.IsDevelopment(), branch => branch.UseMiddleware<RawRequestLoggingMiddleware>()); 
 app.MapControllers();
 
 app.Run();

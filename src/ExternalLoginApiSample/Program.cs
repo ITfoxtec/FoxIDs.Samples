@@ -1,6 +1,6 @@
 using ExternalLoginApiSample.Models;
-using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
 using System.Text.Json.Serialization;
+using FoxIDs.SampleHelperLibrary.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,18 +26,10 @@ builder.Services.AddSwaggerGen(o =>
 });
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-
-app.UseMiddleware<ProxyHeadersMiddleware>();
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.UseSwagger();
 app.UseSwaggerUI();
-
+// Log raw HTTP requests in Development
+app.UseWhen(_ => builder.Environment.IsDevelopment(), branch => branch.UseMiddleware<RawRequestLoggingMiddleware>());
 app.MapControllers();
 
 app.Run();

@@ -25,7 +25,7 @@ namespace ExternalLoginApiSample.Controllers
             if (!VerifyApiIdAndSecret(apiId, apiSecret))
             {
                 // Return HTTP 401 and an error (required) if the API call is rejected.
-                return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidApiIdOrSecret, ErrorMessage = "Invalid API ID or secret." });
+                return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = "Invalid API ID or secret." });
             }
 
             // Include if only one username type is supported.
@@ -52,12 +52,12 @@ namespace ExternalLoginApiSample.Controllers
             }
 
             // Return HTTP 400 or 401 or 403 and an error (required) if the username or password combination is invalid.
-            return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidUsernameOrPassword, ErrorMessage = "Invalid username or password." });
+            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidUsernameOrPassword, ErrorMessage = "Invalid username or password." });
         }
 
         private bool VerifyApiIdAndSecret(string apiId, string apiSecret)
         {
-            if (!"external_login".Equals(apiId, StringComparison.Ordinal))
+            if (!Constants.BasicAuthAppId.Equals(apiId, StringComparison.Ordinal))
             {
                 logger.LogError("Invalid API ID.");
                 return false;

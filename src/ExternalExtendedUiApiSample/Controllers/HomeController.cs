@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreApi1Sample.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
         [Route("")]
@@ -12,9 +13,9 @@ namespace AspNetCoreApi1Sample.Controllers
             var endpoint = $"{domain}ExtendedUi";
 
             var hrml =
-@$"ExternalExtendedUiApiSample</br>
+@$"<strong>ExternalExtendedUiApiSample - <a href='{domain}Swagger'>Swagger UI</a></strong></br></br>
 The API endpoint is: {endpoint}<br>
-- with 'validate' action: {endpoint}/Claims ";
+- with 'validate' action: {endpoint}/Validate ";
 
             return Content(hrml, "text/html");
         }

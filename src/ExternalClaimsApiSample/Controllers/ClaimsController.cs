@@ -24,8 +24,7 @@ namespace ExternalClaimsApiSample.Controllers
             (var apiId, var apiSecret) = HttpContext.Request.Headers.GetAuthorizationHeaderBasic();
             if (!VerifyApiIdAndSecret(apiId, apiSecret))
             {
-                // Return HTTP 401 and an error (required) if the API call is rejected.
-                return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidApiIdOrSecret, ErrorMessage = "Invalid API ID or secret." });
+                return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = "Invalid API ID or secret." });
             }
 
             if (!(request.Claims?.Count() > 0))
@@ -82,18 +81,16 @@ namespace ExternalClaimsApiSample.Controllers
 
         private bool VerifyApiIdAndSecret(string apiId, string apiSecret)
         {
-            if (!"external_claims".Equals(apiId, StringComparison.Ordinal))
+            if (!Constants.BasicAuthAppId.Equals(apiId, StringComparison.Ordinal))
             {
                 logger.LogError("Invalid API ID.");
                 return false;
             }
-
             if (!appSettings.ApiSecret.Equals(apiSecret, StringComparison.Ordinal))
             {
                 logger.LogError("Invalid API secret.");
                 return false;
             }
-
             return true;
         }
     }

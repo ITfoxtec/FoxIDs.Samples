@@ -1,20 +1,18 @@
-using ExternalLoginApiSample.Models;
-using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
-using System.Text.Json.Serialization;
+using ExternalPasswordApiSample.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Config binding
 builder.Services.BindConfig<AppSettings>(builder.Configuration, nameof(AppSettings));
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+// Controllers + swagger
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>
 {
     o.SwaggerDoc("v1", new()
     {
-        Title = "External Login API Sample",
+        Title = "External Password API Sample",
         Version = "v1"
     });
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -26,15 +24,6 @@ builder.Services.AddSwaggerGen(o =>
 });
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-
-app.UseMiddleware<ProxyHeadersMiddleware>();
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
 app.UseSwagger();
 app.UseSwaggerUI();
 

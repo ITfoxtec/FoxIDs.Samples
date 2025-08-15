@@ -12,6 +12,9 @@ public class PasswordRequest : IValidatableObject
     [Required]
     public string Password { get; set; }
 
+    [Required]
+    public PasswordState State { get; set; }
+
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (Email.IsNullOrWhiteSpace() && Phone.IsNullOrWhiteSpace() && Username.IsNullOrWhiteSpace())

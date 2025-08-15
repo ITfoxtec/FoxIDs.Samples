@@ -2,9 +2,9 @@
 	"info": {
 		"_postman_id": "698a05a1-c675-4e30-a7b2-e2018639938c",
 		"name": "External Extended Ui API",
+		"description": "Collection to test the External Extended UI API (Validate endpoint with dynamic elements). Adjust host/port. Basic auth username: external_extended_ui, password: configured secret.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19093410",
-		"_collection_link": "https://itfoxtec.postman.co/workspace/ITfoxtec-Workspace~617c1f8c-4b20-43ce-99f0-f68c143eae25/collection/19093410-698a05a1-c675-4e30-a7b2-e2018639938c?action=share&source=collection_link&creator=19093410"
+		"_exporter_id": "19093414"
 	},
 	"item": [
 		{

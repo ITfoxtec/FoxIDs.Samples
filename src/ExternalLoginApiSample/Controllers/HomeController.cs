@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreApi1Sample.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
         [Route("")]
@@ -12,7 +13,7 @@ namespace AspNetCoreApi1Sample.Controllers
             var endpoint = $"{domain}ExternalLogin";
 
             var hrml =
-@$"ExternalLoginApiSample</br>
+@$"<strong>ExternalLoginApiSample - <a href='{domain}Swagger'>Swagger UI</a></strong></br></br>
 The API endpoint is: {endpoint}<br>
 - with 'authentication' action: {endpoint}/Authentication ";
 

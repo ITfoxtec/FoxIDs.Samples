@@ -24,8 +24,7 @@ namespace ExternalExtendedUiApiSample.Controllers
             (var apiId, var apiSecret) = HttpContext.Request.Headers.GetAuthorizationHeaderBasic();
             if (!VerifyApiIdAndSecret(apiId, apiSecret))
             {
-                // Return HTTP 401 and an error (required) if the API call is rejected.
-                return Unauthorized(new ErrorResponse { Error = ErrorCodes.InvalidApiIdOrSecret, ErrorMessage = "Invalid API ID or secret." });
+                return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = "Invalid API ID or secret." });
             }
 
             var claims = new List<ClaimValue>();
@@ -47,40 +46,32 @@ namespace ExternalExtendedUiApiSample.Controllers
                     {
                         if (element.Value == "111")
                         {
-                            // Display generic error message
-                            return BadRequest(new ErrorResponse { Error = ErrorCodes.Invalid, ErrorMessage = $"Invalid value '{element.Value}' in element '{element.Name}'." });
+                            return BadRequest(new ErrorResponse { Error = Constants.Errors.Invalid, ErrorMessage = $"Invalid value '{element.Value}' in element '{element.Name}'." });
                         }
-
                         if (element.Value == "222")
                         {
-                            // Display generic error message
                             return BadRequest(new ErrorResponse
                             {
-                                Error = ErrorCodes.Invalid,
+                                Error = Constants.Errors.Invalid,
                                 Elements = [new ElementError { Name = element.Name }]
                             });
                         }
-
                         if (element.Value == "333")
                         {
-                            // Display field error message
                             return BadRequest(new ErrorResponse
                             {
-                                Error = ErrorCodes.Invalid,
+                                Error = Constants.Errors.Invalid,
                                 Elements = [new ElementError { Name = element.Name, UiErrorMessage = $"Please use another value." }]
                             });
                         }
-
                         if (element.Value == "444")
                         {
-                            // Display unknown field error message with generic error message
                             return BadRequest(new ErrorResponse
                             {
-                                Error = ErrorCodes.Invalid,
+                                Error = Constants.Errors.Invalid,
                                 Elements = [new ElementError { Name = "incorrect_name", UiErrorMessage = $"Please use another value." }]
                             });
                         }
-
                         if (element.Value == "123456")
                         {
                             // Accept value and add it as a claim
@@ -95,18 +86,16 @@ namespace ExternalExtendedUiApiSample.Controllers
 
         private bool VerifyApiIdAndSecret(string apiId, string apiSecret)
         {
-            if (!"external_extended_ui".Equals(apiId, StringComparison.Ordinal))
+            if (!Constants.BasicAuthAppId.Equals(apiId, StringComparison.Ordinal))
             {
                 logger.LogError("Invalid API ID.");
                 return false;
             }
-
             if (!appSettings.ApiSecret.Equals(apiSecret, StringComparison.Ordinal))
             {
                 logger.LogError("Invalid API secret.");
                 return false;
             }
-
             return true;
         }
     }

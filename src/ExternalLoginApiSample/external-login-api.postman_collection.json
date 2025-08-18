@@ -2,8 +2,9 @@
 	"info": {
 		"_postman_id": "33266877-6830-4fc1-82ae-9001c9f9e998",
 		"name": "External Login API",
+		"description": "Collection to test the External Login API (Authentication endpoint). Adjust host/port to your running sample. Basic auth username: external_login, password: configured secret.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19093410"
+		"_exporter_id": "19093412"
 	},
 	"item": [
 		{

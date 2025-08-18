@@ -32,12 +32,13 @@ public class PasswordController : ControllerBase
         //}
 
         // Demo password policy (replace with real logic)
-        if (request.Password!.Length < 8 || request.Password.Contains("forbidden", StringComparison.OrdinalIgnoreCase))
+        if (request.Password!.Length < 8 || request.Password.Contains(/*"Formel1bil"*/ "Forbidden!", StringComparison.OrdinalIgnoreCase))
         {
             return StatusCode((int)HttpStatusCode.BadRequest, new ErrorResponse
             {
                 Error = Constants.Errors.PasswordNotAccepted,
-                ErrorMessage = "Password not accepted by external policy."
+                ErrorMessage = "Password not accepted by external policy.",
+                UiErrorMessage = "Password does not meet the required policy which is xxx."
             });
         }
 

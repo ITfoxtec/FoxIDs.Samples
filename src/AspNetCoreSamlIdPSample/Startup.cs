@@ -15,6 +15,7 @@ using ITfoxtec.Identity;
 using System.IO;
 using ITfoxtec.Identity.Saml2.Util;
 using Microsoft.IdentityModel.Logging;
+using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
 
 namespace AspNetCoreSamlIdPSample
 {
@@ -45,34 +46,9 @@ namespace AspNetCoreSamlIdPSample
             });
 
             services.Configure<Settings>(Configuration.GetSection("Settings"));
-            services.Configure<Settings>(settings =>
-            {
-                foreach(var rp in settings.RelyingParties)
-                {
-                    var entityDescriptor = new EntityDescriptor();
-                    entityDescriptor.ReadSPSsoDescriptorFromUrl(new Uri(rp.SpMetadata));
-                    if (entityDescriptor.SPSsoDescriptor != null)
-                    {
-                        rp.Issuer = entityDescriptor.EntityId;
-                        rp.SingleSignOnDestination = entityDescriptor.SPSsoDescriptor.AssertionConsumerServices.First().Location;
 
-                        var singleLogoutService = entityDescriptor.SPSsoDescriptor.SingleLogoutServices.First();
-                        rp.SingleLogoutDestination = singleLogoutService.Location;
-                        rp.SingleLogoutResponseDestination = singleLogoutService.ResponseLocation ?? singleLogoutService.Location;
-
-                        rp.SignatureValidationCertificate = entityDescriptor.SPSsoDescriptor.SigningCertificates.First();
-
-                        if (entityDescriptor.SPSsoDescriptor.EncryptionCertificates?.Count() > 0)
-                        {
-                            rp.EncryptionCertificate = entityDescriptor.SPSsoDescriptor.EncryptionCertificates.First();
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("IdPSsoDescriptor not loaded from metadata.");
-                    }
-                }
-            });
+            // Add LibrarySettings for ProxyHeadersMiddleware
+            services.BindConfig<Settings>(Configuration, nameof(Settings));
 
             services.Configure<Saml2ConfigurationIdP>(Configuration.GetSection("Saml2"));
             services.Configure<Saml2ConfigurationIdP>(saml2Configuration =>
@@ -83,13 +59,21 @@ namespace AspNetCoreSamlIdPSample
                 }
                 else
                 {
-                    if (saml2Configuration.TokenExchangeClientCertificatePassword.IsNullOrEmpty())
+                    var parth = Path.Combine(AppEnvironment.ContentRootPath, "Certificates");
+                    try
                     {
-                        saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(AppEnvironment.ContentRootPath, saml2Configuration.TokenExchangeClientCertificateFile));
+                        if (saml2Configuration.TokenExchangeClientCertificatePassword.IsNullOrEmpty())
+                        {
+                            saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(parth, saml2Configuration.TokenExchangeClientCertificateFile), loadPkcs12: true);
+                        }
+                        else
+                        {
+                            saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(parth, saml2Configuration.TokenExchangeClientCertificateFile), saml2Configuration.TokenExchangeClientCertificatePassword);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        saml2Configuration.SigningCertificate = CertificateUtil.Load(Path.Combine(AppEnvironment.ContentRootPath, saml2Configuration.TokenExchangeClientCertificateFile), saml2Configuration.TokenExchangeClientCertificatePassword);
+                        throw new Exception($"Load certificate '{saml2Configuration.TokenExchangeClientCertificateFile}' error, path '{parth}'.", ex);
                     }
                 }
 
@@ -116,6 +100,8 @@ namespace AspNetCoreSamlIdPSample
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ProxyHeadersMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

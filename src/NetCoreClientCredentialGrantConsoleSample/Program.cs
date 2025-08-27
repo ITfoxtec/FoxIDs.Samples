@@ -3,6 +3,7 @@ using NetCoreClientCredentialGrantConsoleSample.Logic;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Logging;
 
 namespace NetCoreClientCredentialGrantConsoleSample
 {
@@ -10,6 +11,8 @@ namespace NetCoreClientCredentialGrantConsoleSample
     {
         static void Main(string[] args)
         {
+            IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+
             MainAsync(args).GetAwaiter().GetResult();
         }
 

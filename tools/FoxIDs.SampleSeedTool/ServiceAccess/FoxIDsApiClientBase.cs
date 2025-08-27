@@ -1,5 +1,4 @@
 ﻿using FoxIDs.SampleSeedTool.Logic;
-using FoxIDs.SampleSeedTool.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -9,8 +8,7 @@ namespace FoxIDs.SampleSeedTool.ServiceAccess
 {
     public abstract class FoxIDsApiClientBase
     {
-        protected SeedSettings Settings { get; set; }
-        protected AccessLogic AccessLogic { get; set; }
+        public AccessLogic AccessLogic { get; init; }
 
         protected async Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
         {

@@ -1,0 +1,55 @@
+{
+	"info": {
+		"_postman_id": "698a05a1-c675-4e30-a7b2-e2018639938c",
+		"name": "External Extended Ui API",
+		"description": "Collection to test the External Extended UI API (Validate endpoint with dynamic elements). Adjust host/port. Basic auth username: external_extended_ui, password: configured secret.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19093414"
+	},
+	"item": [
+		{
+			"name": "https://localhost:44354/ExternalClaims/Claims",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "R-16k5A8pyYmMKGU75rKA2ovfzT_whubOApsq9kFiBw",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "external_extended_ui",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"elements\": [\r\n        {\r\n            \"Name\": \"ne5uqp5z\",\r\n            \"Type\": \"Email\",\r\n            \"ClaimType\": \"email\",\r\n            \"Value\": \"some@test.org\"\r\n        },\r\n        {\r\n            \"Name\": \"ktvywqwc\",\r\n            \"Type\": \"Custom\",\r\n            \"ClaimType\": \"my_claim\",\r\n            \"Value\": \"123456\"\r\n        }\r\n    ],    \r\n \"claims\": [\r\n        {\r\n            \"type\": \"sub\",\r\n            \"value\": \"1b1ac05e-5937-4939-a49c-0e84a89662df\"\r\n        },\r\n        {\r\n            \"type\": \"email\",\r\n            \"value\": \"some_other@test.org\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44354/ExtendedUi/Validate",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44354",
+					"path": [
+						"ExtendedUi",
+						"Validate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

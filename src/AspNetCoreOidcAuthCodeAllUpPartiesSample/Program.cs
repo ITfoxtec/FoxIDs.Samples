@@ -1,20 +1,22 @@
 using AspNetCoreOidcAuthCodeAllUpPartiesSample.Models;
-using ITfoxtec.Identity;
-using ITfoxtec.Identity.Discovery;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Logging;
+using ITfoxtec.Identity;
+using ITfoxtec.Identity.Helpers;
+using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
+using FoxIDs.SampleHelperLibrary.Identity;
+using Microsoft.AspNetCore.Authentication;
 using System.Globalization;
+using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Util;
 using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
-using ITfoxtec.Identity.Helpers;
-using Microsoft.IdentityModel.Logging;
-using FoxIDs.SampleHelperLibrary.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+//To show detail of error and see the problem
+IdentityModelEventSource.ShowPII = true; 
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -40,9 +42,9 @@ builder.Services.AddAuthentication(options =>
         {
             var logoutMemoryCache = context.HttpContext.RequestServices.GetService<LogoutMemoryCache>();
             var sessionId = context.Principal.Claims.Where(c => c.Type == JwtClaimTypes.SessionId).Select(c => c.Value).FirstOrDefault();
-            foreach(var item in logoutMemoryCache.List)
+            foreach (var item in logoutMemoryCache.List)
             {
-                if(sessionId == item)
+                if (sessionId == item)
                 {
                     logoutMemoryCache.Remove(item);
                     // Handle FrontChannelLogout
@@ -50,7 +52,7 @@ builder.Services.AddAuthentication(options =>
                     await context.HttpContext.SignOutAsync();
                     return;
                 }
-            }             
+            }
 
             try
             {
@@ -89,8 +91,14 @@ builder.Services.AddAuthentication(options =>
     })
     .AddOpenIdConnect(options =>
     {
+        //Accept all SSL/TLS certificates
+        //HttpClientHandler handler = new HttpClientHandler();
+        //handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        //options.BackchannelHttpHandler = handler;
+
         options.Authority = identitySettings.FoxIDsAuthority;
         options.ClientId = identitySettings.ClientId;
+        // Comment out client secret to use client authentication basic instead of post
         options.ClientSecret = identitySettings.ClientSecret;
 
         options.ResponseType = OpenIdConnectResponseType.Code;
@@ -104,7 +112,10 @@ builder.Services.AddAuthentication(options =>
 
         // Scope to the application it self, used to do token exchange.
         options.Scope.Add(identitySettings.DownParty);
-        options.Scope.Add("aspnetcore_api1_sample:some_access");
+        if (identitySettings.IncludeApiScope)
+        {
+            options.Scope.Add(identitySettings.RequestApi1Scope);
+        }
         options.Scope.Add("offline_access");
         options.Scope.Add("profile");
         options.Scope.Add("email");
@@ -125,6 +136,14 @@ builder.Services.AddAuthentication(options =>
         {
             // Request a language on logout
             //context.ProtocolMessage.UiLocales = "fr";
+            await Task.FromResult(string.Empty);
+        };    
+        options.Events.OnAuthorizationCodeReceived = async (context) =>
+        {
+            // Use client authentication basic instead of post
+            // and comment out client secret
+            // context.Backchannel.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(IdentityConstants.BasicAuthentication.Basic, $"{identitySettings.ClientId.OAuthUrlEncode()}:{identitySettings.ClientSecret.OAuthUrlEncode()}".Base64Encode());
+
             await Task.FromResult(string.Empty);
         };
         options.Events.OnTokenResponseReceived = async (context) =>
@@ -158,6 +177,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseMiddleware<ProxyHeadersMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

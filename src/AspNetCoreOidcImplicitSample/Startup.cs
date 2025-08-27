@@ -58,7 +58,7 @@ namespace AspNetCoreOidcImplicitSample
                 })
                 .AddOpenIdConnect(options =>
                 {
-                    options.Authority = identitySettings.AuthorityWithoutUpParty;
+                    options.Authority = identitySettings.Authority;
                     options.ClientId = identitySettings.ClientId;
 
                     options.ResponseType = "id_token token";
@@ -138,7 +138,7 @@ namespace AspNetCoreOidcImplicitSample
                 var settings = context.HttpContext.RequestServices.GetService<IdentitySettings>();
 
                 var upParty = GetUpParty(settings, loginType);
-                context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace($"/{settings.DownParty}/", $"/{settings.DownParty}({upParty})/");
+                context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace($"/{settings.DownParty}(*)/", $"/{settings.DownParty}({upParty})/");
             }
         }
 

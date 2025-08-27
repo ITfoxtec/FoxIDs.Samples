@@ -1,15 +1,15 @@
 ﻿using AspNetCoreOidcAuthCodeAllUpPartiesSample.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Helpers;
 using ITfoxtec.Identity.Messages;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Newtonsoft.Json.Linq;
-using System.Diagnostics;
 
 namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
 {
@@ -90,7 +90,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Controllers
 
             var tokenExchangeRequest = new TokenExchangeRequest
             {
-                Scope = "aspnetcore_api2_sample:some_2_access",
+                Scope = identitySettings.RequestApi2Scope,
                 SubjectToken = accessToken,
                 SubjectTokenType = IdentityConstants.TokenTypeIdentifiers.AccessToken
             };

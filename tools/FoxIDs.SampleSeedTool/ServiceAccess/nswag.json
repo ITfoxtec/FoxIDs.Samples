@@ -1,9 +1,9 @@
 ﻿{
-  "runtime": "Net60",
+  "runtime": "Net90",
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://control.foxids.com/api/swagger/v1/swagger.json",
+      "url": "https://control.foxids.com/api/swagger/v2/swagger.json",
       "output": null
     }
   },

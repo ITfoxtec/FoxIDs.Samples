@@ -33,9 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerOidcOpSample"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCoreClientCredentialGrantConsoleSample", "src\NetCoreClientCredentialGrantConsoleSample\NetCoreClientCredentialGrantConsoleSample.csproj", "{19F7C917-00AA-4C6F-8DCC-BB7A5AF22E84}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "down-parties", "down-parties", "{BBD711D8-51DE-41F5-9D3C-81A445FA8E80}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{BBD711D8-51DE-41F5-9D3C-81A445FA8E80}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "up-parties", "up-parties", "{02BEC832-D782-4BD8-ACC7-B79064D6D9A1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication Methods", "Authentication Methods", "{02BEC832-D782-4BD8-ACC7-B79064D6D9A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerOidcSample", "src\BlazorServerOidcSample\BlazorServerOidcSample.csproj", "{B8A6FFC3-9964-47C3-86FF-A12DE1861947}"
 EndProject
@@ -52,6 +52,25 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApi2Sample", "src\AspNetCoreApi2Sample\AspNetCoreApi2Sample.csproj", "{C41057D7-0396-4222-9845-CCBB41809025}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetFramework4.7ClientCredentialGrantAssertionConsoleSample", "src\NetFramework4.7ClientCredentialGrantAssertionConsoleSample\NetFramework4.7ClientCredentialGrantAssertionConsoleSample.csproj", "{6490D857-5138-4210-BEB0-07DD3212E8B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalLoginApiSample", "src\ExternalLoginApiSample\ExternalLoginApiSample.csproj", "{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External APIs", "External APIs", "{CA8922BB-B413-4DD6-AEE1-047310D43938}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalClaimsApiSample", "src\ExternalClaimsApiSample\ExternalClaimsApiSample.csproj", "{8E5FBE66-AA33-4A05-B4C2-542A1A3D2887}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{D890B671-7405-4FB8-8E86-04997FCDF293}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci_main_docker.yaml = .github\workflows\ci_main_docker.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FoxIDs Control API", "FoxIDs Control API", "{341BB81B-1FCC-4BB1-8327-52E1E6C2DE58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoxIDs.ControlApiSample", "src\FoxIDs.ControlApiSample\FoxIDs.ControlApiSample.csproj", "{99326EFD-A673-496C-A009-483413A4C22B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalExtendedUiApiSample", "src\ExternalExtendedUiApiSample\ExternalExtendedUiApiSample.csproj", "{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalPasswordApiSample", "src\ExternalPasswordApiSample\ExternalPasswordApiSample.csproj", "{5B331311-692D-C56B-8E8F-1E40F8CB4B14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +150,26 @@ Global
 		{6490D857-5138-4210-BEB0-07DD3212E8B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6490D857-5138-4210-BEB0-07DD3212E8B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6490D857-5138-4210-BEB0-07DD3212E8B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E5FBE66-AA33-4A05-B4C2-542A1A3D2887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E5FBE66-AA33-4A05-B4C2-542A1A3D2887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E5FBE66-AA33-4A05-B4C2-542A1A3D2887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E5FBE66-AA33-4A05-B4C2-542A1A3D2887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99326EFD-A673-496C-A009-483413A4C22B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99326EFD-A673-496C-A009-483413A4C22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99326EFD-A673-496C-A009-483413A4C22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99326EFD-A673-496C-A009-483413A4C22B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B331311-692D-C56B-8E8F-1E40F8CB4B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B331311-692D-C56B-8E8F-1E40F8CB4B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B331311-692D-C56B-8E8F-1E40F8CB4B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B331311-692D-C56B-8E8F-1E40F8CB4B14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,6 +195,14 @@ Global
 		{83C7142C-268F-44BA-92F3-03236BF76801} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{C41057D7-0396-4222-9845-CCBB41809025} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
 		{6490D857-5138-4210-BEB0-07DD3212E8B0} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
+		{BEFF5A0D-8FB9-4096-A0D6-6CEDB51A950A} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
+		{CA8922BB-B413-4DD6-AEE1-047310D43938} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
+		{8E5FBE66-AA33-4A05-B4C2-542A1A3D2887} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
+		{D890B671-7405-4FB8-8E86-04997FCDF293} = {1C415060-9F5A-4CDE-B14E-1EF3B51C9039}
+		{341BB81B-1FCC-4BB1-8327-52E1E6C2DE58} = {3BD3C68B-BDA7-4114-BC2A-E56D1D317F77}
+		{99326EFD-A673-496C-A009-483413A4C22B} = {341BB81B-1FCC-4BB1-8327-52E1E6C2DE58}
+		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
+		{5B331311-692D-C56B-8E8F-1E40F8CB4B14} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

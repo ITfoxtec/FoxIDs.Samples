@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FoxIDs.SampleHelperLibrary.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -9,7 +10,10 @@ namespace Microsoft.Extensions.DependencyInjection
             var settings = new T();
             configuration.Bind(key, settings);
             services.AddSingleton(settings);
-
+            if (settings is LibrarySettings librarySettings)
+            {
+                services.AddSingleton(librarySettings);
+            }
             return settings;
         }
     }

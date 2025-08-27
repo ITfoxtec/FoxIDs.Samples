@@ -5,9 +5,11 @@ using ITfoxtec.Identity;
 using ITfoxtec.Identity.Util;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace FoxIDs.SampleSeedTool.Logic
 {
@@ -15,30 +17,32 @@ namespace FoxIDs.SampleSeedTool.Logic
     {
         const string loginName = "login";
 
-        const string aspNetCoreSamlIdPSampleUpPartyName = "aspnetcore_saml_idp_sample";
-        const string identityserverOidcOpUpPartyName = "identityserver_oidc_op_sample";
+        static (string name, string displayName) aspNetCoreSamlIdPSampleUpPartyName => ("aspnetcore_saml_idp_sample", "AspNetCoreSamlIdPSample");
+        static (string name, string displayName) identityserverOidcOpUpPartyName => ("identityserver_oidc_op_sample", "IdentityServerOidcOpSample");
 
-        const string aspNetCoreApi1SampleDownPartyName = "aspnetcore_api1_sample";
-        const string aspNetCoreApi2SampleDownPartyName = "aspnetcore_api2_sample";
-        const string aspNetCoreApiOAuthTwoIdPsSampleDownPartyName = "aspnetapi_oauth_twoidps_sample";
+        static (string name, string displayName) externalLoginApiSampleUpPartyName => ("external_login_api_sample", "ExternalLoginApiSample");
 
-        const string netCoreClientGrantConsoleSampleDownPartyName = "netcore_clientgrant_sample";
-        const string netCoreClientAssertionGrantConsoleSampleDownPartyName = "netcore_clientassgrant_sample";
+        static (string name, string displayName) aspNetCoreApi1SampleDownPartyName => ("aspnetcore_api1_sample", "AspNetCoreApi1Sample");
+        static (string name, string displayName) aspNetCoreApi2SampleDownPartyName => ("aspnetcore_api2_sample", "AspNetCoreApi2Sample");
+        static (string name, string displayName) aspNetCoreApiOAuthTwoIdPsSampleDownPartyName => ("aspnetapi_oauth_twoidps_sample", "AspNetCoreApiOAuthTwoIdPsSample");
 
-        const string aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName = "aspnet_oidc_allup_sample";
+        static (string name, string displayName) netCoreClientGrantConsoleSampleDownPartyName => ("netcore_clientgrant_sample", "NetCoreClientCredentialGrantConsoleSample");
+        static (string name, string displayName) netCoreClientAssertionGrantConsoleSampleDownPartyName => ("netcore_clientassgrant_sample", "NetCoreClientCredentialGrantAssertionConsoleSample");
+
+        static (string name, string displayName) aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName => ("aspnet_oidc_allup_sample", "AspNetCoreOidcAuthCodeAllUpPartiesSample");
         // Optional, to enable token exchange trust through up-party instead of the default in same track trust.
-        const string aspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyName = "aspnet_oidc_allup_sample-trust";
-        const string aspNetCoreOidcAuthCodeSampleDownPartyName = "aspnetcore_oidcauthcode_sample";
-        const string aspNetCoreOidcImplicitSampleDownPartyName = "aspnetcore_oidcimplicit_sample"; 
-        const string blazorBffAspNetCoreOidcSampleDownPartyName = "blazor_bff_aspnet_oidc_sample";
-        const string blazorOidcAuthCodePkceSampleDownPartyName = "blazor_oidcauthcodepkce_sample";
-        const string blazorServerOidcSampleDownPartyName = "blazorserver_oidc_sample";
+        static (string name, string displayName) aspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyName => ("aspnet_oidc_allup_sample-trust", "AspNetCoreOidcAuthCodeAllUpPartiesSample OAuth Trust");
+        static (string name, string displayName) aspNetCoreOidcAuthCodeSampleDownPartyName => ("aspnetcore_oidcauthcode_sample", "AspNetCoreOidcAuthorizationCodeSample");
+        static (string name, string displayName) aspNetCoreOidcImplicitSampleDownPartyName => ("aspnetcore_oidcimplicit_sample", "AspNetCoreOidcImplicitSample"); 
+        static (string name, string displayName) blazorBffAspNetCoreOidcSampleDownPartyName => ("blazor_bff_aspnet_oidc_sample", "BlazorBFFAspNetOidcSample");
+        static (string name, string displayName) blazorOidcAuthCodePkceSampleDownPartyName => ("blazor_oidcauthcodepkce_sample", "BlazorOidcPkceSample");
+        static (string name, string displayName) blazorServerOidcSampleDownPartyName => ("blazorserver_oidc_sample", "BlazorServerOidcSample");
 
-        const string aspNetCoreSamlSampleDownPartyName = "aspnetcore_saml_sample";
+        static (string name, string displayName) aspNetCoreSamlSampleDownPartyName => ("aspnetcore_saml_sample", "AspNetCoreSamlSample");
         const string aspNetCoreSamlSampleDownIssuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample";
-        const string oauthTokenExchangeForSamlDownPartyName = "token_exchange_saml";
+        static (string name, string displayName) oauthTokenExchangeForSamlDownPartyName => ("token_exchange_saml", "AspNetCoreSamlSample OAuth TokenExchange");
         // To enable token exchange trust
-        const string aspNetCoreSamlSampleTrustUpPartyName = "aspnetcore_saml_sample-trust";
+        static (string name, string displayName) aspNetCoreSamlSampleTrustUpPartyName => ("aspnetcore_saml_sample-trust", "AspNetCoreSamlSample SAML Trust");
 
         private readonly SeedSettings settings;
         private readonly FoxIDsApiClient foxIDsApiClient;
@@ -55,6 +59,7 @@ namespace FoxIDs.SampleSeedTool.Logic
 
             await CreateAspNetCoreSamlIdPSampleUpPartyAsync();
             await CreateIdentityserverOidcOpUpPartyAsync();
+            await CreateExternalApiLoginSampleUpPartyAsync();
 
             await CreateAspNetCoreApi2SampleDownPartyAsync();
             await CreateAspNetCoreApi1SampleDownPartyAsync();
@@ -63,8 +68,9 @@ namespace FoxIDs.SampleSeedTool.Logic
             await CreateNetCoreClientGrantConsoleSampleDownPartyAsync();
             await CreateNetCoreClientAssertionGrantConsoleSampleDownPartyAsync();
 
-            await CreateAspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyAsync();
             await CreateAspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyAsync();
+            await CreateAspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyAsync();
+
             await CreateAspNetCoreOidcAuthCodeSampleDownPartyAsync();
             await CreateAspNetCoreOidcImplicitSampleDownPartyAsync();
             await CreateBffAspNetCoreOidcSampleDownPartyAsync();
@@ -85,18 +91,18 @@ namespace FoxIDs.SampleSeedTool.Logic
 
             Console.WriteLine("Delete Oidc down party sample configuration");
             var oidcDownPartyNames = new[] { aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName, aspNetCoreOidcAuthCodeSampleDownPartyName, aspNetCoreOidcImplicitSampleDownPartyName, blazorBffAspNetCoreOidcSampleDownPartyName, blazorOidcAuthCodePkceSampleDownPartyName, blazorServerOidcSampleDownPartyName, oauthTokenExchangeForSamlDownPartyName };
-            foreach (var name in oidcDownPartyNames)
+            foreach (var dpName in oidcDownPartyNames)
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteOidcDownPartyAsync(name);
-                    Console.WriteLine($"'{name}' configuration deleted");
+                    await foxIDsApiClient.DeleteOidcDownPartyAsync(dpName.name, settings.Tenant, settings.Track);
+                    Console.WriteLine($"'{dpName}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
                 {
                     if (ex.StatusCode == StatusCodes.Status404NotFound)
                     {
-                        Console.WriteLine($"'{name}' configuration not found");
+                        Console.WriteLine($"'{dpName}' configuration not found");
                     }
                     else
                     {
@@ -111,7 +117,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteOAuthDownPartyAsync(name);
+                    await foxIDsApiClient.DeleteOAuthDownPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -133,7 +139,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteSamlDownPartyAsync(name);
+                    await foxIDsApiClient.DeleteSamlDownPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -155,7 +161,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteSamlUpPartyAsync(name);
+                    await foxIDsApiClient.DeleteSamlUpPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -177,7 +183,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteOAuthUpPartyAsync(name);
+                    await foxIDsApiClient.DeleteOAuthUpPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -199,7 +205,29 @@ namespace FoxIDs.SampleSeedTool.Logic
             {
                 try
                 {
-                    await foxIDsApiClient.DeleteOidcUpPartyAsync(name);
+                    await foxIDsApiClient.DeleteOidcUpPartyAsync(name.name, settings.Tenant, settings.Track);
+                    Console.WriteLine($"'{name}' configuration deleted");
+                }
+                catch (FoxIDsApiException ex)
+                {
+                    if (ex.StatusCode == StatusCodes.Status404NotFound)
+                    {
+                        Console.WriteLine($"'{name}' configuration not found");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            Console.WriteLine("Delete External Login up party sample configuration");
+            var externalLoginUpPartyNames = new[] { externalLoginApiSampleUpPartyName };
+            foreach (var name in externalLoginUpPartyNames)
+            {
+                try
+                {
+                    await foxIDsApiClient.DeleteExternalLoginUpPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -223,18 +251,19 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44342";
 
                 var samlUpParty = new SamlUpParty
                 {
                     Name = name,
+                    DisplayName = displayName,
                     Issuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlidpsample",
-                    Keys = new[] { GetCertificateInfoKey("AspNetCoreSamlIdPSample-test-sign-cert.crt") },
+                    Keys = [GetCertificateInfoKey("AspNetCoreSamlIdPSample-test-sign-cert.crt")],
                     //SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                     //CertificateValidationMode = X509CertificateValidationMode.None,
                     //RevocationMode = X509RevocationMode.NoCheck,
@@ -244,12 +273,12 @@ namespace FoxIDs.SampleSeedTool.Logic
                     LogoutRequestBinding = SamlBindingTypes.Post,
                     LogoutResponseBinding = SamlBindingTypes.Post,
                     LogoutUrl = UrlCombine.Combine(baseUrl, "saml/logout"),
-                    Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role },
+                    Claims = [ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role],
                     SessionLifetime = 36000,
                     SessionAbsoluteLifetime = 86400,
                 };
 
-                await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
+                _ = await foxIDsApiClient.PostSamlUpPartyAsync(settings.Tenant, settings.Track, samlUpParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreSamlIdPSampleUpPartyName, getAction, postAction);
@@ -259,22 +288,23 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44346";
 
-                var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JwtWithCertificateInfo>();
+                var key = File.ReadAllText("identityserver-tempkey.jwk").ToObject<JwkWithCertificateInfo>();
 
                 var oidcUpParty = new OidcUpParty
                 {
                     Name = name,
+                    DisplayName = displayName,
                     Authority = baseUrl,
                     UpdateState = PartyUpdateStates.Manual,
-                    Issuers = new string[] { baseUrl },
-                    Keys = new JwtWithCertificateInfo[] { key },
+                    Issuers = [baseUrl],
+                    Keys = [key],
 
                     Client = new OidcUpClient
                     {
@@ -290,8 +320,8 @@ namespace FoxIDs.SampleSeedTool.Logic
                         //EnablePkce = true,
                         //ClientSecret = "2tqjW-KwiGaR4KRt0IJ8KAJYw3pyPTK8S_dr_YE5nbw",
 
-                        Scopes = new string[] { "profile", "email" },
-                        Claims = new string[] { "access_token", JwtClaimTypes.Email, JwtClaimTypes.EmailVerified, JwtClaimTypes.FamilyName, JwtClaimTypes.GivenName, JwtClaimTypes.Name, JwtClaimTypes.Role },
+                        Scopes = ["profile", "email"],
+                        Claims = ["access_token", JwtClaimTypes.Email, JwtClaimTypes.EmailVerified, JwtClaimTypes.FamilyName, JwtClaimTypes.GivenName, JwtClaimTypes.Name, JwtClaimTypes.Role],
 
                         UseIdTokenClaims = true,
 
@@ -301,31 +331,73 @@ namespace FoxIDs.SampleSeedTool.Logic
                     SessionAbsoluteLifetime = 86400,
                 };
 
-                await foxIDsApiClient.PostOidcUpPartyAsync(oidcUpParty);
+                _ = await foxIDsApiClient.PostOidcUpPartyAsync(settings.Tenant, settings.Track, oidcUpParty);
             };
 
             await CreateIfNotExistsAsync(identityserverOidcOpUpPartyName, getAction, postAction);
+        }
+
+        private async Task CreateExternalApiLoginSampleUpPartyAsync()
+        {
+            Func<string, Task> getAction = async (name) =>
+            {
+                _ = await foxIDsApiClient.GetExternalLoginUpPartyAsync(name, settings.Tenant, settings.Track);
+            };
+
+            Func<string, string, Task> postAction = async (name, displayName) =>
+            {
+                var baseUrl = "https://localhost:44352";
+
+                var secret = "zh1othCVwVkfjlvzTWY-S7SFj-RHaLkpJkdMpHSAhFg";
+
+                var externalLoginUpParty = new ExternalLoginUpParty
+                {
+                    Name = name,
+                    DisplayName = displayName,
+                    EnableCancelLogin = true,
+                    ExternalLoginType = ExternalConnectTypes.Api,
+                    UsernameType = ExternalLoginUsernameTypes.Text,
+                    ApiUrl = $"{baseUrl}/ExternalApiLogin",
+                    Secret = secret,
+                    AdditionalParameters = [new OAuthAdditionalParameter { Name = "SomeCustomId", Value = "7" }],
+                    SessionLifetime = 36000,
+                    SessionAbsoluteLifetime = 86400
+                };
+
+                // Add profile with another SomeCustomId value
+                externalLoginUpParty.Profiles = [new ExternalLoginUpPartyProfile
+                {
+                    DisplayName = $"{displayName} - SomeCustomId:4",
+                    Name = "c_id",
+                    AdditionalParameters = [new OAuthAdditionalParameter { Name = "SomeCustomId", Value = "4" }],
+                }];
+
+                _ = await foxIDsApiClient.PostExternalLoginUpPartyAsync(settings.Tenant, settings.Track, externalLoginUpParty);
+            };
+
+            await CreateIfNotExistsAsync(externalLoginApiSampleUpPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreApi2SampleDownPartyAsync()
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var oauthDownParty = new OAuthDownParty
                 {
                     Name = name,
+                    DisplayName = displayName,
                     Resource = new OAuthDownResource
                     {
-                        Scopes = new[] { "admin", "some_2_access" }
+                        Scopes = ["admin", "some_2_access"]
                     }
                 };
 
-                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreApi2SampleDownPartyName, getAction, postAction);
@@ -335,34 +407,35 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var oauthDownParty = new OAuthDownParty
                 {                    
-                    Name = name,                    
+                    Name = name,
+                    DisplayName = displayName,
                     // The client is configured to support token exchange from tokens issued to the API in the same track.
                     Client = new OAuthDownClient
                     {
                         DisableClientCredentialsGrant = true,
-                        ResourceScopes = new [] 
+                        ResourceScopes = new[]
                         {
                             // Scope to API2.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi2SampleDownPartyName, Scopes = new[] { "some_2_access" } }
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi2SampleDownPartyName.name, Scopes = ["some_2_access"] }
                         },
                         AccessTokenLifetime = 600, // 10 minutes
                         ClientAuthenticationMethod = ClientAuthenticationMethods.PrivateKeyJwt,
-                        ClientKeys = new[] { GetCertificateInfoKey("CN=AspNetCoreApi1Sample, O=test corp.cer") }
+                        ClientKeys = [GetCertificateInfoKey("CN=AspNetCoreApi1Sample, O=test corp.cer")]
                     },
                     Resource = new OAuthDownResource
                     {
-                        Scopes = new[] { "admin", "some_access" }
+                        Scopes = ["admin", "some_access"]
                     }
                 };
 
-                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreApi1SampleDownPartyName, getAction, postAction);
@@ -372,21 +445,22 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var oauthDownParty = new OAuthDownParty
                 {
                     Name = name,
+                    DisplayName = displayName,
                     Resource = new OAuthDownResource
                     {
-                        Scopes = new[] { "admin", "some_access" }
+                        Scopes = ["admin", "some_access"]
                     }
                 };
 
-                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreApiOAuthTwoIdPsSampleDownPartyName, getAction, postAction);
@@ -396,34 +470,35 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var oauthDownParty = new OAuthDownParty
                 {
                     Name = name,
+                    DisplayName = displayName,
                     Client = new OAuthDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "admin", "some_access" } },
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName.name, Scopes = ["admin", "some_access"] },
                             // Scope to API which support two IdPs.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApiOAuthTwoIdPsSampleDownPartyName, Scopes = new [] { "some_access" } }
-                        },
+                            new OAuthDownResourceScope { Resource = aspNetCoreApiOAuthTwoIdPsSampleDownPartyName.name, Scopes = ["some_access"] }
+                        ],
                         AccessTokenLifetime = 600 // 10 minutes
                     }
                 };
 
-                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
 
                 var secret = "MXtV-UmVJqygGUthkG5Q_6SCpmyBpsksvA1kvbE735k";
-                await foxIDsApiClient.PostOAuthClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOAuthClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oauthDownParty.Name,
-                    Secrets = new string[] { secret },
+                    Secrets = [secret],
                 });
                 Console.WriteLine($"\t'{name}' client secret is: {secret}");
             };
@@ -435,30 +510,31 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var oauthDownParty = new OAuthDownParty
                 {
                     Name = name,
+                    DisplayName = displayName,
                     Client = new OAuthDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "admin", "some_access" } },
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName.name, Scopes = ["admin", "some_access"] },
                             // Scope to API which support two IdPs.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApiOAuthTwoIdPsSampleDownPartyName, Scopes = new [] { "some_access" } }
-                        },
+                            new OAuthDownResourceScope { Resource = aspNetCoreApiOAuthTwoIdPsSampleDownPartyName.name, Scopes = ["some_access"] }
+                        ],
                         AccessTokenLifetime = 600, // 10 minutes
                         ClientAuthenticationMethod = ClientAuthenticationMethods.PrivateKeyJwt,
-                        ClientKeys = new [] { GetCertificateInfoKey("CN=NetCoreClientAssertionGrantConsoleSample, O=test corp.cer") }
+                        ClientKeys = [GetCertificateInfoKey("CN=NetCoreClientAssertionGrantConsoleSample, O=test corp.cer")]
                     }
                 };
 
-                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(netCoreClientAssertionGrantConsoleSampleDownPartyName, getAction, postAction);
@@ -468,26 +544,27 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var oauthUpParty = new OAuthUpParty
                 {
                     DisableUserAuthenticationTrust = true,
                     Name = name,
+                    DisplayName = displayName,
                     Note = $"Trust {aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName} to enable token exchange trust through up-party instead of the default in same track trust.",
                     UpdateState = PartyUpdateStates.Automatic,
-                    Authority = UrlCombine.Combine(settings.FoxIDsEndpoint, new[] { settings.Tenant, settings.Track, aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName }),
-                    SpIssuer = aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName,
+                    Authority = GetUrl([aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName.name]),
+                    SpIssuer = aspNetCoreOidcAuthCoreAllUpPartiesSampleDownPartyName.name,
                     Client = new OAuthUpClient
                     {
-                        Claims = new string[] { "*" }
+                        Claims = ["*"]
                     }
                 };
 
-                await foxIDsApiClient.PostOAuthUpPartyAsync(oauthUpParty);
+                _ = await foxIDsApiClient.PostOAuthUpPartyAsync(settings.Tenant, settings.Track, oauthUpParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyName, getAction, postAction);
@@ -497,35 +574,36 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44349";
 
                 var oidcDownParty = new OidcDownParty
                 {
                     Name = name,
-                    AllowCorsOrigins = new[] { baseUrl },
+                    DisplayName = displayName,
+                    AllowCorsOrigins = [baseUrl],
                     // Enable aspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyName in AllowUpPartyNames to do token exchange through up-party trust.
-                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, aspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyName*/ /*, "foxids_oidcpkce", "adfs_saml_idp" */ },
+                    AllowUpPartyNames = [loginName, aspNetCoreSamlIdPSampleUpPartyName.name, identityserverOidcOpUpPartyName.name/*, aspNetCoreOidcAuthCoreAllUpPartiesSampleOAuthTrustUpPartyName*/ /*, "foxids_oidcpkce", "adfs_saml_idp" */],
                     Client = new OidcDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to the application it self, then the client can do token exchange.
                             new OAuthDownResourceScope { Resource = name },
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "admin", "some_access" } },
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName.name, Scopes = ["admin", "some_access"] },
                             // Scope to API2 - accessed with token exchange.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi2SampleDownPartyName, Scopes = new [] { "some_2_access" } }
-                        },
-                        Scopes = new[]
-                        {
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi2SampleDownPartyName.name, Scopes = ["some_2_access"] }
+                        ],
+                        Scopes =
+                        [
                             new OidcDownScope { Scope = "offline_access" },
-                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
@@ -540,36 +618,36 @@ namespace FoxIDs.SampleSeedTool.Logic
                                     new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
                                     new OidcDownClaim { Claim = JwtClaimTypes.Locale },
                                     new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "email", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "address", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "phone", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
-                                }
+                                ]
                             },
-                        },
-                        Claims = new[]
-                        {
+                        ],
+                        Claims =
+                        [
                             new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                        },
-                        ResponseTypes = new[] { "code" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc") },
+                        ],
+                        ResponseTypes = ["code"],
+                        RedirectUris = [UrlCombine.Combine(baseUrl, "signin-oidc")],
                         PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "signout-callback-oidc"),
                         FrontChannelLogoutUri = UrlCombine.Combine(baseUrl, "auth", "frontchannellogout"),
                         FrontChannelLogoutSessionRequired = true,
@@ -582,16 +660,23 @@ namespace FoxIDs.SampleSeedTool.Logic
                         RefreshTokenAbsoluteLifetime = 1200, // 20 minutes
                         RefreshTokenUseOneTime = false,
                         RefreshTokenLifetimeUnlimited = false
-                    }
+                    },
+                    ClaimTransforms = [new OAuthClaimTransform
+                    {
+                        Action = ClaimTransformActions.Replace,
+                        Type = ClaimTransformTypes.Constant,
+                        ClaimOut = "my:claim1",
+                        Transformation = "1234 abcd"
+                    }]
                 };
 
-                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
 
                 var secret = "IxIruKswG4sQxzOrKlXR58strgZtoyZPG18J3FhzEXI";
-                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oidcDownParty.Name,
-                    Secrets = new string[] { secret },
+                    Secrets = [secret],
                 });
                 Console.WriteLine($"\t'{name}' client secret is: {secret}");
             };
@@ -603,32 +688,33 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44340";
 
                 var oidcDownParty = new OidcDownParty
                 {
                     Name = name,
-                    AllowCorsOrigins = new[] { baseUrl },
-                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    DisplayName = displayName,
+                    AllowCorsOrigins = [baseUrl],
+                    AllowUpPartyNames = [loginName, aspNetCoreSamlIdPSampleUpPartyName.name, identityserverOidcOpUpPartyName.name/*, "foxids_oidcpkce", "adfs_saml_idp"*/],
                     Client = new OidcDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to the application it self.
                             //new OAuthDownResourceScope { Resource = name },
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "admin", "some_access" } }
-                        },
-                        Scopes = new[]
-                        {
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName.name, Scopes = ["admin", "some_access"] }
+                        ],
+                        Scopes =
+                        [
                             new OidcDownScope { Scope = "offline_access" },
-                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
@@ -643,36 +729,36 @@ namespace FoxIDs.SampleSeedTool.Logic
                                     new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
                                     new OidcDownClaim { Claim = JwtClaimTypes.Locale },
                                     new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "email", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "address", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "phone", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
-                                }
+                                ]
                             },
-                        },
-                        Claims = new[]
-                        {
+                        ],
+                        Claims =
+                        [
                             new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                        },
-                        ResponseTypes = new[] { "code" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc") },
+                        ],
+                        ResponseTypes = ["code"],
+                        RedirectUris = [UrlCombine.Combine(baseUrl, "signin-oidc")],
                         PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "signout-callback-oidc"),
                         FrontChannelLogoutUri = UrlCombine.Combine(baseUrl, "auth", "frontchannellogout"),
                         FrontChannelLogoutSessionRequired = true,
@@ -688,13 +774,13 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
 
                 var secret = "KnhiOHuUz1zolY5k4B_r2M3iGkpkJmsmPwQ0RwS5KjM";
-                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oidcDownParty.Name,
-                    Secrets = new string[] { secret },
+                    Secrets = [secret],
                 });
                 Console.WriteLine($"\t'{name}' client secret is: {secret}");
             };
@@ -706,29 +792,30 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44341";
 
                 var oidcDownParty = new OidcDownParty
                 {
                     Name = name,
-                    AllowCorsOrigins = new[] { baseUrl },
-                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    DisplayName = displayName,
+                    AllowCorsOrigins = [baseUrl],
+                    AllowUpPartyNames = [loginName, aspNetCoreSamlIdPSampleUpPartyName.name, identityserverOidcOpUpPartyName.name/*, "foxids_oidcpkce", "adfs_saml_idp"*/],
                     Client = new OidcDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to the application it self.
                             new OAuthDownResourceScope { Resource = name }
-                        },
-                        Scopes = new[]
-                        {
-                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                                {
+                        ],
+                        Scopes =
+                        [
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
@@ -743,21 +830,21 @@ namespace FoxIDs.SampleSeedTool.Logic
                                     new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
                                     new OidcDownClaim { Claim = JwtClaimTypes.Locale },
                                     new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "email", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                                }
+                                ]
                             },
-                        },
-                        Claims = new[]
-                        {
+                        ],
+                        Claims =
+                        [
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                        },
-                        ResponseTypes = new[] { "id_token token", "id_token" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc") },
+                        ],
+                        ResponseTypes = ["id_token token", "id_token"],
+                        RedirectUris = [UrlCombine.Combine(baseUrl, "signin-oidc")],
                         PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "signout-callback-oidc"),
                         FrontChannelLogoutUri = UrlCombine.Combine(baseUrl, "auth", "frontchannellogout"),
                         FrontChannelLogoutSessionRequired = true,
@@ -769,7 +856,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreOidcImplicitSampleDownPartyName, getAction, postAction);
@@ -781,32 +868,33 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44348";
 
                 var oidcDownParty = new OidcDownParty
                 {
                     Name = name,
-                    AllowCorsOrigins = new[] { baseUrl },
-                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    DisplayName = displayName,
+                    AllowCorsOrigins = [baseUrl],
+                    AllowUpPartyNames = [loginName, aspNetCoreSamlIdPSampleUpPartyName.name, identityserverOidcOpUpPartyName.name/*, "foxids_oidcpkce", "adfs_saml_idp"*/],
                     Client = new OidcDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to the application it self.
                             //new OAuthDownResourceScope { Resource = name },
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "admin", "some_access" } }
-                        },
-                        Scopes = new[]
-                        {
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName.name, Scopes = ["admin", "some_access"] }
+                        ],
+                        Scopes =
+                        [
                             new OidcDownScope { Scope = "offline_access" },
-                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
@@ -821,36 +909,36 @@ namespace FoxIDs.SampleSeedTool.Logic
                                     new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
                                     new OidcDownClaim { Claim = JwtClaimTypes.Locale },
                                     new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "email", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "address", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "phone", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
-                                }
+                                ]
                             },
-                        },
-                        Claims = new[]
-                        {
+                        ],
+                        Claims =
+                        [
                             new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                        },
-                        ResponseTypes = new[] { "code" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc") },
+                        ],
+                        ResponseTypes = ["code"],
+                        RedirectUris = [UrlCombine.Combine(baseUrl, "signin-oidc")],
                         PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "signout-callback-oidc"),
                         FrontChannelLogoutUri = UrlCombine.Combine(baseUrl, "auth", "frontchannellogout"),
                         FrontChannelLogoutSessionRequired = true,
@@ -866,13 +954,13 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
 
                 var secret = "wXyFfKVxZXGAIoFrcj-8hXtcPD6CgtjpEhrqGJJe95g";
-                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oidcDownParty.Name,
-                    Secrets = new string[] { secret },
+                    Secrets = [secret],
                 });
                 Console.WriteLine($"\t'{name}' client secret is: {secret}");
             };
@@ -884,32 +972,33 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44345";
 
                 var oidcDownParty = new OidcDownParty
                 {
                     Name = name,
-                    AllowCorsOrigins = new[] { baseUrl },
-                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    DisplayName = displayName,
+                    AllowCorsOrigins = [baseUrl],
+                    AllowUpPartyNames = [loginName, aspNetCoreSamlIdPSampleUpPartyName.name, identityserverOidcOpUpPartyName.name/*, "foxids_oidcpkce", "adfs_saml_idp"*/],
                     Client = new OidcDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to the application it self.
                             //new OAuthDownResourceScope { Resource = name },
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "admin", "some_access" } }
-                        },
-                        Scopes = new[]
-                        {
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName.name, Scopes = ["admin", "some_access"] }
+                        ],
+                        Scopes =
+                        [
                             new OidcDownScope { Scope = "offline_access" },
-                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
@@ -924,36 +1013,36 @@ namespace FoxIDs.SampleSeedTool.Logic
                                     new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
                                     new OidcDownClaim { Claim = JwtClaimTypes.Locale },
                                     new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "email", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "address", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "phone", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
-                                }
+                                ]
                             },
-                        },
-                        Claims = new[]
-                        {
+                        ],
+                        Claims =
+                        [
                             new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                        },
-                        ResponseTypes = new[] { "code" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "authentication/login-callback") },
+                        ],
+                        ResponseTypes = ["code"],
+                        RedirectUris = [UrlCombine.Combine(baseUrl, "authentication/login-callback")],
                         PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "authentication/logout-callback"),
                         RequirePkce = true,
                         RequireLogoutIdTokenHint = true,
@@ -967,7 +1056,7 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
             };
 
             await CreateIfNotExistsAsync(blazorOidcAuthCodePkceSampleDownPartyName, getAction, postAction);
@@ -977,32 +1066,33 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOidcDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44347";
 
                 var oidcDownParty = new OidcDownParty
                 {
                     Name = name,
-                    AllowCorsOrigins = new[] { baseUrl },
-                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
+                    DisplayName = displayName,
+                    AllowCorsOrigins = [baseUrl],
+                    AllowUpPartyNames = [loginName, aspNetCoreSamlIdPSampleUpPartyName.name, identityserverOidcOpUpPartyName.name/*, "foxids_oidcpkce", "adfs_saml_idp"*/],
                     Client = new OidcDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to the application it self.
                             //new OAuthDownResourceScope { Resource = name },
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "admin", "some_access" } }
-                        },
-                        Scopes = new[]
-                        {
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName.name, Scopes = ["admin", "some_access"] }
+                        ],
+                        Scopes =
+                        [
                             new OidcDownScope { Scope = "offline_access" },
-                            new OidcDownScope { Scope = "profile", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "profile", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Name, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.FamilyName, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.GivenName, InIdToken = true  },
@@ -1017,36 +1107,36 @@ namespace FoxIDs.SampleSeedTool.Logic
                                     new OidcDownClaim { Claim = JwtClaimTypes.Zoneinfo },
                                     new OidcDownClaim { Claim = JwtClaimTypes.Locale },
                                     new OidcDownClaim { Claim = JwtClaimTypes.UpdatedAt }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "email", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "email", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Email, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.EmailVerified }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "address", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "address", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.Address, InIdToken = true  }
-                                }
+                                ]
                             },
-                            new OidcDownScope { Scope = "phone", VoluntaryClaims = new[]
-                                {
+                            new OidcDownScope { Scope = "phone", VoluntaryClaims =
+                                [
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumber, InIdToken = true  },
                                     new OidcDownClaim { Claim = JwtClaimTypes.PhoneNumberVerified },
-                                }
+                                ]
                             },
-                        },
-                        Claims = new[]
-                        {
+                        ],
+                        Claims =
+                        [
                             new OidcDownClaim{ Claim = JwtClaimTypes.Email, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Name, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.FamilyName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.GivenName, InIdToken = true },
                             new OidcDownClaim{ Claim = JwtClaimTypes.Role, InIdToken = true }
-                        },
-                        ResponseTypes = new[] { "code" },
-                        RedirectUris = new[] { UrlCombine.Combine(baseUrl, "signin-oidc") },
+                        ],
+                        ResponseTypes = ["code"],
+                        RedirectUris = [UrlCombine.Combine(baseUrl, "signin-oidc")],
                         PostLogoutRedirectUri = UrlCombine.Combine(baseUrl, "signout-callback-oidc"),
                         FrontChannelLogoutUri = UrlCombine.Combine(baseUrl, "auth", "frontchannellogout"),
                         FrontChannelLogoutSessionRequired = true,
@@ -1062,13 +1152,13 @@ namespace FoxIDs.SampleSeedTool.Logic
                     }
                 };
 
-                await foxIDsApiClient.PostOidcDownPartyAsync(oidcDownParty);
+                _ = await foxIDsApiClient.PostOidcDownPartyAsync(settings.Tenant, settings.Track, oidcDownParty);
 
                 var secret = "rbZ82PSaE0NeRLMy4DNhlP1mnsdcgMfjnF5niufa1w0";
-                await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(new OAuthClientSecretRequest
+                _ = await foxIDsApiClient.PostOidcClientSecretDownPartyAsync(settings.Tenant, settings.Track, new OAuthClientSecretRequest
                 {
                     PartyName = oidcDownParty.Name,
-                    Secrets = new string[] { secret },
+                    Secrets = [secret],
                 });
                 Console.WriteLine($"\t'{name}' client secret is: {secret}");
             };
@@ -1080,36 +1170,37 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetSamlDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetSamlDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var baseUrl = "https://localhost:44343";
 
                 var samlUpParty = new SamlDownParty
                 {
                     Name = name,
+                    DisplayName = displayName,
                     Issuer = aspNetCoreSamlSampleDownIssuer,
-                    AllowUpPartyNames = new[] { loginName, aspNetCoreSamlIdPSampleUpPartyName, identityserverOidcOpUpPartyName/*, "foxids_oidcpkce", "adfs_saml_idp"*/ },
-                    Keys = new[] { GetCertificateInfoKey("AspNetCoreSamlSample-test-sign-cert.crt") },
+                    AllowUpPartyNames = [loginName, aspNetCoreSamlIdPSampleUpPartyName.name, identityserverOidcOpUpPartyName.name/*, "foxids_oidcpkce", "adfs_saml_idp"*/],
+                    Keys = [GetCertificateInfoKey("AspNetCoreSamlSample-test-sign-cert.crt")],
                     SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
                     CertificateValidationMode = X509CertificateValidationMode.None,
                     RevocationMode = X509RevocationMode.NoCheck,
                     AuthnResponseSignType = Saml2AuthnResponseSignTypes.SignAssertionAndResponse,
                     AuthnRequestBinding = SamlBindingTypes.Redirect,
                     AuthnResponseBinding = SamlBindingTypes.Post,
-                    AcsUrls = new[] { UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice") },
+                    AcsUrls = [UrlCombine.Combine(baseUrl, "saml/assertionconsumerservice")],
                     LogoutRequestBinding = SamlBindingTypes.Post,
                     LogoutResponseBinding = SamlBindingTypes.Post,
                     SingleLogoutUrl = UrlCombine.Combine(baseUrl, "saml/singlelogout"),
                     LoggedOutUrl = UrlCombine.Combine(baseUrl, "saml/loggedout"),
-                    Claims = new string[] { ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role },
+                    Claims = [ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role],
                     SubjectConfirmationLifetime = 300, // 5 minutes
                     IssuedTokenLifetime = 36000 // 10 hours
                 };
 
-                await foxIDsApiClient.PostSamlDownPartyAsync(samlUpParty);
+                _ = await foxIDsApiClient.PostSamlDownPartyAsync(settings.Tenant, settings.Track, samlUpParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreSamlSampleDownPartyName, getAction, postAction);
@@ -1119,23 +1210,24 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name);
+                _ = await foxIDsApiClient.GetSamlUpPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var samlUpParty = new SamlUpParty
                 {
                     // Only enable token exchange
                     DisableUserAuthenticationTrust = true,
                     Name = name,
+                    DisplayName = displayName,
                     UpdateState = PartyUpdateStates.Automatic,
-                    MetadataUrl = UrlCombine.Combine(settings.FoxIDsEndpoint, new[] { settings.Tenant, settings.Track, aspNetCoreSamlSampleDownPartyName, "saml", "idpmetadata" }),
+                    MetadataUrl = GetUrl([ aspNetCoreSamlSampleDownPartyName.name, "saml", "idpmetadata" ]),
                     // The SP issuer can be configured to match an external application (service provider)
                     SpIssuer = aspNetCoreSamlSampleDownIssuer,
                 };
 
-                await foxIDsApiClient.PostSamlUpPartyAsync(samlUpParty);
+                _ = await foxIDsApiClient.PostSamlUpPartyAsync(settings.Tenant, settings.Track, samlUpParty);
             };
 
             await CreateIfNotExistsAsync(aspNetCoreSamlSampleTrustUpPartyName, getAction, postAction);
@@ -1145,64 +1237,79 @@ namespace FoxIDs.SampleSeedTool.Logic
         {
             Func<string, Task> getAction = async (name) =>
             {
-                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name);
+                _ = await foxIDsApiClient.GetOAuthDownPartyAsync(name, settings.Tenant, settings.Track);
             };
 
-            Func<string, Task> postAction = async (name) =>
+            Func<string, string, Task> postAction = async (name, displayName) =>
             {
                 var oauthDownParty = new OAuthDownParty
                 {
                     Name = name,
-                    AllowUpPartyNames = new[] { aspNetCoreSamlSampleTrustUpPartyName },
+                    DisplayName = displayName,
+                    AllowUpPartyNames = [aspNetCoreSamlSampleTrustUpPartyName.name],
                     Client = new OAuthDownClient
                     {
-                        ResourceScopes = new[]
-                        {
+                        ResourceScopes =
+                        [
                             // Scope to API1.
-                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName, Scopes = new [] { "some_access" } },
-                        },
+                            new OAuthDownResourceScope { Resource = aspNetCoreApi1SampleDownPartyName.name, Scopes = ["some_access"] },
+                        ],
                         AccessTokenLifetime = 600, // 10 minutes
                         ClientAuthenticationMethod = ClientAuthenticationMethods.PrivateKeyJwt,
-                        ClientKeys = new[] { GetCertificateInfoKey("CN=TokenExchangeAspnetcoreSamlSample, O=test corp.cer") }
+                        ClientKeys = [GetCertificateInfoKey("CN=TokenExchangeAspnetcoreSamlSample, O=test corp.cer")]
                     }
                 };
 
-                await foxIDsApiClient.PostOAuthDownPartyAsync(oauthDownParty);
+                _ = await foxIDsApiClient.PostOAuthDownPartyAsync(settings.Tenant, settings.Track, oauthDownParty);
             };
 
             await CreateIfNotExistsAsync(oauthTokenExchangeForSamlDownPartyName, getAction, postAction);
         }        
 
-        private JwtWithCertificateInfo GetCertificateInfoKey(string file)
+        private JwkWithCertificateInfo GetCertificateInfoKey(string file)
         {
             var certificate = CertificateUtil.Load(file);
             var jwk = certificate.ToFTJsonWebKey();
-            return jwk.ToJson().ToObject<JwtWithCertificateInfo>();
+            return jwk.ToJson().ToObject<JwkWithCertificateInfo>();
         }
 
-        private async Task CreateIfNotExistsAsync(string name, Func<string, Task> getActionAsync, Func<string, Task> postActionAsync)
+        private async Task CreateIfNotExistsAsync((string name, string displayName) partyName, Func<string, Task> getActionAsync, Func<string, string, Task> postActionAsync)
         {
-            Console.WriteLine($"Creating '{name}'");
+            Console.WriteLine($"Creating '{partyName.name}'");
 
             try
             {
-                await getActionAsync(name);
+                await getActionAsync(partyName.name);
 
-                Console.WriteLine($"\t'{name}' already exists");
+                Console.WriteLine($"\t'{partyName.name} ({partyName.displayName})' already exists");
             }
             catch (FoxIDsApiException ex)
             {
                 if (ex.StatusCode == StatusCodes.Status404NotFound)
                 {
-                    await postActionAsync(name);
+                    await postActionAsync(partyName.name, partyName.displayName);
 
-                    Console.WriteLine($"\t'{name}' created");
+                    Console.WriteLine($"\t'{partyName.name} ({partyName.displayName})' created");
                 }
                 else
                 {
                     throw;
                 }
             }
+        }
+
+        private string GetUrl(string[] postElements)
+        {
+            var elements = new List<string>();
+
+            if (settings.IncludeTenantInUrl)
+            {
+                elements.Add(settings.Tenant);
+            }
+            elements.Add(settings.Track);
+            elements.AddRange(postElements);
+
+            return UrlCombine.Combine(settings.FoxIDsEndpoint, elements.ToArray());
         }
     }
 }

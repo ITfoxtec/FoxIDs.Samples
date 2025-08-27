@@ -31,7 +31,9 @@ namespace IdentityServerOidcOpSample.UI
                 // also consider adding upgrade-insecure-requests once you have HTTPS in place for production
                 //csp += "upgrade-insecure-requests;";
                 // also an example if you need client images to be displayed from twitter
-                // csp += "img-src 'self' https://pbs.twimg.com;";
+
+                // Allow all frame-src domains to support front channel logout
+                csp += " frame-src *;";
 
                 // once for standards compliant browsers
                 if (!context.HttpContext.Response.Headers.ContainsKey("Content-Security-Policy"))

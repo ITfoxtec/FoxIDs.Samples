@@ -80,7 +80,7 @@ namespace AspNetCoreApi1Sample.Controllers
 
             var tokenExchangeRequest = new TokenExchangeRequest
             {
-                Scope = "aspnetcore_api2_sample:some_2_access",
+                Scope = identitySettings.RequestApi2Scope,
                 SubjectToken = accessToken,
                 SubjectTokenType = IdentityConstants.TokenTypeIdentifiers.AccessToken
             };
@@ -98,7 +98,15 @@ namespace AspNetCoreApi1Sample.Controllers
             }
             else
             {
-                return CertificateUtil.Load(Path.Combine(Startup.AppEnvironment.ContentRootPath, identitySettings.TokenExchangeClientCertificateFile), identitySettings.TokenExchangeClientCertificatePassword);
+                var parth = Path.Combine(Startup.AppEnvironment.ContentRootPath, "Certificates");
+                try
+                {
+                    return CertificateUtil.Load(Path.Combine(parth, identitySettings.TokenExchangeClientCertificateFile), identitySettings.TokenExchangeClientCertificatePassword);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Load certificate '{identitySettings.TokenExchangeClientCertificateFile}' error, path '{parth}'.", ex);
+                }
             }
         }
     }

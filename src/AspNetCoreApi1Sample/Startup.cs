@@ -1,8 +1,9 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using AspNetCoreApi1Sample.Models;
 using AspNetCoreApi1Sample.Policies;
+using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
 using ITfoxtec.Identity;
 using ITfoxtec.Identity.Discovery;
 using ITfoxtec.Identity.Helpers;
@@ -75,9 +76,9 @@ namespace AspNetCoreApi1Sample
 
                     options.Events = new JwtBearerEvents
                     {
-                        OnAuthenticationFailed = async (context) =>
+                        OnAuthenticationFailed = (context) =>
                         {
-                            await Task.FromResult(string.Empty);
+                            throw new Exception("API 1 authentication failed.", context.Exception);
                         }
                     };
                 });
@@ -92,6 +93,8 @@ namespace AspNetCoreApi1Sample
             {
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ProxyHeadersMiddleware>();
 
             app.UseHttpsRedirection();
 

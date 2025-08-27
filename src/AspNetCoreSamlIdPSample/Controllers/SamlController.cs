@@ -18,6 +18,10 @@ using Microsoft.Extensions.Logging;
 using FoxIDs.SampleHelperLibrary.Repository;
 using FoxIDs.SampleHelperLibrary.Models;
 using ITfoxtec.Identity.Util;
+using ITfoxtec.Identity.Saml2.Claims;
+using System.Web;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ITfoxtec.Identity;
 
 namespace AspNetCoreSamlIdPSample.Controllers
 {
@@ -47,30 +51,30 @@ namespace AspNetCoreSamlIdPSample.Controllers
             entityDescriptor.ValidUntil = 365;
             entityDescriptor.IdPSsoDescriptor = new IdPSsoDescriptor
             {
-                SigningCertificates = new X509Certificate2[]
-                {
+                SigningCertificates =
+                [
                     saml2Config.SigningCertificate
-                },
-                //EncryptionCertificates = new X509Certificate2[]
-                //{
+                ],
+                //EncryptionCertificates =
+                //[
                 //    saml2Config.DecryptionCertificate
-                //},
-                SingleSignOnServices = new SingleSignOnService[]
-                {
+                //],
+                SingleSignOnServices =
+                [
                     new SingleSignOnService { Binding = ProtocolBindings.HttpRedirect, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Login")) }
-                },
-                SingleLogoutServices = new SingleLogoutService[]
-                {
+                ],
+                SingleLogoutServices =
+                [
                     new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Logout")) }
-                },
-                NameIDFormats = new Uri[] { NameIdentifierFormats.X509SubjectName },
+                ],
+                NameIDFormats = [NameIdentifierFormats.X509SubjectName],
             };
-            entityDescriptor.ContactPersons = new [] { 
+            entityDescriptor.ContactPersons = [
                 new ContactPerson(ContactTypes.Administrative)
                 {
                     Company = "Some sample IdP",
                 } 
-            };
+            ];
             return new Saml2Metadata(entityDescriptor).CreateMetadata().ToActionResult();
         }
 
@@ -85,24 +89,9 @@ namespace AspNetCoreSamlIdPSample.Controllers
             {
                 httpRequest.Binding.Unbind(httpRequest, saml2AuthnRequest);
 
-                // ****  Handle user login e.g. in GUI ****
-                // Test user with session index and claims
-                var session = await idPSessionCookieRepository.GetAsync();
-                if (session == null)
-                {
-                    session = new IdPSession
-                    {
-                        RelyingPartyIssuer = relyingParty.Issuer,
-                        NameIdentifier = "12345",
-                        Upn = "12345@email.test",
-                        Email = "some@email.test",
-                        SessionIndex = Guid.NewGuid().ToString()
-                    };
-                    await idPSessionCookieRepository.SaveAsync(session);
-                }
-                var claims = CreateClaims(session);
+                var session = await GetSession(relyingParty);
 
-                return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, httpRequest.Binding.RelayState, relyingParty, session.SessionIndex, claims);
+                return LoginResponse(saml2AuthnRequest.Id, Saml2StatusCodes.Success, httpRequest.Binding.RelayState, relyingParty, session.SessionIndex, GetClaims(session));
             }
             catch (Exception ex)
             {
@@ -111,28 +100,122 @@ namespace AspNetCoreSamlIdPSample.Controllers
             }
         }
 
-        private Saml2Configuration GetLoginSaml2Config(RelyingParty relyingParty)
+        [Route("IdPInitiated")]
+        public IActionResult IdPInitiated()
         {
-            var loginSaml2Config = new Saml2Configuration
-            {
-                Issuer = saml2Config.Issuer,
-                SigningCertificate = saml2Config.SigningCertificate,                
-                SignatureAlgorithm = saml2Config.SignatureAlgorithm,
-                CertificateValidationMode = saml2Config.CertificateValidationMode,
-                RevocationMode = saml2Config.RevocationMode
-            };
-            loginSaml2Config.AllowedAudienceUris.AddRange(saml2Config.AllowedAudienceUris);
-            loginSaml2Config.EncryptionCertificate = relyingParty.EncryptionCertificate;
-
-            return loginSaml2Config;
+            return base.View(new IdPInitiatedViewModel { RelyingPartyIssuers = GetRelyingPartyListItems(), OnlineSample = settings.OnlineSample });
         }
 
-        private IEnumerable<Claim> CreateClaims(IdPSession idPSession)
+        [HttpPost("IdPInitiated")]
+        public async Task<IActionResult> IdPInitiated(IdPInitiatedViewModel idPInitiatedViewModel)
+        {
+            if ("oidc".Equals(idPInitiatedViewModel.ApplicationType, StringComparison.OrdinalIgnoreCase) && idPInitiatedViewModel.ApplicationRedirectURL.IsNullOrWhiteSpace())
+            {
+                ModelState.AddModelError(nameof(idPInitiatedViewModel.ApplicationRedirectURL), $"The {nameof(idPInitiatedViewModel.ApplicationRedirectURL)} field is required for OpenID Connect (oidc)");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                idPInitiatedViewModel.RelyingPartyIssuers = GetRelyingPartyListItems();
+                idPInitiatedViewModel.OnlineSample = settings.OnlineSample;
+                return View(idPInitiatedViewModel);
+            }
+
+            var relyingParty = ValidateRelyingParty(idPInitiatedViewModel.RelyingPartyIssuer);
+
+            var binding = new Saml2PostBinding();
+            binding.RelayState = string.Join('&', GetRelayState(idPInitiatedViewModel));
+
+            var response = new Saml2AuthnResponse(GetLoginSaml2Config(relyingParty));
+            response.Status = Saml2StatusCodes.Success;
+
+            var session = await GetSession(relyingParty);
+
+            return LoginResponse(null, Saml2StatusCodes.Success, binding.RelayState, relyingParty, session.SessionIndex, GetClaims(session));
+
+
+            //var claimsIdentity = new ClaimsIdentity(GetClaims(session));
+            //response.NameId = new Saml2NameIdentifier(claimsIdentity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).Single(), NameIdentifierFormats.Persistent);
+            //response.ClaimsIdentity = claimsIdentity;
+            //var token = response.CreateSecurityToken(relyingParty.Issuer);
+
+            //return binding.Bind(response).ToActionResult();
+        }
+
+        private IEnumerable<string> GetRelayState(IdPInitiatedViewModel idPInitiatedViewModel)
+        {
+            yield return $"app_name={idPInitiatedViewModel.ApplicationName.ToLower()}";
+            yield return $"app_type={idPInitiatedViewModel.ApplicationType.ToLower()}";
+            if (!idPInitiatedViewModel.ApplicationRedirectURL.IsNullOrWhiteSpace())
+            {
+                yield return $"app_redirect={HttpUtility.UrlEncode(idPInitiatedViewModel.ApplicationRedirectURL)}";
+            }
+        }
+
+        private async Task<IdPSession> GetSession(RelyingParty relyingParty)
+        {
+            // ****  Handle user login e.g. in GUI ****
+            // Test user with session index and claims
+            var session = await idPSessionCookieRepository.GetAsync();
+            if (session == null)
+            {
+                session = new IdPSession
+                {
+                    RelyingPartyIssuer = relyingParty.Issuer,
+                    NameIdentifier = "12345",
+                    Upn = "12345@email.test",
+                    Email = "some@email.test",
+                    CustomId = "123abc",
+                    CustomName = "Test Users Custom Full Name",
+                    SessionIndex = Guid.NewGuid().ToString()
+                };
+                await idPSessionCookieRepository.SaveAsync(session);
+            }
+
+            return session;
+        }
+
+        private IEnumerable<Claim> GetClaims(IdPSession idPSession)
         {
             yield return new Claim(ClaimTypes.NameIdentifier, idPSession.NameIdentifier);
             yield return new Claim(ClaimTypes.Upn, idPSession.Upn);
             yield return new Claim(ClaimTypes.Email, idPSession.Email);
-            yield return new Claim("https://data.gov.dk/model/core/eid/cprUuid", Guid.NewGuid().ToString());
+
+            yield return new Claim("http://schemas.test.org/claims/CustomID", idPSession.CustomId);
+            yield return new Claim("http://schemas.test.org/claims/customname", idPSession.CustomName);
+
+            yield return new Claim("space claim test", "Test value");
+
+            yield return new Claim(Saml2ClaimTypes.NameId, idPSession.NameIdentifier);
+            yield return new Claim(Saml2ClaimTypes.SessionIndex, idPSession.SessionIndex);
+        }
+
+        private IEnumerable<SelectListItem> GetRelyingPartyListItems() => GetRelyingParties().Select(r => new SelectListItem(r.SingleSignOnDestination.OriginalString, r.Issuer));
+
+        private IActionResult LoginResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, RelyingParty relyingParty, string sessionIndex = null, IEnumerable<Claim> claims = null)
+        {
+            var responsebinding = new Saml2PostBinding();
+            responsebinding.RelayState = relayState;
+
+            var saml2AuthnResponse = new Saml2AuthnResponse(GetLoginSaml2Config(relyingParty))
+            {
+                InResponseTo = inResponseTo,
+                Status = status,
+                Destination = relyingParty.SingleSignOnDestination,
+            };
+            if (status == Saml2StatusCodes.Success && claims != null)
+            {
+                saml2AuthnResponse.SessionIndex = sessionIndex;
+
+                var claimsIdentity = new ClaimsIdentity(claims);
+                saml2AuthnResponse.NameId = new Saml2NameIdentifier(claimsIdentity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).Single(), NameIdentifierFormats.Persistent);
+                //saml2AuthnResponse.NameId = new Saml2NameIdentifier(claimsIdentity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).Single());
+                saml2AuthnResponse.ClaimsIdentity = claimsIdentity;
+
+                _ = saml2AuthnResponse.CreateSecurityToken(relyingParty.Issuer);
+            }
+
+            return responsebinding.Bind(saml2AuthnResponse).ToActionResult();
         }
 
         [Route("Logout")]
@@ -189,10 +272,8 @@ namespace AspNetCoreSamlIdPSample.Controllers
             var relyingParty = ValidateRelyingParty(session.RelyingPartyIssuer);
 
             var binding = new Saml2PostBinding();
-            var saml2LogoutRequest = new Saml2LogoutRequest(saml2Config, User)
-            {
-                Destination = relyingParty.SingleLogoutDestination
-            };
+            var saml2LogoutRequest = session == null ? new Saml2LogoutRequest(saml2Config) : new Saml2LogoutRequest(saml2Config, new ClaimsPrincipal(new ClaimsIdentity(GetClaims(session), "auth_session", ClaimTypes.NameIdentifier, ClaimTypes.Role)));
+            saml2LogoutRequest.Destination = relyingParty.SingleLogoutDestination;
 
             await idPSessionCookieRepository.DeleteAsync();         
 
@@ -214,32 +295,6 @@ namespace AspNetCoreSamlIdPSample.Controllers
             return httpRequest.Binding.ReadSamlResponse(httpRequest, new Saml2LogoutResponse(saml2Config))?.Issuer;
         }
 
-        private IActionResult LoginResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, RelyingParty relyingParty, string sessionIndex = null, IEnumerable<Claim> claims = null)
-        {
-            var responsebinding = new Saml2PostBinding();
-            responsebinding.RelayState = relayState;
-
-            var saml2AuthnResponse = new Saml2AuthnResponse(GetLoginSaml2Config(relyingParty))
-            {
-                InResponseTo = inResponseTo,
-                Status = status,
-                Destination = relyingParty.SingleSignOnDestination,
-            };
-            if (status == Saml2StatusCodes.Success && claims != null)
-            {
-                saml2AuthnResponse.SessionIndex = sessionIndex;
-
-                var claimsIdentity = new ClaimsIdentity(claims);
-                saml2AuthnResponse.NameId = new Saml2NameIdentifier(claimsIdentity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).Single(), NameIdentifierFormats.Persistent);
-                //saml2AuthnResponse.NameId = new Saml2NameIdentifier(claimsIdentity.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).Single());
-                saml2AuthnResponse.ClaimsIdentity = claimsIdentity;
-
-                _ = saml2AuthnResponse.CreateSecurityToken(relyingParty.Issuer);
-            }
-
-            return responsebinding.Bind(saml2AuthnResponse).ToActionResult();
-        }
-
         private IActionResult LogoutResponse(Saml2Id inResponseTo, Saml2StatusCodes status, string relayState, string sessionIndex, RelyingParty relyingParty)
         {
             var responsebinding = new Saml2PostBinding();
@@ -256,9 +311,71 @@ namespace AspNetCoreSamlIdPSample.Controllers
             return responsebinding.Bind(saml2LogoutResponse).ToActionResult();
         }
 
+        private Saml2Configuration GetLoginSaml2Config(RelyingParty relyingParty)
+        {
+            var loginSaml2Config = new Saml2Configuration
+            {
+                Issuer = saml2Config.Issuer,
+                SigningCertificate = saml2Config.SigningCertificate,
+                SignatureAlgorithm = saml2Config.SignatureAlgorithm,
+                CertificateValidationMode = saml2Config.CertificateValidationMode,
+                RevocationMode = saml2Config.RevocationMode
+            };
+            loginSaml2Config.AllowedAudienceUris.AddRange(saml2Config.AllowedAudienceUris);
+            loginSaml2Config.EncryptionCertificate = relyingParty.EncryptionCertificate;
+
+            return loginSaml2Config;
+        }
+
         private RelyingParty ValidateRelyingParty(string issuer)
         {
-            return settings.RelyingParties.Where(rp => rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
+            try
+            {
+                return GetRelyingParties().Where(rp => rp.Issuer.Equals(issuer, StringComparison.InvariantCultureIgnoreCase)).Single();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Requested RP Issuer '{issuer}' is not configured in settings.RelyingParties.");
+            }
+        }
+
+        int metadataValidInSecunds = 10*60*60;
+        private List<RelyingParty> GetRelyingParties()
+        {
+            var now = DateTimeOffset.UtcNow;
+            foreach (var rp in settings.RelyingParties)
+            {
+                if (rp.ValidUntil < now)
+                {
+                    var entityDescriptor = new EntityDescriptor();
+                    entityDescriptor.ReadSPSsoDescriptorFromUrl(new Uri(rp.SpMetadata));
+                    if (entityDescriptor.SPSsoDescriptor != null)
+                    {
+                        rp.Issuer = entityDescriptor.EntityId;
+                        rp.SingleSignOnDestination = entityDescriptor.SPSsoDescriptor.AssertionConsumerServices.First().Location;
+
+                        var singleLogoutService = entityDescriptor.SPSsoDescriptor.SingleLogoutServices.First();
+                        rp.SingleLogoutDestination = singleLogoutService.Location;
+                        rp.SingleLogoutResponseDestination = singleLogoutService.ResponseLocation ?? singleLogoutService.Location;
+
+                        rp.SignatureValidationCertificate = entityDescriptor.SPSsoDescriptor.SigningCertificates.First();
+
+                        if (entityDescriptor.SPSsoDescriptor.EncryptionCertificates?.Count() > 0)
+                        {
+                            rp.EncryptionCertificate = entityDescriptor.SPSsoDescriptor.EncryptionCertificates.First();
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("IdPSsoDescriptor not loaded from metadata.");
+                    }
+
+                    rp.ValidUntil = now.AddSeconds(metadataValidInSecunds);
+                }
+            }
+
+            return settings.RelyingParties;
         }
     }
 }

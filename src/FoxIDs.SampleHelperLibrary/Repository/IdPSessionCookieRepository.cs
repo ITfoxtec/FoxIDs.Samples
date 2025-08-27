@@ -14,7 +14,20 @@ namespace FoxIDs.SampleHelperLibrary.Repository
 
         public async Task<IdPSession> GetAsync()
         {
-            return (await GetValueAsync()).ToObject<IdPSession>();
+            try
+            {
+                return (await GetValueAsync()).ToObject<IdPSession>();
+            }
+            catch
+            {
+                try
+                {
+                    await DeleteAsync();
+                }
+                catch { }
+
+                throw;
+            }    
         }
 
         public Task SaveAsync(IdPSession idPSession)

@@ -119,6 +119,7 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("offline_access");
         options.Scope.Add("profile");
         options.Scope.Add("email");
+        //options.Scope.Add("phone");
 
         options.MapInboundClaims = false;
         options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;

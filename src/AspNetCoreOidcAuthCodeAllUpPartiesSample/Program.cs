@@ -15,7 +15,7 @@ using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//To show detail of error and see the problem
+// To view detailed authentication errors and identify the issue
 IdentityModelEventSource.ShowPII = true; 
 
 builder.Services.AddApplicationInsightsTelemetry();

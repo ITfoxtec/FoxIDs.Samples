@@ -9,7 +9,7 @@ using FoxIDs.SampleHelperLibrary.Infrastructure.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+IdentityModelEventSource.ShowPII = true; // To view detailed authentication errors and identify the issue
 
 builder.Services.AddApplicationInsightsTelemetry();
 

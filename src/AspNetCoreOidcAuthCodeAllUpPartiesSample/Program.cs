@@ -128,7 +128,7 @@ builder.Services.AddAuthentication(options =>
         options.Events.OnRedirectToIdentityProvider = async (context) =>
         {
             // To require MFA
-            //context.ProtocolMessage.AcrValues = "urn:foxids:mfa";
+            //context.ProtocolMessage.AcrValues = "urn:foxids:mfa"; //  urn:foxids:link urn:foxids:xxxxxxxx urn:foxids:email urn:foxids:otp
             // Request a language on login
             //context.ProtocolMessage.UiLocales = "fr";
             await Task.FromResult(string.Empty);

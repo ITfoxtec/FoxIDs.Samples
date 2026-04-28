@@ -72,6 +72,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalExtendedUiApiSample
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalPasswordApiSample", "src\ExternalPasswordApiSample\ExternalPasswordApiSample.csproj", "{5B331311-692D-C56B-8E8F-1E40F8CB4B14}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryConnectorApiSample", "src\DirectoryConnectorApiSample\DirectoryConnectorApiSample.csproj", "{1A8D40E5-3301-4356-9612-F2C1A6EEE4EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -170,6 +172,10 @@ Global
 		{5B331311-692D-C56B-8E8F-1E40F8CB4B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B331311-692D-C56B-8E8F-1E40F8CB4B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B331311-692D-C56B-8E8F-1E40F8CB4B14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A8D40E5-3301-4356-9612-F2C1A6EEE4EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A8D40E5-3301-4356-9612-F2C1A6EEE4EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A8D40E5-3301-4356-9612-F2C1A6EEE4EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A8D40E5-3301-4356-9612-F2C1A6EEE4EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -203,6 +209,7 @@ Global
 		{99326EFD-A673-496C-A009-483413A4C22B} = {341BB81B-1FCC-4BB1-8327-52E1E6C2DE58}
 		{C4BECBB5-4BBD-4CEF-AEC4-2366D04B6221} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
 		{5B331311-692D-C56B-8E8F-1E40F8CB4B14} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
+		{1A8D40E5-3301-4356-9612-F2C1A6EEE4EE} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

@@ -55,12 +55,11 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/DirectoryConnector/authentication",
+          "raw": "{{baseUrl}}/authentication",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
-            "DirectoryConnector",
             "authentication"
           ]
         }
@@ -87,12 +86,11 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/DirectoryConnector/authentication",
+          "raw": "{{baseUrl}}/authentication",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
-            "DirectoryConnector",
             "authentication"
           ]
         }
@@ -119,12 +117,11 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/DirectoryConnector/authentication",
+          "raw": "{{baseUrl}}/authentication",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
-            "DirectoryConnector",
             "authentication"
           ]
         }
@@ -151,12 +148,11 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/DirectoryConnector/change-password",
+          "raw": "{{baseUrl}}/change-password",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
-            "DirectoryConnector",
             "change-password"
           ]
         }
@@ -183,12 +179,11 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/DirectoryConnector/set-password",
+          "raw": "{{baseUrl}}/set-password",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
-            "DirectoryConnector",
             "set-password"
           ]
         }
@@ -215,12 +210,11 @@
           }
         },
         "url": {
-          "raw": "{{baseUrl}}/DirectoryConnector/set-password",
+          "raw": "{{baseUrl}}/set-password",
           "host": [
             "{{baseUrl}}"
           ],
           "path": [
-            "DirectoryConnector",
             "set-password"
           ]
         }

@@ -8,7 +8,6 @@ using System.Text;
 namespace DirectoryConnectorApiSample.Controllers;
 
 [ApiController]
-[Route("DirectoryConnector")]
 public class DirectoryConnectorController : ControllerBase
 {
     private readonly ILogger<DirectoryConnectorController> logger;

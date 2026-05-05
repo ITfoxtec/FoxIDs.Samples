@@ -3,6 +3,7 @@
 Sample implementation of the Directory Connector API used by FoxIDs to validate passwords and delegate password lifecycle operations to an external directory.
 
 Endpoints:
+- GET `/health`
 - POST `/authentication`
 - POST `/change-password`
 - POST `/set-password`

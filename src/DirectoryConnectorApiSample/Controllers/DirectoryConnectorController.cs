@@ -21,6 +21,21 @@ public class DirectoryConnectorController : ControllerBase
         this.directoryStore = directoryStore;
     }
 
+    [HttpGet("health")]
+    public IActionResult Health()
+    {
+        // TODO: Validate required configuration, for example the API secret and directory connection settings.
+        // TODO: Check that the external directory can be reached and queried.
+        // TODO: Check that the connector identity has the required read/write access for users and password changes.
+        return Ok(new
+        {
+            status = "ok",
+            configuration = "ok",
+            directory = "ok",
+            accessRights = "ok"
+        });
+    }
+
     [HttpPost("authentication")]
     public IActionResult Authenticate([FromBody] DirectoryAuthenticationRequest request)
     {

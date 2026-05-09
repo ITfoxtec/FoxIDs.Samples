@@ -1,0 +1,225 @@
+{
+  "info": {
+    "_postman_id": "8f8b4d79-f4cc-4d2c-ae45-dcebf3a01410",
+    "name": "Directory Connector API",
+    "description": "Collection to test the Directory Connector API sample. Adjust host/port to your running sample. Basic auth username: directory_connector, password: configured secret.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{apiUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{apiSecret}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:44362"
+    },
+    {
+      "key": "apiUsername",
+      "value": "directory_connector"
+    },
+    {
+      "key": "apiSecret",
+      "value": "zh1othCVwVkfjlvzTWY-S7SFj-RHaLkpJkdMpHSAhFg"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication - success",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user1@somewhere.org\",\n  \"password\": \"testpass1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/authentication",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "authentication"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Authentication - invalid password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user1@somewhere.org\",\n  \"password\": \"wrongpass\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/authentication",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "authentication"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Authentication - disabled user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"disabled@somewhere.org\",\n  \"password\": \"disabledpass1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/authentication",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "authentication"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Change password - success",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"email\": \"user1@somewhere.org\",\n  \"currentPassword\": \"testpass1\",\n  \"newPassword\": \"newpass123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/change-password",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "change-password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Set password - reset user1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"email\": \"user1@somewhere.org\",\n  \"password\": \"testpass1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/set-password",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "set-password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Set password - password too short",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"directoryUserId\": \"dir-user-2\",\n  \"email\": \"user2@somewhere.org\",\n  \"password\": \"short\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/set-password",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "set-password"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

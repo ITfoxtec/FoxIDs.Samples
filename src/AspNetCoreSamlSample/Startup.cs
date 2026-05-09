@@ -32,7 +32,7 @@ namespace AspNetCoreSamlSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            IdentityModelEventSource.ShowPII = true; //To show detail of error and see the problem
+            IdentityModelEventSource.ShowPII = true; // To view detailed authentication errors and identify the issue
 
             services.Configure<CookiePolicyOptions>(options =>
             {

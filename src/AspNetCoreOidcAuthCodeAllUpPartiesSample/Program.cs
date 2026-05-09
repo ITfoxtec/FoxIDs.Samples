@@ -15,7 +15,7 @@ using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//To show detail of error and see the problem
+// To view detailed authentication errors and identify the issue
 IdentityModelEventSource.ShowPII = true; 
 
 builder.Services.AddApplicationInsightsTelemetry();
@@ -119,6 +119,7 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("offline_access");
         options.Scope.Add("profile");
         options.Scope.Add("email");
+        //options.Scope.Add("phone");
 
         options.MapInboundClaims = false;
         options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
@@ -127,7 +128,7 @@ builder.Services.AddAuthentication(options =>
         options.Events.OnRedirectToIdentityProvider = async (context) =>
         {
             // To require MFA
-            //context.ProtocolMessage.AcrValues = "urn:foxids:mfa";
+            //context.ProtocolMessage.AcrValues = "urn:foxids:mfa"; //  urn:foxids:link urn:foxids:xxxxxxxx urn:foxids:email urn:foxids:otp
             // Request a language on login
             //context.ProtocolMessage.UiLocales = "fr";
             await Task.FromResult(string.Empty);

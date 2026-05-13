@@ -45,7 +45,7 @@ public class DirectoryConnectorController : ControllerBase
         }
 
         var user = directoryStore.Find(request);
-        var userError = ValidateUser(user);
+        var userError = ValidateUser(user, request);
         if (userError != null)
         {
             return userError;
@@ -53,7 +53,7 @@ public class DirectoryConnectorController : ControllerBase
 
         if (!directoryStore.ValidatePassword(user, request.Password))
         {
-            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidUsernameOrPassword, ErrorMessage = "Invalid username or password." });
+            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidPassword, ErrorMessage = "Invalid password." });
         }
 
         return Ok(user.ToResponse());
@@ -68,7 +68,7 @@ public class DirectoryConnectorController : ControllerBase
         }
 
         var user = directoryStore.Find(request);
-        var userError = ValidateUser(user);
+        var userError = ValidateUser(user, request);
         if (userError != null)
         {
             return userError;
@@ -98,7 +98,7 @@ public class DirectoryConnectorController : ControllerBase
         }
 
         var user = directoryStore.Find(request);
-        var userError = ValidateUser(user);
+        var userError = ValidateUser(user, request);
         if (userError != null)
         {
             return userError;
@@ -114,11 +114,16 @@ public class DirectoryConnectorController : ControllerBase
         return Ok(user.ToResponse());
     }
 
-    private IActionResult ValidateUser(DemoDirectoryUser user)
+    private IActionResult ValidateUser(DemoDirectoryUser user, DirectoryUserIdentifierRequest request)
     {
         if (user == null)
         {
-            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidUsernameOrPassword, ErrorMessage = "User not found." });
+            if (!string.IsNullOrWhiteSpace(request.DirectoryUserId))
+            {
+                return StatusCode((int)HttpStatusCode.Forbidden, new ErrorResponse { Error = Constants.Errors.UserDeleted, ErrorMessage = "User not found." });
+            }
+
+            return Unauthorized(new ErrorResponse { Error = Constants.Errors.UserNotExists, ErrorMessage = "User not found." });
         }
         if (user.Deleted)
         {

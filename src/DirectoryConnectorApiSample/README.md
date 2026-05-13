@@ -69,7 +69,8 @@ Success response (200):
 
 Error responses:
 - `401 invalid_api_id_secret`
-- `401 invalid_username_password`
+- `401 user_not_exists`
+- `401 invalid_password`
 - `401 invalid_current_password`
 - `403 user_disabled`
 - `400 password_min_length`

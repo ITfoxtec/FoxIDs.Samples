@@ -43,7 +43,6 @@ public class DemoDirectoryUser
         ConfirmAccount = ConfirmAccount,
         EmailVerified = EmailVerified,
         PhoneVerified = PhoneVerified,
-        DisableAccount = Disabled,
         DisableTwoFactorApp = DisableTwoFactorApp,
         DisableTwoFactorSms = DisableTwoFactorSms,
         DisableTwoFactorEmail = DisableTwoFactorEmail,

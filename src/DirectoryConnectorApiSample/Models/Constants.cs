@@ -7,9 +7,11 @@ public static class Constants
     public static class Errors
     {
         public const string InvalidApiIdOrSecret = "invalid_api_id_secret";
+        public const string UserExists = "user_exists";
         public const string UserNotExists = "user_not_exists";
         public const string InvalidPassword = "invalid_password";
         public const string InvalidCurrentPassword = "invalid_current_password";
+        public const string CreateUserNotSupported = "create_user_not_supported";
         public const string UserDisabled = "user_disabled";
         public const string UserDeleted = "user_deleted";
         public const string PasswordNotAccepted = "password_not_accepted";
@@ -29,9 +31,11 @@ public static class Constants
         public static readonly IReadOnlyDictionary<string, string> Descriptions = new Dictionary<string, string>
         {
             [InvalidApiIdOrSecret] = "The HTTP Basic API username or secret is invalid.",
+            [UserExists] = "The user already exists in the directory.",
             [UserNotExists] = "The user does not exist in the directory.",
             [InvalidPassword] = "The password was rejected by the directory.",
             [InvalidCurrentPassword] = "The current password in a change-password request was rejected by the directory.",
+            [CreateUserNotSupported] = "The connector does not support creating users.",
             [UserDisabled] = "The user exists in the directory but is disabled.",
             [UserDeleted] = "The user no longer exists or is deleted in the directory.",
             [PasswordNotAccepted] = "The new password was rejected by a directory password rule that does not map to a more specific code.",

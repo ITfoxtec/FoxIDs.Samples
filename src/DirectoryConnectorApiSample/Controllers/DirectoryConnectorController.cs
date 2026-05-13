@@ -59,6 +59,29 @@ public class DirectoryConnectorController : ControllerBase
         return Ok(user.ToResponse());
     }
 
+    [HttpPost("create-user")]
+    public IActionResult CreateUser([FromBody] DirectoryCreateUserRequest request)
+    {
+        if (!AuthenticateApi(out var authError))
+        {
+            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = authError });
+        }
+
+        if (directoryStore.Find(request) != null)
+        {
+            return BadRequest(new ErrorResponse { Error = Constants.Errors.UserExists, ErrorMessage = "User already exists." });
+        }
+
+        var passwordError = ValidateNewPassword(request.Password, request);
+        if (passwordError != null)
+        {
+            return passwordError;
+        }
+
+        var user = directoryStore.Create(request);
+        return Ok(user.ToResponse());
+    }
+
     [HttpPost("change-password")]
     public IActionResult ChangePassword([FromBody] DirectoryChangePasswordRequest request)
     {
@@ -139,7 +162,17 @@ public class DirectoryConnectorController : ControllerBase
 
     private IActionResult ValidateNewPassword(string password, DemoDirectoryUser user, string currentPassword = null)
     {
-        if (password?.Length < 8)
+        return ValidateNewPassword(password, user.Username, currentPassword);
+    }
+
+    private IActionResult ValidateNewPassword(string password, DirectoryCreateUserRequest request)
+    {
+        return ValidateNewPassword(password, request.Username, currentPassword: null);
+    }
+
+    private IActionResult ValidateNewPassword(string password, string username, string currentPassword = null)
+    {
+        if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
         {
             return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordMinLength, ErrorMessage = "Password must be at least 8 characters." });
         }
@@ -151,7 +184,7 @@ public class DirectoryConnectorController : ControllerBase
         {
             return BadRequest(new ErrorResponse { Error = Constants.Errors.NewPasswordEqualsCurrent, ErrorMessage = "New password equals current password." });
         }
-        if (password.Contains(user.Username, StringComparison.OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(username) && password.Contains(username, StringComparison.OrdinalIgnoreCase))
         {
             return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordBannedCharacters, ErrorMessage = "Demo policy rejects passwords containing the username." });
         }

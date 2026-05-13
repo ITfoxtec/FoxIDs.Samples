@@ -129,6 +129,37 @@
       "response": []
     },
     {
+      "name": "Create user - success",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"new.user@somewhere.org\",\n  \"password\": \"newpass123\",\n  \"confirmAccount\": true,\n  \"requireMultiFactor\": false,\n  \"claims\": [\n    { \"type\": \"name\", \"value\": \"New User\" }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/create-user",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "create-user"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Change password - success",
       "request": {
         "method": "POST",

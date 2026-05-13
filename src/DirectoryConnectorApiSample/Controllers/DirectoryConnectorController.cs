@@ -53,7 +53,7 @@ public class DirectoryConnectorController : ControllerBase
 
         if (!directoryStore.ValidatePassword(user, request.Password))
         {
-            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidUsernameOrPassword, ErrorMessage = "Invalid username or password." });
+            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidPassword, ErrorMessage = "Invalid password." });
         }
 
         return Ok(user.ToResponse());
@@ -118,7 +118,7 @@ public class DirectoryConnectorController : ControllerBase
     {
         if (user == null)
         {
-            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidUsernameOrPassword, ErrorMessage = "User not found." });
+            return Unauthorized(new ErrorResponse { Error = Constants.Errors.UserNotExists, ErrorMessage = "User not found." });
         }
         if (user.Deleted)
         {

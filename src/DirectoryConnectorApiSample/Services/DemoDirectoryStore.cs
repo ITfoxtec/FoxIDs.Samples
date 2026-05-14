@@ -77,4 +77,24 @@ public class DemoDirectoryStore
             user.Password = password;
         }
     }
+
+    public DemoDirectoryUser Create(DirectoryCreateUserRequest request)
+    {
+        lock (syncRoot)
+        {
+            var user = new DemoDirectoryUser
+            {
+                DirectoryUserId = $"dir-user-{Guid.NewGuid():N}",
+                Email = request.Email,
+                Phone = request.Phone,
+                Username = request.Username,
+                Password = request.Password,
+                ConfirmAccount = request.ConfirmAccount,
+                RequireMultiFactor = request.RequireMultiFactor,
+                Claims = request.Claims?.ToList() ?? []
+            };
+            users.Add(user);
+            return user;
+        }
+    }
 }

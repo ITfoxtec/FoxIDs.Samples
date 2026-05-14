@@ -56,6 +56,35 @@ public class DirectoryConnectorController : ControllerBase
             return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidPassword, ErrorMessage = "Invalid password." });
         }
 
+        var passwordError = ValidatePassword(request.Password, request.Username);
+        if (passwordError != null)
+        {
+            return passwordError;
+        }
+
+        return Ok(user.ToResponse());
+    }
+
+    [HttpPost("create-user")]
+    public IActionResult CreateUser([FromBody] DirectoryCreateUserRequest request)
+    {
+        if (!AuthenticateApi(out var authError))
+        {
+            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = authError });
+        }
+
+        if (directoryStore.Find(request) != null)
+        {
+            return BadRequest(new ErrorResponse { Error = Constants.Errors.UserExists, ErrorMessage = "User already exists." });
+        }
+
+        var passwordError = ValidateNewPassword(request.Password, request);
+        if (passwordError != null)
+        {
+            return passwordError;
+        }
+
+        var user = directoryStore.Create(request);
         return Ok(user.ToResponse());
     }
 
@@ -137,9 +166,9 @@ public class DirectoryConnectorController : ControllerBase
         return null;
     }
 
-    private IActionResult ValidateNewPassword(string password, DemoDirectoryUser user, string currentPassword = null)
+    private IActionResult ValidatePassword(string password, string username)
     {
-        if (password?.Length < 8)
+        if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
         {
             return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordMinLength, ErrorMessage = "Password must be at least 8 characters." });
         }
@@ -147,13 +176,35 @@ public class DirectoryConnectorController : ControllerBase
         {
             return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordBannedCharacters, ErrorMessage = "Password contains a banned word." });
         }
+        if (!string.IsNullOrWhiteSpace(username) && password.Contains(username, StringComparison.OrdinalIgnoreCase))
+        {
+            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordBannedCharacters, ErrorMessage = "Demo policy rejects passwords containing the username." });
+        }
+
+        return null;
+    }
+
+    private IActionResult ValidateNewPassword(string password, DemoDirectoryUser user, string currentPassword = null)
+    {
+        return ValidateNewPassword(password, user.Username, currentPassword);
+    }
+
+    private IActionResult ValidateNewPassword(string password, DirectoryCreateUserRequest request)
+    {
+        return ValidateNewPassword(password, request.Username, currentPassword: null);
+    }
+
+    private IActionResult ValidateNewPassword(string password, string username, string currentPassword = null)
+    {
+        var passwordError = ValidatePassword(password, username);
+        if (passwordError != null)
+        {
+            return passwordError;
+        }
+
         if (!string.IsNullOrWhiteSpace(currentPassword) && password.Equals(currentPassword, StringComparison.Ordinal))
         {
             return BadRequest(new ErrorResponse { Error = Constants.Errors.NewPasswordEqualsCurrent, ErrorMessage = "New password equals current password." });
-        }
-        if (password.Contains(user.Username, StringComparison.OrdinalIgnoreCase))
-        {
-            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordBannedCharacters, ErrorMessage = "Demo policy rejects passwords containing the username." });
         }
 
         return null;

@@ -19,8 +19,6 @@ public class DirectoryUserResponse : IValidatableObject
 
     public bool PhoneVerified { get; set; }
 
-    public bool DisableAccount { get; set; }
-
     public bool DisableTwoFactorApp { get; set; }
 
     public bool DisableTwoFactorSms { get; set; }

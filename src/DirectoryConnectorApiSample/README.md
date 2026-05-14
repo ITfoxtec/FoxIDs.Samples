@@ -5,6 +5,7 @@ Sample implementation of the Directory Connector API used by FoxIDs to validate 
 Endpoints:
 - GET `/health`
 - POST `/authentication`
+- POST `/create-user`
 - POST `/change-password`
 - POST `/set-password`
 
@@ -55,7 +56,6 @@ Success response (200):
   "confirmAccount": false,
   "emailVerified": true,
   "phoneVerified": true,
-  "disableAccount": false,
   "disableTwoFactorApp": false,
   "disableTwoFactorSms": false,
   "disableTwoFactorEmail": false,

@@ -56,6 +56,12 @@ public class DirectoryConnectorController : ControllerBase
             return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidPassword, ErrorMessage = "Invalid password." });
         }
 
+        var passwordError = ValidatePassword(request.Password, request.Username);
+        if (passwordError != null)
+        {
+            return passwordError;
+        }
+
         return Ok(user.ToResponse());
     }
 
@@ -160,6 +166,24 @@ public class DirectoryConnectorController : ControllerBase
         return null;
     }
 
+    private IActionResult ValidatePassword(string password, string username)
+    {
+        if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
+        {
+            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordMinLength, ErrorMessage = "Password must be at least 8 characters." });
+        }
+        if (password.Contains("Forbidden!", StringComparison.OrdinalIgnoreCase))
+        {
+            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordBannedCharacters, ErrorMessage = "Password contains a banned word." });
+        }
+        if (!string.IsNullOrWhiteSpace(username) && password.Contains(username, StringComparison.OrdinalIgnoreCase))
+        {
+            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordBannedCharacters, ErrorMessage = "Demo policy rejects passwords containing the username." });
+        }
+
+        return null;
+    }
+
     private IActionResult ValidateNewPassword(string password, DemoDirectoryUser user, string currentPassword = null)
     {
         return ValidateNewPassword(password, user.Username, currentPassword);
@@ -172,21 +196,15 @@ public class DirectoryConnectorController : ControllerBase
 
     private IActionResult ValidateNewPassword(string password, string username, string currentPassword = null)
     {
-        if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
+        var passwordError = ValidatePassword(password, username);
+        if (passwordError != null)
         {
-            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordMinLength, ErrorMessage = "Password must be at least 8 characters." });
+            return passwordError;
         }
-        if (password.Contains("Forbidden!", StringComparison.OrdinalIgnoreCase))
-        {
-            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordBannedCharacters, ErrorMessage = "Password contains a banned word." });
-        }
+
         if (!string.IsNullOrWhiteSpace(currentPassword) && password.Equals(currentPassword, StringComparison.Ordinal))
         {
             return BadRequest(new ErrorResponse { Error = Constants.Errors.NewPasswordEqualsCurrent, ErrorMessage = "New password equals current password." });
-        }
-        if (!string.IsNullOrWhiteSpace(username) && password.Contains(username, StringComparison.OrdinalIgnoreCase))
-        {
-            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordBannedCharacters, ErrorMessage = "Demo policy rejects passwords containing the username." });
         }
 
         return null;

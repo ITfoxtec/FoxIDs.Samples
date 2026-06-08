@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AspNetCoreWsFedSample</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; color: #222; }
+        header { background: #1f2933; color: #fff; padding: 12px 24px; }
+        header a { color: #fff; margin-right: 18px; text-decoration: none; }
+        main { max-width: 980px; margin: 28px auto; padding: 0 20px; }
+        footer { border-top: 1px solid #ddd; margin-top: 32px; padding-top: 16px; color: #666; }
+        .nav-right { float: right; }
+        .panel { border: 1px solid #d8dde3; border-radius: 4px; padding: 16px; margin: 16px 0; background: #fafafa; }
+        code, pre { background: #f2f4f7; border: 1px solid #d8dde3; border-radius: 4px; }
+        code { padding: 2px 4px; }
+        pre { padding: 12px; overflow: auto; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border-bottom: 1px solid #e2e6ea; padding: 8px; text-align: left; vertical-align: top; }
+        button, .button { background: #e88325; border: 0; color: #fff; cursor: pointer; padding: 8px 12px; text-decoration: none; }
+        .inline-form { display: inline; }
+    </style>
+</head>
+<body>
+    <header>
+        <a asp-controller="Home" asp-action="Index">AspNetCoreWsFedSample</a>
+        <a asp-controller="Home" asp-action="Secure">Secure</a>
+        <span class="nav-right">
+            <partial name="_LoginPartial" />
+        </span>
+    </header>
+    <main>
+        @RenderBody()
+        <footer>
+            <p>&copy; 2026 - AspNetCoreWsFedSample</p>
+        </footer>
+    </main>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

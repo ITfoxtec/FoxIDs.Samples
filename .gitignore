@@ -28,6 +28,7 @@ bld/
 **/appsettings.qa.json
 **/appsettings.staging.json
 **/appsettings.production.json
+!src/AspNetCoreWsFedSample/appsettings.Development.json
 
 # Visual Studio 2015 cache/options directory
 .vs/

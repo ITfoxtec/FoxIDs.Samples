@@ -1,0 +1,12 @@
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <form asp-controller="Auth" asp-action="Logout" method="post" class="inline-form">
+        @Html.AntiForgeryToken()
+        <span>Hello, @User.Identity.Name!</span>
+        <button type="submit">Log off</button>
+    </form>
+}
+else
+{
+    <a asp-controller="Auth" asp-action="Login">Log in</a>
+}

@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "WS-Federation sample";
+    var settings = (WsFederationSettings)ViewBag.WsFederationSettings;
+    var siteUrl = (string)ViewBag.SiteUrl;
+}
+
+<h1>WS-Federation sample</h1>
+
+<div class="panel">
+    <p>This ASP.NET Core sample signs users in with WS-Federation and can be configured as a WS-Federation application registration in FoxIDs.</p>
+    <p><a class="button" asp-controller="Auth" asp-action="Login">Log in with WS-Federation</a></p>
+</div>
+
+<h2>FoxIDs application configuration</h2>
+<p>Configure a WS-Federation application registration in FoxIDs with these values.</p>
+<table>
+    <tr>
+        <th>Realm</th>
+        <td><code>@settings.Wtrealm</code></td>
+    </tr>
+    <tr>
+        <th>Reply URL</th>
+        <td><code>@settings.Wreply</code></td>
+    </tr>
+    <tr>
+        <th>Sign-out cleanup URL</th>
+        <td><code>@(siteUrl + settings.RemoteSignOutPath)</code></td>
+    </tr>
+    <tr>
+        <th>Logged out URL</th>
+        <td><code>@settings.SignOutWreply</code></td>
+    </tr>
+    <tr>
+        <th>FoxIDs Federation Metadata URL</th>
+        <td><code>@settings.MetadataAddress</code></td>
+    </tr>
+</table>
+
+<h2>Current user claims</h2>
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <partial name="_Claims" />
+}
+else
+{
+    <p>The user is not authenticated.</p>
+}

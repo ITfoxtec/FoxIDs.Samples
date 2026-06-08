@@ -1,0 +1,11 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1>Error</h1>
+<p>An error occurred while processing the request.</p>
+@if (Model.ShowRequestId)
+{
+    <p>Request ID: <code>@Model.RequestId</code></p>
+}

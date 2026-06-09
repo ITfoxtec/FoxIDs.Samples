@@ -39,6 +39,8 @@ namespace FoxIDs.SampleSeedTool.Logic
         static (string name, string displayName) blazorServerOidcSampleDownPartyName => ("blazorserver_oidc_sample", "BlazorServerOidcSample");
 
         static (string name, string displayName) aspNetCoreSamlSampleDownPartyName => ("aspnetcore_saml_sample", "AspNetCoreSamlSample");
+        static (string name, string displayName) aspNetCoreWsFedSampleDownPartyName => ("aspnetcore-wsfed-sample", "AspNetCoreWsFedSample");
+
         const string aspNetCoreSamlSampleDownIssuer = "urn:itfoxtec:idservice:samples:aspnetcoresamlsample";
         static (string name, string displayName) oauthTokenExchangeForSamlDownPartyName => ("token_exchange_saml", "AspNetCoreSamlSample OAuth TokenExchange");
         // To enable token exchange trust
@@ -78,6 +80,7 @@ namespace FoxIDs.SampleSeedTool.Logic
             await CreateblazorServerOidcSampleDownPartyAsync();
 
             await CreateAspNetCoreSamlSampleDownPartyAsync();
+            await CreateAspNetCoreWsFedSampleDownPartyAsync();
             await CreateAspNetCoreSamlSampleTrustUpPartyAsync();
             await CreateOAuthTokenExchangeForSamlDownPartyAsync();
 
@@ -118,6 +121,28 @@ namespace FoxIDs.SampleSeedTool.Logic
                 try
                 {
                     await foxIDsApiClient.DeleteOAuthDownPartyAsync(name.name, settings.Tenant, settings.Track);
+                    Console.WriteLine($"'{name}' configuration deleted");
+                }
+                catch (FoxIDsApiException ex)
+                {
+                    if (ex.StatusCode == StatusCodes.Status404NotFound)
+                    {
+                        Console.WriteLine($"'{name}' configuration not found");
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            Console.WriteLine("Delete WS-Federation down party sample configuration");
+            var wsFedDownPartyNames = new[] { aspNetCoreWsFedSampleDownPartyName };
+            foreach (var name in wsFedDownPartyNames)
+            {
+                try
+                {
+                    await foxIDsApiClient.DeleteWsFedDownPartyAsync(name.name, settings.Tenant, settings.Track);
                     Console.WriteLine($"'{name}' configuration deleted");
                 }
                 catch (FoxIDsApiException ex)
@@ -1204,6 +1229,41 @@ namespace FoxIDs.SampleSeedTool.Logic
             };
 
             await CreateIfNotExistsAsync(aspNetCoreSamlSampleDownPartyName, getAction, postAction);
+        }
+
+        private async Task CreateAspNetCoreWsFedSampleDownPartyAsync()
+        {
+            Func<string, Task> getAction = async (name) =>
+            {
+                _ = await foxIDsApiClient.GetWsFedDownPartyAsync(name, settings.Tenant, settings.Track);
+            };
+
+            Func<string, string, Task> postAction = async (name, displayName) =>
+            {
+                var baseUrl = "https://localhost:44358";
+                var realm = $"{baseUrl}/";
+
+                var wsFedDownParty = new WsFedDownParty
+                {
+                    Name = name,
+                    DisplayName = displayName,
+                    UpdateState = PartyUpdateStates.Manual,
+                    MetadataUpdateRate = 86400,
+                    AllowUpPartyNames = [loginName, aspNetCoreSamlIdPSampleUpPartyName.name, identityserverOidcOpUpPartyName.name/*, "foxids_oidcpkce", "adfs_saml_idp"*/],
+                    Realm = realm,
+                    ReplyUrls = [UrlCombine.Combine(baseUrl, "signin-wsfed")],
+                    SignOutUrl = UrlCombine.Combine(baseUrl, "signout-wsfed"),
+                    LoggedOutUrl = realm,
+                    Claims = [ClaimTypes.Email, ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Surname, ClaimTypes.Role],
+                    TokenType = WsFedTokenTypes.Saml11,
+                    SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+                    IssuedTokenLifetime = 36000 // 10 hours
+                };
+
+                _ = await foxIDsApiClient.PostWsFedDownPartyAsync(settings.Tenant, settings.Track, wsFedDownParty);
+            };
+
+            await CreateIfNotExistsAsync(aspNetCoreWsFedSampleDownPartyName, getAction, postAction);
         }
 
         private async Task CreateAspNetCoreSamlSampleTrustUpPartyAsync()

@@ -47,34 +47,38 @@ namespace AspNetCoreSamlIdPSample.Controllers
         {
             var defaultSite = $"{Request.Scheme}://{Request.Host.ToUriComponent()}/";
 
-            var entityDescriptor = new EntityDescriptor(saml2Config);
-            entityDescriptor.ValidUntil = 365;
-            entityDescriptor.IdPSsoDescriptor = new IdPSsoDescriptor
+            var entityDescriptor = new EntityDescriptor(saml2Config)
             {
-                SigningCertificates =
-                [
-                    saml2Config.SigningCertificate
-                ],
-                //EncryptionCertificates =
-                //[
-                //    saml2Config.DecryptionCertificate
-                //],
-                SingleSignOnServices =
-                [
-                    new SingleSignOnService { Binding = ProtocolBindings.HttpRedirect, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Login")) }
-                ],
-                SingleLogoutServices =
-                [
-                    new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Logout")) }
-                ],
-                NameIDFormats = [NameIdentifierFormats.X509SubjectName],
-            };
-            entityDescriptor.ContactPersons = [
-                new ContactPerson(ContactTypes.Administrative)
+                ValidUntil = 365,
+                IdPSsoDescriptor = new IdPSsoDescriptor
                 {
-                    Company = "Some sample IdP",
-                } 
-            ];
+                    SigningCertificates =
+                    [
+                        saml2Config.SigningCertificate
+                    ],
+                    SingleSignOnServices =
+                    [
+                        new SingleSignOnService { Binding = ProtocolBindings.HttpRedirect, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Login")) }
+                    ],
+                    SingleLogoutServices =
+                    [
+                        new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri(UrlCombine.Combine(defaultSite, "/Saml/Logout")) }
+                    ],
+                    NameIDFormats = [NameIdentifierFormats.X509SubjectName],
+                },
+                ContactPersons = [
+                    new ContactPerson(ContactTypes.Administrative)
+                    {
+                        Company = "Some sample IdP",
+                    }
+                ]
+            };
+
+            if (saml2Config.DecryptionCertificates?.Count > 0)
+            {
+                entityDescriptor.SPSsoDescriptor.EncryptionCertificates = saml2Config.DecryptionCertificates;
+            }
+
             return new Saml2Metadata(entityDescriptor).CreateMetadata().ToActionResult();
         }
 

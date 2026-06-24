@@ -54,6 +54,9 @@ namespace AspNetCoreSamlSample
                 //saml2Configuration.SignAuthnRequest = true;
                 saml2Configuration.SigningCertificate = TestCertificate.GetSelfSignedCertificate(AppEnvironment.ContentRootPath, "test-sign-cert");
 
+                // Add the signing certificate to the decryption certificates collection to use encrypted assertions.
+                //saml2Configuration.DecryptionCertificates.Add(saml2Configuration.SigningCertificate);
+
                 saml2Configuration.AllowedAudienceUris.Add(saml2Configuration.Issuer);
 
                 var entityDescriptor = new EntityDescriptor();

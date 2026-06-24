@@ -35,41 +35,49 @@ namespace AspNetCoreSamlSample.Controllers
         [Route("Metadata")]
         public IActionResult Metadata()
         {
-            var entityDescriptor = new EntityDescriptor(saml2Config);
-            entityDescriptor.ValidUntil = 365;
-            entityDescriptor.SPSsoDescriptor = new SPSsoDescriptor
+            var entityDescriptor = new EntityDescriptor(saml2Config)
             {
-                WantAssertionsSigned = true,
-                SigningCertificates =
-                [
-                    saml2Config.SigningCertificate
-                ],
-                //EncryptionCertificates =
-                //[
-                //    saml2Config.DecryptionCertificate
-                //],
-                SingleLogoutServices =
-                [
-                    new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri($"{DefaultSite}/Saml/SingleLogout"), ResponseLocation = new Uri($"{DefaultSite}/Saml/LoggedOut") }
-                ],
-                NameIDFormats = [NameIdentifierFormats.X509SubjectName],
-                AssertionConsumerServices =
-                [
-                    new AssertionConsumerService {  Binding = ProtocolBindings.HttpPost, Location = new Uri($"{DefaultSite}/Saml/AssertionConsumerService") }
-                ],
-                AttributeConsumingServices =
-                [
-                    new AttributeConsumingService { ServiceNames = [new LocalizedNameType("Some SP", "en")], RequestedAttributes = CreateRequestedAttributes() }
-                ],
+                ValidUntil = 365,
+                SPSsoDescriptor = new SPSsoDescriptor
+                {
+                    WantAssertionsSigned = true,
+                    SigningCertificates =
+                    [
+                        saml2Config.SigningCertificate
+                    ],
+                    //EncryptionCertificates =
+                    //[
+                    //    saml2Config.DecryptionCertificate
+                    //],
+                    SingleLogoutServices =
+                    [
+                        new SingleLogoutService { Binding = ProtocolBindings.HttpPost, Location = new Uri($"{DefaultSite}/Saml/SingleLogout"), ResponseLocation = new Uri($"{DefaultSite}/Saml/LoggedOut") }
+                    ],
+                    NameIDFormats = [NameIdentifierFormats.X509SubjectName],
+                    AssertionConsumerServices =
+                    [
+                        new AssertionConsumerService {  Binding = ProtocolBindings.HttpPost, Location = new Uri($"{DefaultSite}/Saml/AssertionConsumerService") }
+                    ],
+                    AttributeConsumingServices =
+                    [
+                        new AttributeConsumingService { ServiceNames = [new LocalizedNameType("Some SP", "en")], RequestedAttributes = CreateRequestedAttributes() }
+                    ],
+                },
+                ContactPerson = new ContactPerson(ContactTypes.Administrative)
+                {
+                    Company = "Some Company",
+                    GivenName = "Some Given Name",
+                    SurName = "Some Sur Name",
+                    EmailAddress = "some@somedomain.com",
+                    TelephoneNumber = "11111111",
+                }
             };
-            entityDescriptor.ContactPerson = new ContactPerson(ContactTypes.Administrative)
+
+            if (saml2Config.DecryptionCertificates?.Count > 0)
             {
-                Company = "Some Company",
-                GivenName = "Some Given Name",
-                SurName = "Some Sur Name",
-                EmailAddress = "some@somedomain.com",
-                TelephoneNumber = "11111111",
-            };
+                entityDescriptor.SPSsoDescriptor.EncryptionCertificates = saml2Config.DecryptionCertificates;
+            }
+
             return new Saml2Metadata(entityDescriptor).CreateMetadata().ToActionResult();
         }
 

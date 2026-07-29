@@ -40,6 +40,10 @@ builder.Services.AddAuthentication(options =>
     {
         options.Events.OnValidatePrincipal = async (context) =>
         {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("AspNetCoreOidcAuthCodeAllUpPartiesSample.RefreshToken");
+
             var logoutMemoryCache = context.HttpContext.RequestServices.GetService<LogoutMemoryCache>();
             var sessionId = context.Principal.Claims.Where(c => c.Type == JwtClaimTypes.SessionId).Select(c => c.Value).FirstOrDefault();
             foreach (var item in logoutMemoryCache.List)
@@ -61,6 +65,10 @@ builder.Services.AddAuthentication(options =>
                 // Tokens expires 30 seconds before actual expiration time.
                 if (expiresUtc < DateTimeOffset.UtcNow.AddSeconds(30))
                 {
+                    logger.LogInformation(
+                        "Refreshing OIDC tokens because the access token expires at {ExpiresUtc}.",
+                        expiresUtc);
+
                     var tokenResponse = await RefreshTokenHandler.ResolveRefreshToken(context, identitySettings);
 
                     context.Properties.UpdateTokenValue(OpenIdConnectParameterNames.AccessToken, tokenResponse.AccessToken);
@@ -80,10 +88,19 @@ builder.Services.AddAuthentication(options =>
 
                     // Cookie should be renewed.
                     context.ShouldRenew = true;
+
+                    logger.LogInformation(
+                        "OIDC tokens refreshed successfully. The new access token expires at {ExpiresUtc}; refresh token rotated: {RefreshTokenRotated}.",
+                        newExpiresUtc,
+                        !tokenResponse.RefreshToken.IsNullOrEmpty());
                 }
             }
-            catch
+            catch (Exception exception)
             {
+                logger.LogError(
+                    exception,
+                    "OIDC token refresh failed. Rejecting the authentication cookie and signing out.");
+
                 context.RejectPrincipal();
                 await context.HttpContext.SignOutAsync();
             }

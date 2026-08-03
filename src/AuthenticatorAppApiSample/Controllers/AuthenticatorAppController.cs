@@ -6,19 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuthenticatorAppApiSample.Controllers;
 
 [ApiController]
-public class AuthenticatorAppRegistrationController : ControllerBase
+public class AuthenticatorAppController : ControllerBase
 {
-    private readonly ILogger<AuthenticatorAppRegistrationController> logger;
+    private readonly ILogger<AuthenticatorAppController> logger;
     private readonly AppSettings appSettings;
 
-    public AuthenticatorAppRegistrationController(ILogger<AuthenticatorAppRegistrationController> logger, AppSettings appSettings)
+    public AuthenticatorAppController(ILogger<AuthenticatorAppController> logger, AppSettings appSettings)
     {
         this.logger = logger;
         this.appSettings = appSettings;
     }
 
     [HttpPost("notification")]
-    public IActionResult Notify([FromBody] AuthenticatorAppRegistrationRequest request)
+    public IActionResult Notify([FromBody] AuthenticatorAppRequest request)
     {
         (var apiId, var apiSecret) = HttpContext.Request.Headers.GetAuthorizationHeaderBasic();
         if (!VerifyApiIdAndSecret(apiId, apiSecret))
@@ -43,9 +43,12 @@ public class AuthenticatorAppRegistrationController : ControllerBase
         // Complete the required synchronous backend work here. Return 200 OK only
         // when another FoxIDs deployment can safely handle the registered app.
         logger.LogInformation(
-            "Authenticator app registration '{RegistrationId}' received for user '{UserId}'.",
+            "Authenticator app registration '{RegistrationId}' received for user '{UserId}' with email '{Email}', phone '{Phone}' and username '{Username}'.",
             request.RegistrationId,
-            request.UserId);
+            request.UserId,
+            request.Email,
+            request.Phone,
+            request.Username);
 
         return Ok();
     }

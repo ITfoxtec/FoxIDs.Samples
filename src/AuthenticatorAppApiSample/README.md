@@ -39,4 +39,8 @@ Open Swagger UI at:
 https://localhost:44357/swagger
 ```
 
-Configure `https://localhost:44357` as the base API URL in the Login authentication method. Update `AppSettings:ApiSecret` before using the sample outside local development.
+Configure `https://localhost:44357` as the base API URL in the Login authentication method. FoxIDs appends `/notification` and calls `https://localhost:44357/notification`.
+
+For example, if the sample is deployed at `https://api.example.com/authenticator-app`, configure `https://api.example.com/authenticator-app` as the base API URL in FoxIDs. FoxIDs then calls `https://api.example.com/authenticator-app/notification`. Do not include `/notification` in the configured base API URL.
+
+Update `AppSettings:ApiSecret` before using the sample outside local development.

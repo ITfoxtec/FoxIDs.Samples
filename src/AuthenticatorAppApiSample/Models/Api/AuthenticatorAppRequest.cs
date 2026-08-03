@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace AuthenticatorAppApiSample.Models.Api;
 
-public class AuthenticatorAppRegistrationRequest
+public class AuthenticatorAppRequest
 {
     [Required]
     [JsonPropertyName("type")]

@@ -172,6 +172,15 @@ builder.Services.AddAuthentication(options =>
             }
             await Task.FromResult(string.Empty);
         };
+        options.Events.OnTicketReceived = context =>
+        {
+            // Simulate that the application does not accept the completed login.
+            // Do not create the application's authentication cookie.
+            //context.Response.Redirect(context.ReturnUri ?? "/Home/Secure");
+            //context.HandleResponse();
+
+            return Task.CompletedTask;
+        };
         options.Events.OnRemoteFailure = async (context) =>
         {
             await Task.FromResult(string.Empty);

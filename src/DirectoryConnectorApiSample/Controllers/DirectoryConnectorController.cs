@@ -2,6 +2,7 @@ using DirectoryConnectorApiSample.Models;
 using DirectoryConnectorApiSample.Models.Api;
 using DirectoryConnectorApiSample.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Net;
 using System.Text;
 
@@ -54,6 +55,25 @@ public class DirectoryConnectorController : ControllerBase
         if (!directoryStore.ValidatePassword(user, request.Password))
         {
             return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidPassword, ErrorMessage = "Invalid password." });
+        }
+
+        // Only return account-specific login guidance after the credentials have been verified.
+        if (user.RejectLogin)
+        {
+            const string errorMessage = "Credentials verified; login rejected by demo directory policy.";
+            logger.LogInformation("Login rejected for directory user {DirectoryUserId}. {Reason}", user.DirectoryUserId, errorMessage);
+            return Unauthorized(new ErrorResponse
+            {
+                Error = Constants.Errors.LoginRejected,
+                ErrorMessage = errorMessage,
+                UiErrorMessage = user.ShowLoginRejectionMessage
+                    ? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName switch
+                    {
+                        "da" => "Du kan ikke logge ind her. Kontakt support.",
+                        _ => "You cannot log in here. Contact support."
+                    }
+                    : null
+            });
         }
 
         var passwordError = ValidatePassword(request.Password, request.Username);

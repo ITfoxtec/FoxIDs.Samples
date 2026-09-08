@@ -10,6 +10,7 @@ public static class Constants
         public const string UserExists = "user_exists";
         public const string UserNotExists = "user_not_exists";
         public const string InvalidPassword = "invalid_password";
+        public const string LoginRejected = "login_rejected";
         public const string InvalidCurrentPassword = "invalid_current_password";
         public const string CreateUserNotSupported = "create_user_not_supported";
         public const string UserDisabled = "user_disabled";
@@ -34,6 +35,7 @@ public static class Constants
             [UserExists] = "The user already exists in the directory.",
             [UserNotExists] = "The user does not exist in the directory.",
             [InvalidPassword] = "The password was rejected by the directory.",
+            [LoginRejected] = "Login was rejected after verifying the user identifier and password. An optional UI message can be returned.",
             [InvalidCurrentPassword] = "The current password in a change-password request was rejected by the directory.",
             [CreateUserNotSupported] = "The connector does not support creating users.",
             [UserDisabled] = "The user exists in the directory but is disabled.",

@@ -43,6 +43,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "en"
           }
         ],
         "body": {
@@ -74,6 +78,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "en"
           }
         ],
         "body": {
@@ -105,6 +113,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "en"
           }
         ],
         "body": {
@@ -129,6 +141,323 @@
       "response": []
     },
     {
+      "name": "Authentication - login rejection",
+      "item": [
+        {
+          "name": "English message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "en"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rejected@somewhere.org\",\n  \"password\": \"testpass3\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected authentication response\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.error).to.eql(\"login_rejected\");",
+                  "    pm.expect(response.uiErrorMessage).to.eql(\"You cannot log in here. Contact support.\");",
+                  "    pm.expect(response.errorMessage).to.eql(\"Credentials verified; login rejected by demo directory policy.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Danish message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "da-DK"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rejected@somewhere.org\",\n  \"password\": \"testpass3\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected authentication response\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.error).to.eql(\"login_rejected\");",
+                  "    pm.expect(response.uiErrorMessage).to.eql(\"Du kan ikke logge ind her. Kontakt support.\");",
+                  "    pm.expect(response.errorMessage).to.eql(\"Credentials verified; login rejected by demo directory policy.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "With directory user ID",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "en"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-rejected\",\n  \"email\": \"rejected@somewhere.org\",\n  \"password\": \"testpass3\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected authentication response\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.error).to.eql(\"login_rejected\");",
+                  "    pm.expect(response.uiErrorMessage).to.eql(\"You cannot log in here. Contact support.\");",
+                  "    pm.expect(response.errorMessage).to.eql(\"Credentials verified; login rejected by demo directory policy.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "General FoxIDs message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "en"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rejected-no-message@somewhere.org\",\n  \"password\": \"testpass4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected authentication response\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.error).to.eql(\"login_rejected\");",
+                  "    pm.expect(response).not.to.have.property(\"uiErrorMessage\");",
+                  "    pm.expect(response.errorMessage).to.eql(\"Credentials verified; login rejected by demo directory policy.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Wrong password does not disclose restriction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "da-DK"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rejected@somewhere.org\",\n  \"password\": \"wrongpass\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected authentication response\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.error).to.eql(\"invalid_password\");",
+                  "    pm.expect(response).not.to.have.property(\"uiErrorMessage\");",
+                  "    pm.expect(response.errorMessage).to.eql(\"Invalid password.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unknown identifier",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "da-DK"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"unknown@somewhere.org\",\n  \"password\": \"wrongpass\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected authentication response\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.error).to.eql(\"user_not_exists\");",
+                  "    pm.expect(response).not.to.have.property(\"uiErrorMessage\");",
+                  "    pm.expect(response.errorMessage).to.eql(\"User not found.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Create user - success",
       "request": {
         "method": "POST",
@@ -136,6 +465,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "en"
           }
         ],
         "body": {
@@ -167,6 +500,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "en"
           }
         ],
         "body": {
@@ -198,6 +535,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "en"
           }
         ],
         "body": {
@@ -229,6 +570,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "Accept-Language",
+            "value": "en"
           }
         ],
         "body": {

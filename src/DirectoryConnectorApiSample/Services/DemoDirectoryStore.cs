@@ -41,6 +41,25 @@ public class DemoDirectoryStore
         },
         new()
         {
+            DirectoryUserId = "dir-user-rejected",
+            Email = "rejected@somewhere.org",
+            Phone = "+4511223355",
+            Username = "rejected",
+            Password = "testpass3",
+            RejectLogin = true,
+            ShowLoginRejectionMessage = true
+        },
+        new()
+        {
+            DirectoryUserId = "dir-user-rejected-no-message",
+            Email = "rejected-no-message@somewhere.org",
+            Phone = "+4511223366",
+            Username = "rejected-no-message",
+            Password = "testpass4",
+            RejectLogin = true
+        },
+        new()
+        {
             DirectoryUserId = "dir-user-disabled",
             Email = "disabled@somewhere.org",
             Phone = "+4599990000",

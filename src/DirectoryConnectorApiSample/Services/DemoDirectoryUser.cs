@@ -14,6 +14,10 @@ public class DemoDirectoryUser
 
     public string Password { get; set; }
 
+    public bool RejectLogin { get; set; }
+
+    public bool ShowLoginRejectionMessage { get; set; }
+
     public bool Disabled { get; set; }
 
     public bool Deleted { get; set; }

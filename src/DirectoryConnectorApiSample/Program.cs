@@ -1,12 +1,20 @@
 using DirectoryConnectorApiSample.Models;
 using DirectoryConnectorApiSample.Services;
 using FoxIDs.SampleHelperLibrary.Middleware;
+using Microsoft.AspNetCore.Localization;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.BindConfig<AppSettings>(builder.Configuration, nameof(AppSettings));
 builder.Services.AddSingleton<DemoDirectoryStore>();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.SetDefaultCulture("en")
+        .AddSupportedCultures("en", "da")
+        .AddSupportedUICultures("en", "da");
+    options.RequestCultureProviders = [new AcceptLanguageHeaderRequestCultureProvider()];
+});
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -30,6 +38,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseWhen(_ => builder.Environment.IsDevelopment(), branch => branch.UseMiddleware<RawRequestLoggingMiddleware>());
+app.UseRequestLocalization();
 app.MapControllers();
 
 app.Run();

@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<WsFederationSettings>(builder.Configuration.GetSection("WsFederation"));
 var wsFederationSettings = builder.Configuration.GetSection("WsFederation").Get<WsFederationSettings>() ?? new WsFederationSettings();
 
+// TEST ONLY: Use shared storage or a database for authentication tickets in production.
+builder.Services.AddTestInMemoryTicketStore();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

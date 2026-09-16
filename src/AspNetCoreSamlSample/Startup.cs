@@ -3,6 +3,7 @@ using System.Linq;
 using AspNetCoreSamlSample.Models;
 using ITfoxtec.Identity.Saml2;
 using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
+using ITfoxtec.Identity.Saml2.Schemas;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -85,6 +86,9 @@ namespace AspNetCoreSamlSample
 
             // Required SameSiteMode.None to support OpenID Connect Front channel logout
             services.AddSaml2("/Saml/Login", cookieSameSite: SameSiteMode.None);
+
+            // TEST ONLY: Use shared storage or a database for authentication tickets in production.
+            services.AddTestInMemoryTicketStore(Saml2Constants.AuthenticationScheme);
 
             services.AddControllersWithViews();
         }

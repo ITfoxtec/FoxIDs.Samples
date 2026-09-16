@@ -78,6 +78,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryConnectorApiSample
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreWsFedSample", "src\AspNetCoreWsFedSample\AspNetCoreWsFedSample.csproj", "{A8B42DBF-9201-4B2D-9BF4-2AB6715468E2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C88DD14-F956-CE84-757C-A364CCF449FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoxIDs.SampleHelperLibrary.Tests", "test\FoxIDs.SampleHelperLibrary.Tests\FoxIDs.SampleHelperLibrary.Tests.csproj", "{E802E6E9-2BC2-4316-9E82-AE3043A80187}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -188,6 +192,10 @@ Global
 		{A8B42DBF-9201-4B2D-9BF4-2AB6715468E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8B42DBF-9201-4B2D-9BF4-2AB6715468E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8B42DBF-9201-4B2D-9BF4-2AB6715468E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E802E6E9-2BC2-4316-9E82-AE3043A80187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E802E6E9-2BC2-4316-9E82-AE3043A80187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E802E6E9-2BC2-4316-9E82-AE3043A80187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E802E6E9-2BC2-4316-9E82-AE3043A80187}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -224,6 +232,7 @@ Global
 		{23589ED4-B024-4977-A229-559F4276F281} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
 		{1A8D40E5-3301-4356-9612-F2C1A6EEE4EE} = {CA8922BB-B413-4DD6-AEE1-047310D43938}
 		{A8B42DBF-9201-4B2D-9BF4-2AB6715468E2} = {BBD711D8-51DE-41F5-9D3C-81A445FA8E80}
+		{E802E6E9-2BC2-4316-9E82-AE3043A80187} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E093D1EA-7966-4F7F-BA00-DC599050299F}

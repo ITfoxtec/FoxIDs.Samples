@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.WsFederation" Version="10.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FoxIDs.SampleHelperLibrary\FoxIDs.SampleHelperLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

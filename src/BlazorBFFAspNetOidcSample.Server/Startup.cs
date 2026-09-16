@@ -60,6 +60,9 @@ namespace BlazorBFFAspNetOidcSample.Server
                 options.HeaderName = Constants.AntiforgeryTokenHeaderName;
             });
 
+            // TEST ONLY: Use shared storage or a database for authentication tickets in production.
+            services.AddTestInMemoryTicketStore();
+
             services
                 .AddAuthentication(options =>
                 {

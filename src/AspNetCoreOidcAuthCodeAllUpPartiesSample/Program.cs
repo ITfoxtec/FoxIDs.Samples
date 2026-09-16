@@ -31,6 +31,9 @@ builder.Services.AddSingleton((serviceProvider) =>
     return new OidcDiscoveryHandler(httpClientFactory, UrlCombine.Combine(settings.FoxIDsAuthority, IdentityConstants.OidcDiscovery.Path));
 });
 
+// TEST ONLY: Use shared storage or a database for authentication tickets in production.
+builder.Services.AddTestInMemoryTicketStore();
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

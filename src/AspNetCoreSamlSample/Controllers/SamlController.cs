@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using AspNetCoreSamlSample.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Authentication;
@@ -99,8 +100,8 @@ namespace AspNetCoreSamlSample.Controllers
 
             var saml2AuthnRequest = new Saml2AuthnRequest(saml2Config)
             {
-                AssertionConsumerServiceUrl= new Uri($"{DefaultSite}/Saml/AssertionConsumerService"),
-                
+                AssertionConsumerServiceUrl = new Uri($"{DefaultSite}/Saml/AssertionConsumerService"),
+
                 //ForceAuthn = true,
                 //NameIdPolicy = new NameIdPolicy { AllowCreate = true, Format = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" },
 
@@ -120,7 +121,14 @@ namespace AspNetCoreSamlSample.Controllers
 
             saml2AuthnRequest.Destination = AddUpParty(saml2AuthnRequest.Destination, loginType.HasValue ? loginType.Value : LoginType.FoxIDsLogin);
 
-            return binding.Bind(saml2AuthnRequest).ToActionResult();
+            var redirectUrl = binding.Bind(saml2AuthnRequest).RedirectLocation.OriginalString;
+            if (settings.SendLoginParameter)
+            {
+                // Append after binding to preserve the SAML request and its signature.
+                redirectUrl = QueryHelpers.AddQueryString(redirectUrl, "profile_id", settings.LoginParameterProfileId);
+                redirectUrl = QueryHelpers.AddQueryString(redirectUrl, "departments", settings.LoginParameterDepartments);
+            }
+            return Redirect(redirectUrl);
         }
 
         [Route("AssertionConsumerService")]
@@ -199,7 +207,7 @@ namespace AspNetCoreSamlSample.Controllers
         }
 
         private Uri AddUpParty(Uri destination, LoginType loginType)
-        {         
+        {
             var upParty = GetUpParty(loginType);
             return new Uri(destination.OriginalString.Replace($"/{settings.DownParty}(*)/", $"/{settings.DownParty}({upParty})/"));
         }

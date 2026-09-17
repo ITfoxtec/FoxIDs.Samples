@@ -7,6 +7,13 @@ The samples are pre-configured and can be run immediately in Visual Studio.
 
 > FoxIDs GitHub repository [https://github.com/ITfoxtec/FoxIDs](https://github.com/ITfoxtec/FoxIDs)
 
+## Login parameter examples
+
+These samples show how to send an optional `profile_id` when starting a sign-in. The examples are disabled by default. Each README describes how to enable sending and the required FoxIDs application registration configuration:
+
+- [OpenID Connect with all authentication methods](src/AspNetCoreOidcAuthCodeAllUpPartiesSample/README.md)
+- [SAML 2.0](src/AspNetCoreSamlSample/README.md)
+
 ## Small authentication cookies in the application samples
 
 The ASP.NET Core OIDC, SAML and WS-Federation applications, Blazor Server and Blazor BFF server use `AddTestInMemoryTicketStore` from `FoxIDs.SampleHelperLibrary`. Claims, authentication properties and saved tokens are stored on the server through ASP.NET Core's [cookie authentication session store](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.cookies.cookieauthenticationoptions.sessionstore). The browser receives only a protected session reference. This reduces the combined cookie header size when testing several applications on the same host, while keeping tokens available for API calls, token renewal and logout.

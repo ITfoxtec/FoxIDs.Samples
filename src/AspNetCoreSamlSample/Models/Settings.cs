@@ -3,6 +3,10 @@
     public class Settings
     {
         public string DownParty { get; set; }
+        public bool SendLoginParameter { get; set; }
+        public string LoginParameterProfileId { get; set; }
+        public string LoginParameterDepartments { get; set; }
+
         public string FoxIDsLoginUpParty { get; set; }
         public string ParallelFoxIDsUpParty { get; set; }
         public string IdentityServerUpParty { get; set; }

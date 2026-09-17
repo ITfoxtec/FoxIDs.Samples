@@ -16,7 +16,7 @@ using AspNetCoreOidcAuthCodeAllUpPartiesSample.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // To view detailed authentication errors and identify the issue
-IdentityModelEventSource.ShowPII = true; 
+IdentityModelEventSource.ShowPII = true;
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -147,6 +147,12 @@ builder.Services.AddAuthentication(options =>
 
         options.Events.OnRedirectToIdentityProvider = async (context) =>
         {
+            if (identitySettings.SendLoginParameter)
+            {
+                context.ProtocolMessage.SetParameter("profile_id", identitySettings.LoginParameterProfileId);
+                context.ProtocolMessage.SetParameter("departments", identitySettings.LoginParameterDepartments);
+            }
+
             // To require MFA
             //context.ProtocolMessage.AcrValues = "urn:foxids:mfa"; //  urn:foxids:link urn:foxids:xxxxxxxx urn:foxids:email urn:foxids:otp
             // Request a language on login
@@ -158,7 +164,7 @@ builder.Services.AddAuthentication(options =>
             // Request a language on logout
             //context.ProtocolMessage.UiLocales = "fr";
             await Task.FromResult(string.Empty);
-        };    
+        };
         options.Events.OnAuthorizationCodeReceived = async (context) =>
         {
             // Use client authentication basic instead of post

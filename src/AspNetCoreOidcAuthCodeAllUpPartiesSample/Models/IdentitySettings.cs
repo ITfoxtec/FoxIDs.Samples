@@ -14,7 +14,7 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Models
         public string LoginParameterDepartments { get; set; }
 
         public bool SendImpersonationParameter { get; set; }
-        public string ImpersonatedUserId { get; set; }
+        public string ImpersonationTargetId { get; set; }
 
         public bool IncludeApiScope { get; set; }
 

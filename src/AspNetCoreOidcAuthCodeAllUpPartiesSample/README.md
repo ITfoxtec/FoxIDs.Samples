@@ -28,22 +28,22 @@ Set `SendLoginParameters` to `false` to stop sending these parameters. The confi
 
 ## Send an impersonation parameter
 
-This example sends `impersonated_user_id` as a reference to the user to impersonate. The reference can be an external profile ID or an internal user ID used by the configured target lookup.
+This example sends `impersonation_target_id` as a reference to the user to impersonate. The reference can be an external profile ID or an internal user ID used by the configured target lookup.
 
-1. Add `impersonated_user_id` to **Allowed request parameters** in the sample's FoxIDs application registration.
+1. Add `impersonation_target_id` to **Allowed request parameters** in the sample's FoxIDs application registration.
 2. Enable the parameter and set the target user's reference:
 
    ```json
    "IdentitySettings": {
      "SendImpersonationParameter": true,
-     "ImpersonatedUserId": "16b66fb6-9f88-4a10-b489-8e54f48f76a4"
+     "ImpersonationTargetId": "16b66fb6-9f88-4a10-b489-8e54f48f76a4"
    }
    ```
 
-3. Configure the FoxIDs authentication method's claim transforms to read `_local:params:impersonated_user_id`, check the authenticated user's permission to impersonate, load the target using `Query internal user` or a Claims API, check the target's eligibility, and select it with an `Impersonation` transform. Follow the [impersonation configuration example](https://www.foxids.com/docs/claim-transform-task#impersonation).
-4. To continue impersonation at later application logins, save the accepted target reference in `_session:impersonated_user_id`. When the request parameter is absent, load the target using that saved reference and repeat the permission checks.
+3. Configure the FoxIDs authentication method's claim transforms to read `_local:params:impersonation_target_id`, check the authenticated user's permission to impersonate, load the target using `Query internal user` or a Claims API, check the target's eligibility, and select it with an `Impersonation` transform. Follow the [impersonation configuration example](https://www.foxids.com/docs/claim-transform-task#impersonation).
+4. To continue impersonation at later application logins, save the accepted target reference in `_session:impersonation_target_id`. When the request parameter is absent, load the target using that saved reference and repeat the permission checks.
 5. Start a new sign-in from the sample. The configured reference is sent on every OIDC sign-in while `SendImpersonationParameter` is enabled, independently of `SendLoginParameters`.
 
-To select another target, change `ImpersonatedUserId` and start a new sign-in. Setting `SendImpersonationParameter` to `false` stops sending the parameter. If FoxIDs retains the target reference in a session claim, the configured transforms can continue impersonation. To end it, the FoxIDs flow must clear the saved reference and complete without selecting a target.
+To select another target, change `ImpersonationTargetId` and start a new sign-in. Setting `SendImpersonationParameter` to `false` stops sending the parameter. If FoxIDs retains the target reference in a session claim, the configured transforms can continue impersonation. To end it, the FoxIDs flow must clear the saved reference and complete without selecting a target.
 
 Treat all parameters as browser input. Sending a target reference does not grant permission to impersonate. Avoid sending secrets in query parameters.

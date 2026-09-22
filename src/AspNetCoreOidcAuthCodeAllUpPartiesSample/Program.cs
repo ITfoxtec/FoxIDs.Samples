@@ -154,7 +154,7 @@ builder.Services.AddAuthentication(options =>
             }
             if (identitySettings.SendImpersonationParameter)
             {
-                context.ProtocolMessage.SetParameter("impersonated_user_id", identitySettings.ImpersonatedUserId);
+                context.ProtocolMessage.SetParameter("impersonation_target_id", identitySettings.ImpersonationTargetId);
             }
 
             // To require MFA

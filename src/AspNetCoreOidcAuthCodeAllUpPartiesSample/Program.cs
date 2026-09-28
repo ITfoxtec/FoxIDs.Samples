@@ -147,10 +147,14 @@ builder.Services.AddAuthentication(options =>
 
         options.Events.OnRedirectToIdentityProvider = async (context) =>
         {
-            if (identitySettings.SendLoginParameter)
+            if (identitySettings.SendLoginParameters)
             {
                 context.ProtocolMessage.SetParameter("profile_id", identitySettings.LoginParameterProfileId);
                 context.ProtocolMessage.SetParameter("departments", identitySettings.LoginParameterDepartments);
+            }
+            if (identitySettings.SendImpersonationParameter)
+            {
+                context.ProtocolMessage.SetParameter("impersonation_target_id", identitySettings.ImpersonationTargetId);
             }
 
             // To require MFA

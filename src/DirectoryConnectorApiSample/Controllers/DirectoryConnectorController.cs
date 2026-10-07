@@ -37,6 +37,25 @@ public class DirectoryConnectorController : ControllerBase
         });
     }
 
+    [HttpPost("synchronise-user")]
+    public IActionResult SynchroniseUser([FromBody] DirectorySynchronisationRequest request)
+    {
+        if (!AuthenticateApi(out var authError))
+        {
+            return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = authError });
+        }
+
+        var user = directoryStore.Find(request);
+        if (user == null || user.Deleted)
+        {
+            return string.IsNullOrWhiteSpace(request.DirectoryUserId)
+                ? Unauthorized(new ErrorResponse { Error = Constants.Errors.UserNotExists, ErrorMessage = "No directory user matches the supplied identifier." })
+                : StatusCode((int)HttpStatusCode.Forbidden, new ErrorResponse { Error = Constants.Errors.UserDeleted, ErrorMessage = "The directory user ID no longer exists." });
+        }
+
+        return Ok(user.ToResponse());
+    }
+
     [HttpPost("authentication")]
     public IActionResult Authenticate([FromBody] DirectoryAuthenticationRequest request)
     {
@@ -45,8 +64,8 @@ public class DirectoryConnectorController : ControllerBase
             return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = authError });
         }
 
-        var user = directoryStore.Find(request);
-        var userError = ValidateUser(user, request);
+        var user = directoryStore.Find(request.DirectoryUserId);
+        var userError = ValidatePasswordOperationUser(user);
         if (userError != null)
         {
             return userError;
@@ -76,13 +95,18 @@ public class DirectoryConnectorController : ControllerBase
             });
         }
 
-        var passwordError = ValidatePassword(request.Password, request.Username);
+        if (user.PasswordExpired)
+        {
+            return BadRequest(new ErrorResponse { Error = Constants.Errors.PasswordExpired, ErrorMessage = "The verified password has expired." });
+        }
+
+        var passwordError = ValidatePassword(request.Password, user.Username);
         if (passwordError != null)
         {
             return passwordError;
         }
 
-        return Ok(user.ToResponse());
+        return NoContent();
     }
 
     [HttpPost("create-user")]
@@ -93,11 +117,6 @@ public class DirectoryConnectorController : ControllerBase
             return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = authError });
         }
 
-        if (directoryStore.Find(request) != null)
-        {
-            return BadRequest(new ErrorResponse { Error = Constants.Errors.UserExists, ErrorMessage = "User already exists." });
-        }
-
         var passwordError = ValidateNewPassword(request.Password, request);
         if (passwordError != null)
         {
@@ -105,7 +124,11 @@ public class DirectoryConnectorController : ControllerBase
         }
 
         var user = directoryStore.Create(request);
-        return Ok(user.ToResponse());
+        if (user == null)
+        {
+            return BadRequest(new ErrorResponse { Error = Constants.Errors.UserExists, ErrorMessage = "User already exists." });
+        }
+        return Ok(new DirectoryCreateUserResponse { DirectoryUserId = user.DirectoryUserId });
     }
 
     [HttpPost("change-password")]
@@ -116,8 +139,8 @@ public class DirectoryConnectorController : ControllerBase
             return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = authError });
         }
 
-        var user = directoryStore.Find(request);
-        var userError = ValidateUser(user, request);
+        var user = directoryStore.Find(request.DirectoryUserId);
+        var userError = ValidatePasswordOperationUser(user);
         if (userError != null)
         {
             return userError;
@@ -135,7 +158,7 @@ public class DirectoryConnectorController : ControllerBase
         }
 
         directoryStore.SetPassword(user, request.NewPassword);
-        return Ok(user.ToResponse());
+        return NoContent();
     }
 
     [HttpPost("set-password")]
@@ -146,8 +169,8 @@ public class DirectoryConnectorController : ControllerBase
             return Unauthorized(new ErrorResponse { Error = Constants.Errors.InvalidApiIdOrSecret, ErrorMessage = authError });
         }
 
-        var user = directoryStore.Find(request);
-        var userError = ValidateUser(user, request);
+        var user = directoryStore.Find(request.DirectoryUserId);
+        var userError = ValidatePasswordOperationUser(user);
         if (userError != null)
         {
             return userError;
@@ -160,27 +183,14 @@ public class DirectoryConnectorController : ControllerBase
         }
 
         directoryStore.SetPassword(user, request.Password);
-        return Ok(user.ToResponse());
+        return NoContent();
     }
 
-    private IActionResult ValidateUser(DemoDirectoryUser user, DirectoryUserIdentifierRequest request)
+    private IActionResult ValidatePasswordOperationUser(DemoDirectoryUser user)
     {
-        if (user == null)
+        if (user == null || user.Deleted || user.Disabled)
         {
-            if (!string.IsNullOrWhiteSpace(request.DirectoryUserId))
-            {
-                return StatusCode((int)HttpStatusCode.Forbidden, new ErrorResponse { Error = Constants.Errors.UserDeleted, ErrorMessage = "User not found." });
-            }
-
-            return Unauthorized(new ErrorResponse { Error = Constants.Errors.UserNotExists, ErrorMessage = "User not found." });
-        }
-        if (user.Deleted)
-        {
-            return StatusCode((int)HttpStatusCode.Forbidden, new ErrorResponse { Error = Constants.Errors.UserDeleted, ErrorMessage = "User is deleted in the directory." });
-        }
-        if (user.Disabled)
-        {
-            return StatusCode((int)HttpStatusCode.Forbidden, new ErrorResponse { Error = Constants.Errors.UserDisabled, ErrorMessage = "User is disabled in the directory." });
+            return StatusCode((int)HttpStatusCode.Forbidden, new ErrorResponse { Error = Constants.Errors.OperationRejected, ErrorMessage = "The directory account is unavailable." });
         }
 
         return null;

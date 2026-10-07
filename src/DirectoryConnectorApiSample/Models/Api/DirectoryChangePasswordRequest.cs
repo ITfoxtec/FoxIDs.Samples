@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DirectoryConnectorApiSample.Models.Api;
 
-public class DirectoryChangePasswordRequest : DirectoryUserIdentifierRequest
+public class DirectoryChangePasswordRequest : DirectoryUserRequest
 {
     [Required]
     public string CurrentPassword { get; set; }

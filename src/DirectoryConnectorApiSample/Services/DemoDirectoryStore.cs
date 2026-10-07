@@ -66,18 +66,56 @@ public class DemoDirectoryStore
             Username = "disabled",
             Password = "disabledpass1",
             Disabled = true
+        },
+        new()
+        {
+            DirectoryUserId = "dir-user-deleted",
+            Email = "deleted@somewhere.org",
+            Username = "deleted",
+            Password = "testpass5",
+            Deleted = true
+        },
+        new()
+        {
+            DirectoryUserId = "dir-user-expired",
+            Email = "expired@somewhere.org",
+            Username = "expired",
+            Password = "testpass6",
+            PasswordExpired = true
+        },
+        new()
+        {
+            DirectoryUserId = "dir-user-setup-email",
+            Email = "setup@somewhere.org",
+            SetPasswordEmail = true
+        },
+        new()
+        {
+            DirectoryUserId = "dir-user-setup-sms",
+            Phone = "+4511223377",
+            SetPasswordSms = true
         }
     ];
+
+    public DemoDirectoryUser Find(DirectorySynchronisationRequest request) =>
+        !string.IsNullOrWhiteSpace(request.DirectoryUserId) ? Find(request.DirectoryUserId) : Find((DirectoryUserIdentifierRequest)request);
+
+    public DemoDirectoryUser Find(string directoryUserId)
+    {
+        lock (syncRoot)
+        {
+            return users.FirstOrDefault(user => string.Equals(user.DirectoryUserId, directoryUserId, StringComparison.Ordinal));
+        }
+    }
 
     public DemoDirectoryUser Find(DirectoryUserIdentifierRequest request)
     {
         lock (syncRoot)
         {
             return users.FirstOrDefault(u =>
-                (!string.IsNullOrWhiteSpace(request.DirectoryUserId) && u.DirectoryUserId.Equals(request.DirectoryUserId, StringComparison.OrdinalIgnoreCase)) ||
-                (!string.IsNullOrWhiteSpace(request.Email) && u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase)) ||
-                (!string.IsNullOrWhiteSpace(request.Phone) && u.Phone.Equals(request.Phone, StringComparison.OrdinalIgnoreCase)) ||
-                (!string.IsNullOrWhiteSpace(request.Username) && u.Username.Equals(request.Username, StringComparison.OrdinalIgnoreCase)));
+                (!string.IsNullOrWhiteSpace(request.Email) && string.Equals(u.Email, request.Email.Trim(), StringComparison.OrdinalIgnoreCase)) ||
+                (!string.IsNullOrWhiteSpace(request.Phone) && string.Equals(u.Phone, request.Phone.Trim(), StringComparison.Ordinal)) ||
+                (!string.IsNullOrWhiteSpace(request.Username) && string.Equals(u.Username, request.Username.Trim(), StringComparison.OrdinalIgnoreCase)));
         }
     }
 
@@ -85,7 +123,7 @@ public class DemoDirectoryStore
     {
         lock (syncRoot)
         {
-            return user.Password.Equals(password, StringComparison.Ordinal);
+            return string.Equals(user.Password, password, StringComparison.Ordinal);
         }
     }
 
@@ -94,6 +132,11 @@ public class DemoDirectoryStore
         lock (syncRoot)
         {
             user.Password = password;
+            user.PasswordExpired = false;
+            user.ChangePassword = false;
+            user.SetPasswordEmail = false;
+            user.SetPasswordSms = false;
+            user.PasswordLastChanged = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         }
     }
 
@@ -101,13 +144,18 @@ public class DemoDirectoryStore
     {
         lock (syncRoot)
         {
+            if (Find(request) != null)
+            {
+                return null;
+            }
             var user = new DemoDirectoryUser
             {
                 DirectoryUserId = $"dir-user-{Guid.NewGuid():N}",
-                Email = request.Email,
-                Phone = request.Phone,
-                Username = request.Username,
+                Email = request.Email?.Trim(),
+                Phone = request.Phone?.Trim(),
+                Username = request.Username?.Trim(),
                 Password = request.Password,
+                PasswordLastChanged = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 ConfirmAccount = request.ConfirmAccount,
                 RequireMultiFactor = request.RequireMultiFactor,
                 Claims = request.Claims?.ToList() ?? []

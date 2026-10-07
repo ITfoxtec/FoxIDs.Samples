@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "8f8b4d79-f4cc-4d2c-ae45-dcebf3a01410",
     "name": "Directory Connector API",
-    "description": "Collection to test the Directory Connector API sample. Adjust host/port to your running sample. Basic auth username: directory_connector, password: configured secret.",
+    "description": "Directory Connector sample: synchronise users, authenticate and manage passwords. Run in order against a freshly started sample; password operations change the in-memory demo users. Restart before running again.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -36,130 +36,21 @@
   ],
   "item": [
     {
-      "name": "Authentication - success",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept-Language",
-            "value": "en"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"user1@somewhere.org\",\n  \"password\": \"testpass1\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/authentication",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "authentication"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Authentication - invalid password",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept-Language",
-            "value": "en"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"user1@somewhere.org\",\n  \"password\": \"wrongpass\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/authentication",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "authentication"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Authentication - disabled user",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept-Language",
-            "value": "en"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"disabled@somewhere.org\",\n  \"password\": \"disabledpass1\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/authentication",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "authentication"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Authentication - login rejection",
+      "name": "Synchronisation",
       "item": [
         {
-          "name": "English message",
+          "name": "Find by email",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "en"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"rejected@somewhere.org\",\n  \"password\": \"testpass3\"\n}",
+              "raw": "{\n  \"email\": \"user1@somewhere.org\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -167,51 +58,43 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/authentication",
+              "raw": "{{baseUrl}}/synchronise-user",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "authentication"
+                "synchronise-user"
               ]
             }
           },
-          "response": [],
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Expected authentication response\", function () {",
-                  "    pm.response.to.have.status(401);",
-                  "    const response = pm.response.json();",
-                  "    pm.expect(response.error).to.eql(\"login_rejected\");",
-                  "    pm.expect(response.uiErrorMessage).to.eql(\"You cannot log in here. Contact support.\");",
-                  "    pm.expect(response.errorMessage).to.eql(\"Credentials verified; login rejected by demo directory policy.\");",
-                  "});"
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-1\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "Danish message",
+          "name": "Find by phone",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "da-DK"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"rejected@somewhere.org\",\n  \"password\": \"testpass3\"\n}",
+              "raw": "{\n  \"phone\": \"+4511223344\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -219,51 +102,43 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/authentication",
+              "raw": "{{baseUrl}}/synchronise-user",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "authentication"
+                "synchronise-user"
               ]
             }
           },
-          "response": [],
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Expected authentication response\", function () {",
-                  "    pm.response.to.have.status(401);",
-                  "    const response = pm.response.json();",
-                  "    pm.expect(response.error).to.eql(\"login_rejected\");",
-                  "    pm.expect(response.uiErrorMessage).to.eql(\"Du kan ikke logge ind her. Kontakt support.\");",
-                  "    pm.expect(response.errorMessage).to.eql(\"Credentials verified; login rejected by demo directory policy.\");",
-                  "});"
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-1\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "With directory user ID",
+          "name": "Find by username",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "en"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"directoryUserId\": \"dir-user-rejected\",\n  \"email\": \"rejected@somewhere.org\",\n  \"password\": \"testpass3\"\n}",
+              "raw": "{\n  \"username\": \"user1\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -271,51 +146,43 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/authentication",
+              "raw": "{{baseUrl}}/synchronise-user",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "authentication"
+                "synchronise-user"
               ]
             }
           },
-          "response": [],
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Expected authentication response\", function () {",
-                  "    pm.response.to.have.status(401);",
-                  "    const response = pm.response.json();",
-                  "    pm.expect(response.error).to.eql(\"login_rejected\");",
-                  "    pm.expect(response.uiErrorMessage).to.eql(\"You cannot log in here. Contact support.\");",
-                  "    pm.expect(response.errorMessage).to.eql(\"Credentials verified; login rejected by demo directory policy.\");",
-                  "});"
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-1\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "General FoxIDs message",
+          "name": "Find by directory ID",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "en"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"rejected-no-message@somewhere.org\",\n  \"password\": \"testpass4\"\n}",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-1\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -323,51 +190,43 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/authentication",
+              "raw": "{{baseUrl}}/synchronise-user",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "authentication"
+                "synchronise-user"
               ]
             }
           },
-          "response": [],
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Expected authentication response\", function () {",
-                  "    pm.response.to.have.status(401);",
-                  "    const response = pm.response.json();",
-                  "    pm.expect(response.error).to.eql(\"login_rejected\");",
-                  "    pm.expect(response).not.to.have.property(\"uiErrorMessage\");",
-                  "    pm.expect(response.errorMessage).to.eql(\"Credentials verified; login rejected by demo directory policy.\");",
-                  "});"
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-1\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "Wrong password does not disclose restriction",
+          "name": "Disabled account returns state",
           "request": {
             "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "da-DK"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"rejected@somewhere.org\",\n  \"password\": \"wrongpass\"\n}",
+              "raw": "{\n  \"email\": \"disabled@somewhere.org\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -375,29 +234,26 @@
               }
             },
             "url": {
-              "raw": "{{baseUrl}}/authentication",
+              "raw": "{{baseUrl}}/synchronise-user",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "authentication"
+                "synchronise-user"
               ]
             }
           },
-          "response": [],
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Expected authentication response\", function () {",
-                  "    pm.response.to.have.status(401);",
-                  "    const response = pm.response.json();",
-                  "    pm.expect(response.error).to.eql(\"invalid_password\");",
-                  "    pm.expect(response).not.to.have.property(\"uiErrorMessage\");",
-                  "    pm.expect(response.errorMessage).to.eql(\"Invalid password.\");",
-                  "});"
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-disabled\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));",
+                  "pm.test(\"disableAccount\", () => pm.expect(body.disableAccount).to.eql(true));"
                 ]
               }
             }
@@ -411,15 +267,108 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
-              },
-              {
-                "key": "Accept-Language",
-                "value": "da-DK"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"unknown@somewhere.org\",\n  \"password\": \"wrongpass\"\n}",
+              "raw": "{\n  \"email\": \"missing@somewhere.org\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/synchronise-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "synchronise-user"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"user_not_exists\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deleted known account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-deleted\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/synchronise-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "synchronise-user"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"user_deleted\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Authenticate user 1",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"password\": \"testpass1\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -436,20 +385,194 @@
               ]
             }
           },
-          "response": [],
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Expected authentication response\", function () {",
-                  "    pm.response.to.have.status(401);",
-                  "    const response = pm.response.json();",
-                  "    pm.expect(response.error).to.eql(\"user_not_exists\");",
-                  "    pm.expect(response).not.to.have.property(\"uiErrorMessage\");",
-                  "    pm.expect(response.errorMessage).to.eql(\"User not found.\");",
-                  "});"
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Authenticate user 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-2\",\n  \"password\": \"testpass2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Wrong password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"password\": \"wrongpass\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"invalid_password\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disabled account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-disabled\",\n  \"password\": \"disabledpass1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"operation_rejected\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deleted account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-deleted\",\n  \"password\": \"testpass5\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"operation_rejected\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
                 ]
               }
             }
@@ -458,144 +581,1144 @@
       ]
     },
     {
-      "name": "Create user - success",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept-Language",
-            "value": "en"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"new.user@somewhere.org\",\n  \"password\": \"newpass123\",\n  \"confirmAccount\": true,\n  \"requireMultiFactor\": false,\n  \"claims\": [\n    { \"type\": \"name\", \"value\": \"New User\" }\n  ]\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "Authentication - login rejection",
+      "item": [
+        {
+          "name": "Rejection with English UI message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "en-US"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-rejected\",\n  \"password\": \"testpass3\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"login_rejected\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"uiErrorMessage\", () => pm.expect(body.uiErrorMessage).to.eql(\"You cannot log in here. Contact support.\"));"
+                ]
+              }
+            }
+          ]
         },
-        "url": {
-          "raw": "{{baseUrl}}/create-user",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "create-user"
+        {
+          "name": "Rejection with Danish UI message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "da-DK"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-rejected\",\n  \"password\": \"testpass3\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"login_rejected\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"uiErrorMessage\", () => pm.expect(body.uiErrorMessage).to.eql(\"Du kan ikke logge ind her. Kontakt support.\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unsupported language falls back to English",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "fr-FR"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-rejected\",\n  \"password\": \"testpass3\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"login_rejected\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"uiErrorMessage\", () => pm.expect(body.uiErrorMessage).to.eql(\"You cannot log in here. Contact support.\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Rejection without UI message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-rejected-no-message\",\n  \"password\": \"testpass4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"login_rejected\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Wrong credential has no rejection guidance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-rejected\",\n  \"password\": \"short\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"invalid_password\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
           ]
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "Change password - success",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept-Language",
-            "value": "en"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"email\": \"user1@somewhere.org\",\n  \"currentPassword\": \"testpass1\",\n  \"newPassword\": \"newpass123\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "Password lifecycle",
+      "item": [
+        {
+          "name": "Change password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"currentPassword\": \"testpass1\",\n  \"newPassword\": \"newpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "change-password"
+              ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
         },
-        "url": {
-          "raw": "{{baseUrl}}/change-password",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "change-password"
+        {
+          "name": "Authenticate changed password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"password\": \"newpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reject short new password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"currentPassword\": \"newpass123\",\n  \"newPassword\": \"short\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "change-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"password_min_length\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"password\": \"testpass1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/set-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "set-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Read password-change time",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/synchronise-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "synchronise-user"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-1\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));",
+                  "pm.test(\"Password-change time\", () => pm.expect(body.passwordLastChanged).to.be.above(0));",
+                  "pm.test(\"changePassword\", () => pm.expect(body.changePassword).to.eql(false));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Expired credential must be verified",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-expired\",\n  \"password\": \"wrongpass\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"invalid_password\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verified expired password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-expired\",\n  \"password\": \"testpass6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"password_expired\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Change expired password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-expired\",\n  \"currentPassword\": \"testpass6\",\n  \"newPassword\": \"newpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "change-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Authenticate after expiry cleared",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-expired\",\n  \"password\": \"newpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
           ]
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "Set password - reset user1",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept-Language",
-            "value": "en"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"directoryUserId\": \"dir-user-1\",\n  \"email\": \"user1@somewhere.org\",\n  \"password\": \"testpass1\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "Initial password setup",
+      "item": [
+        {
+          "name": "Email setup required",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"setup@somewhere.org\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/synchronise-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "synchronise-user"
+              ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-setup-email\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));",
+                  "pm.test(\"setPasswordEmail\", () => pm.expect(body.setPasswordEmail).to.eql(true));"
+                ]
+              }
+            }
+          ]
         },
-        "url": {
-          "raw": "{{baseUrl}}/set-password",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "set-password"
+        {
+          "name": "Set first password after FoxIDs email verification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-setup-email\",\n  \"password\": \"newpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/set-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "set-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Email setup completed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-setup-email\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/synchronise-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "synchronise-user"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-setup-email\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));",
+                  "pm.test(\"setPasswordEmail\", () => pm.expect(body.setPasswordEmail).to.eql(false));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Authenticate first password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-setup-email\",\n  \"password\": \"newpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "SMS setup required",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+4511223377\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/synchronise-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "synchronise-user"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-setup-sms\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));",
+                  "pm.test(\"setPasswordSms\", () => pm.expect(body.setPasswordSms).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Set first password after FoxIDs SMS verification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-setup-sms\",\n  \"password\": \"newpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/set-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "set-password"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "SMS setup completed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"dir-user-setup-sms\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/synchronise-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "synchronise-user"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"directoryUserId\", () => pm.expect(body.directoryUserId).to.eql(\"dir-user-setup-sms\"));",
+                  "pm.test(\"No password\", () => pm.expect(body).not.to.have.property(\"password\"));",
+                  "pm.test(\"setPasswordSms\", () => pm.expect(body.setPasswordSms).to.eql(false));"
+                ]
+              }
+            }
           ]
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "Set password - password too short",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept-Language",
-            "value": "en"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"directoryUserId\": \"dir-user-2\",\n  \"email\": \"user2@somewhere.org\",\n  \"password\": \"short\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "Create and synchronise",
+      "item": [
+        {
+          "name": "Create user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@somewhere.org\",\n  \"password\": \"testpass123\",\n  \"confirmAccount\": false,\n  \"requireMultiFactor\": false,\n  \"claims\": [\n    {\n      \"type\": \"name\",\n      \"value\": \"New User\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/create-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "create-user"
+              ]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Only directory ID is returned\", () => pm.expect(Object.keys(body)).to.eql([\"directoryUserId\"]));",
+                  "pm.test(\"Directory ID\", () => pm.expect(body.directoryUserId).to.be.a(\"string\").and.not.empty);",
+                  "pm.collectionVariables.set(\"createdDirectoryUserId\", body.directoryUserId);"
+                ]
+              }
+            }
+          ]
         },
-        "url": {
-          "raw": "{{baseUrl}}/set-password",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "set-password"
+        {
+          "name": "Synchronise created user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"{{createdDirectoryUserId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/synchronise-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "synchronise-user"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Created directory ID\", () => pm.expect(body.directoryUserId).to.equal(pm.collectionVariables.get(\"createdDirectoryUserId\")));",
+                  "pm.test(\"email\", () => pm.expect(body.email).to.eql(\"newuser@somewhere.org\"));",
+                  "pm.test(\"claims\", () => pm.expect(body.claims).to.eql([{\"type\": \"name\", \"value\": \"New User\"}]));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Authenticate created user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directoryUserId\": \"{{createdDirectoryUserId}}\",\n  \"password\": \"testpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authentication",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "authentication"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "pm.test(\"Empty success body\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Duplicate user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@somewhere.org\",\n  \"password\": \"testpass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/create-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "create-user"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"error\", () => pm.expect(body.error).to.eql(\"user_exists\"));",
+                  "pm.test(\"Diagnostic message\", () => pm.expect(body.errorMessage).to.be.a(\"string\").and.not.empty);",
+                  "pm.test(\"No user snapshot\", () => pm.expect(body).not.to.have.property(\"directoryUserId\"));",
+                  "pm.test(\"No UI message\", () => pm.expect(body).not.to.have.property(\"uiErrorMessage\"));"
+                ]
+              }
+            }
           ]
         }
-      },
-      "response": []
+      ]
     }
   ]
 }

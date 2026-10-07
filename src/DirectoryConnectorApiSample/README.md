@@ -1,54 +1,57 @@
 # DirectoryConnectorApiSample
 
-Sample implementation of the Directory Connector API used by FoxIDs to validate passwords and delegate password lifecycle operations to an external directory.
+Sample implementation of the [FoxIDs Directory Connector API](https://www.foxids.com/docs/directory-connector), including on-demand user synchronisation and password operations in an external directory.
 
-Endpoints:
-- GET `/health`
-- POST `/authentication`
-- POST `/create-user`
-- POST `/change-password`
-- POST `/set-password`
+The sample uses an in-memory directory with plaintext demo passwords. Restarting resets all users and passwords. Replace `DemoDirectoryStore` with your external directory integration for real use.
 
-Authentication:
-- HTTP Basic
-  - Username: `directory_connector`
-  - Password: configured secret in `appsettings.json`: `AppSettings:ApiSecret`
+## Run and configure
 
-Demo users:
-- `user1@somewhere.org` / `user1` / `+4511223344`, password `testpass1`, directory user ID `dir-user-1`
-- `user2@somewhere.org` / `user2` / `+4555667788`, password `testpass2`, directory user ID `dir-user-2`
-- `rejected@somewhere.org` / `rejected`, password `testpass3`, directory user ID `dir-user-rejected`: login rejected with a localised UI message
-- `rejected-no-message@somewhere.org` / `rejected-no-message`, password `testpass4`, directory user ID `dir-user-rejected-no-message`: login rejected without a UI message
-- `disabled@somewhere.org` / `disabled`, password `disabledpass1`, directory user ID `dir-user-disabled`
+Run from this directory:
 
-Authentication request:
+```bash
+dotnet run
+```
+
+Open Swagger UI at `https://localhost:44362/swagger`. Configure FoxIDs with the sample's reachable base URL and the secret from `AppSettings:ApiSecret`. All five connector endpoints require HTTP Basic authentication with username `directory_connector` and that secret. Use a private secret and HTTPS for a deployed connector. The separate GET `/health` endpoint is a demonstration health check.
+
+Import `directory-connector-api.postman_collection.json` into Postman. Its variables contain the local base URL and demo API credentials. Run the collection in order against a freshly started sample; it includes response assertions and password changes. Restart the sample before running it again.
+
+## Demo users
+
+| Directory user ID | Identifier | Password | Behaviour |
+| --- | --- | --- | --- |
+| `dir-user-1` | `user1@somewhere.org`, `user1`, `+4511223344` | `testpass1` | Normal login |
+| `dir-user-2` | `user2@somewhere.org`, `user2`, `+4555667788` | `testpass2` | Normal login with additional roles |
+| `dir-user-rejected` | `rejected@somewhere.org`, `rejected` | `testpass3` | Verified login rejected with a localised UI message |
+| `dir-user-rejected-no-message` | `rejected-no-message@somewhere.org`, `rejected-no-message` | `testpass4` | Verified login rejected without a UI message |
+| `dir-user-disabled` | `disabled@somewhere.org`, `disabled` | `disabledpass1` | Synchronisation returns `disableAccount: true`; password operations are rejected |
+| `dir-user-deleted` | `deleted@somewhere.org`, `deleted` | `testpass5` | Deleted account |
+| `dir-user-expired` | `expired@somewhere.org`, `expired` | `testpass6` | Password must be changed |
+| `dir-user-setup-email` | `setup@somewhere.org` | None | Set a password using an email confirmation code |
+| `dir-user-setup-sms` | `+4511223377` | None | Set a password using an SMS confirmation code |
+
+For first-login password setup, enable the corresponding email or SMS flow and notification delivery in FoxIDs. FoxIDs verifies the confirmation code before calling `set-password`. This also supports users who have forgotten their password before their first sign-in.
+
+## Synchronisation request
+
+POST `/synchronise-user` with exactly one current identifier (`email`, `phone` or `username`) for the initial lookup:
+
 ```json
 {
-  "email": "user1@somewhere.org",
-  "password": "testpass1"
+  "email": "user1@somewhere.org"
 }
 ```
 
-Change-password request:
+For an account already known to FoxIDs, send its stable directory ID:
+
 ```json
 {
-  "directoryUserId": "dir-user-1",
-  "email": "user1@somewhere.org",
-  "currentPassword": "testpass1",
-  "newPassword": "newpass123"
+  "directoryUserId": "dir-user-1"
 }
 ```
 
-Set-password request:
-```json
-{
-  "directoryUserId": "dir-user-1",
-  "email": "user1@somewhere.org",
-  "password": "testpass1"
-}
-```
+When supplied, the directory ID determines the account; the sample does not fall back to an identifier. The successful response is HTTP 200 with the current user snapshot. Only this endpoint returns identifiers, account state and claims:
 
-Success response (200):
 ```json
 {
   "directoryUserId": "dir-user-1",
@@ -56,6 +59,13 @@ Success response (200):
   "phone": "+4511223344",
   "username": "user1",
   "confirmAccount": false,
+  "disableAccount": false,
+  "changePassword": false,
+  "setPasswordEmail": false,
+  "setPasswordSms": false,
+  "disableSetPasswordEmail": false,
+  "disableSetPasswordSms": false,
+  "passwordLastChanged": null,
   "emailVerified": true,
   "phoneVerified": true,
   "disableTwoFactorApp": false,
@@ -69,20 +79,96 @@ Success response (200):
 }
 ```
 
-Error responses:
-- `401 invalid_api_id_secret`
-- `401 user_not_exists`
-- `401 invalid_password`
-- `401 login_rejected` (only from `/authentication`, after verifying credentials)
-- `401 invalid_current_password`
-- `403 user_disabled`
-- `400 password_min_length`
-- `400 password_banned_characters`
-- `400 new_password_equals_current`
+`passwordLastChanged` is the password-change time in Unix seconds, or null when unknown. Password changes and user creation set it in this sample. A disabled user still returns a successful snapshot with `disableAccount: true`. An identifier lookup that finds no active directory entry returns the error `user_not_exists`; a lookup by a known directory ID that no longer exists returns the error `user_deleted`.
 
-## Login rejection and language
+## Authentication request
 
-Authenticate the `rejected@somewhere.org` demo user with password `testpass3` to receive HTTP 401:
+POST `/authentication`:
+
+```json
+{
+  "directoryUserId": "dir-user-1",
+  "password": "testpass1"
+}
+```
+
+Success: HTTP 204 with no body. The sample verifies the password before returning login rejection guidance, password expiry or password-policy errors.
+
+## Create-user request
+
+POST `/create-user` with exactly one identifier:
+
+```json
+{
+  "email": "newuser@somewhere.org",
+  "password": "testpass123",
+  "confirmAccount": false,
+  "requireMultiFactor": false,
+  "claims": [
+    { "type": "name", "value": "New User" }
+  ]
+}
+```
+
+Success: HTTP 200 with only the new directory ID. The value below is illustrative; the sample generates a new ID for each account:
+
+```json
+{
+  "directoryUserId": "dir-user-8aecb4d74c744125a45e98f3ec1e2b70"
+}
+```
+
+FoxIDs then calls `synchronise-user` with that ID to retrieve the account.
+
+## Change-password request
+
+POST `/change-password`:
+
+```json
+{
+  "directoryUserId": "dir-user-1",
+  "currentPassword": "testpass1",
+  "newPassword": "newpass123"
+}
+```
+
+Success: HTTP 204 with no body. The current password is verified before checking the new password. An expired current password can be changed. Success clears the change-password and initial password-setup requirements.
+
+## Set-password request
+
+POST `/set-password`:
+
+```json
+{
+  "directoryUserId": "dir-user-setup-email",
+  "password": "newpass123"
+}
+```
+
+Success: HTTP 204 with no body. This operation trusts the authorised FoxIDs API caller to have verified the user's recovery or setup code; the connector does not validate a current password. Success clears the change-password and initial password-setup requirements.
+
+## Errors
+
+The sample returns the following errors for valid connector requests:
+
+| Endpoint | HTTP status and error |
+| --- | --- |
+| All five endpoints | `401 invalid_api_id_secret` |
+| Synchronisation by identifier | `401 user_not_exists` |
+| Synchronisation by directory ID | `403 user_deleted` |
+| Authentication, change-password, set-password | `403 operation_rejected` for an unknown, deleted or disabled account |
+| Authentication | `401 invalid_password`; after credential verification: `401 login_rejected` or `400 password_expired` |
+| Create-user | `400 user_exists` |
+| Change-password | `401 invalid_current_password`, `400 new_password_equals_current` |
+| Authentication, create-user, change-password, set-password | `400 password_min_length`, `400 password_banned_characters` |
+
+The demo password policy requires at least eight characters and rejects passwords containing `Forbidden!` or the account's username. It does not implement password history. Malformed requests, such as password operations missing `directoryUserId`, receive HTTP 400 model-validation errors.
+
+`operation_rejected` reports a failed operation without changing the FoxIDs account. FoxIDs refreshes account state through synchronisation. Other supported codes and their permitted endpoints are described in the [Directory Connector error contract](https://www.foxids.com/docs/directory-connector#error-response).
+
+### Login rejection and language
+
+Authenticate `dir-user-rejected` with password `testpass3` to receive HTTP 401:
 
 ```json
 {
@@ -92,28 +178,16 @@ Authenticate the `rejected@somewhere.org` demo user with password `testpass3` to
 }
 ```
 
-FoxIDs displays `uiErrorMessage` as plain text on the login form. `errorMessage` is diagnostic text for the logs and is never the fallback user message.
+FoxIDs displays `uiErrorMessage` as plain text on the login form. `errorMessage` is English diagnostic text for the logs and is never the fallback user message.
 
 FoxIDs sends its selected culture in `Accept-Language`. This sample supports English (`en`, including `en-US`) and Danish (`da`, including `da-DK`). Send `Accept-Language: da-DK` to receive `Du kan ikke logge ind her. Kontakt support.` Missing or unsupported language preferences fall back to English. Only the header selects the language; query-string and cookie culture providers are disabled.
 
-Authenticate `rejected-no-message@somewhere.org` with password `testpass4` to receive `login_rejected` without `uiErrorMessage`. FoxIDs then displays the same general, localised login message as for `invalid_password`, `user_not_exists`, `user_disabled` and `user_deleted`. FoxIDs also uses this fallback for a null, empty or whitespace-only UI message.
+Authenticate `dir-user-rejected-no-message` with password `testpass4` to receive `login_rejected` without `uiErrorMessage`. FoxIDs then uses its general, localised login error. A wrong password for either user returns `invalid_password` without a UI message or the policy rejection reason. Keep credential verification before account-specific guidance in a real connector. API authentication or knowledge of a directory user ID does not establish that the person logging in owns the account.
 
-Both examples work with or without the matching `directoryUserId`. A rejected login does not disable or delete the demo user, change its password or return a success response.
+## Tests
 
-The sample verifies credentials before checking `RejectLogin`. A wrong password for either demo user returns `invalid_password` without a UI message or the rejection reason. An unknown identifier returns `user_not_exists`; FoxIDs shows the same general login message. A successful lookup or knowledge of a directory user ID does not prove that the person logging in owns the account. Preserve this order in a real connector and keep observable failure behaviour consistent before credential verification.
+Run the HTTP contract tests from the repository root:
 
-The Postman folder **Authentication - login rejection** includes English, Danish, no-message, directory-ID and invalid-credential examples with response assertions. The demo directory is stored in memory; use your external directory's credential validation in a real connector.
-
-Run:
 ```bash
-dotnet run
+dotnet test test/DirectoryConnectorApiSample.Tests/DirectoryConnectorApiSample.Tests.csproj
 ```
-
-Swagger UI:
-```text
-https://localhost:44362/swagger
-```
-
-Use the Postman collection `directory-connector-api.postman_collection.json` to test the endpoints.
-
-Update `AppSettings:ApiSecret` before using in production.

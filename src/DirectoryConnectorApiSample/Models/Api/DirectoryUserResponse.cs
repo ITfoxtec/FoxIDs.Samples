@@ -15,6 +15,20 @@ public class DirectoryUserResponse : IValidatableObject
 
     public bool ConfirmAccount { get; set; }
 
+    public bool DisableAccount { get; set; }
+
+    public bool ChangePassword { get; set; }
+
+    public bool SetPasswordEmail { get; set; }
+
+    public bool SetPasswordSms { get; set; }
+
+    public bool DisableSetPasswordEmail { get; set; }
+
+    public bool DisableSetPasswordSms { get; set; }
+
+    public long? PasswordLastChanged { get; set; }
+
     public bool EmailVerified { get; set; }
 
     public bool PhoneVerified { get; set; }

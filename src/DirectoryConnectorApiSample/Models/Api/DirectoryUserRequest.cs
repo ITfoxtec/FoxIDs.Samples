@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DirectoryConnectorApiSample.Models.Api;
 
-public class DirectoryAuthenticationRequest : DirectoryUserRequest
+public abstract class DirectoryUserRequest
 {
     [Required]
-    public string Password { get; set; }
+    public string DirectoryUserId { get; set; }
 }

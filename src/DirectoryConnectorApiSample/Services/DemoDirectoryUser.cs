@@ -24,6 +24,20 @@ public class DemoDirectoryUser
 
     public bool ConfirmAccount { get; set; }
 
+    public bool ChangePassword { get; set; }
+
+    public bool PasswordExpired { get; set; }
+
+    public bool SetPasswordEmail { get; set; }
+
+    public bool SetPasswordSms { get; set; }
+
+    public bool DisableSetPasswordEmail { get; set; }
+
+    public bool DisableSetPasswordSms { get; set; }
+
+    public long? PasswordLastChanged { get; set; }
+
     public bool EmailVerified { get; set; }
 
     public bool PhoneVerified { get; set; }
@@ -45,6 +59,13 @@ public class DemoDirectoryUser
         Phone = Phone,
         Username = Username,
         ConfirmAccount = ConfirmAccount,
+        DisableAccount = Disabled,
+        ChangePassword = ChangePassword || PasswordExpired,
+        SetPasswordEmail = SetPasswordEmail,
+        SetPasswordSms = SetPasswordSms,
+        DisableSetPasswordEmail = DisableSetPasswordEmail,
+        DisableSetPasswordSms = DisableSetPasswordSms,
+        PasswordLastChanged = PasswordLastChanged,
         EmailVerified = EmailVerified,
         PhoneVerified = PhoneVerified,
         DisableTwoFactorApp = DisableTwoFactorApp,

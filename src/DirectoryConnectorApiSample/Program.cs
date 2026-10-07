@@ -1,6 +1,5 @@
 using DirectoryConnectorApiSample.Models;
 using DirectoryConnectorApiSample.Services;
-using FoxIDs.SampleHelperLibrary.Middleware;
 using Microsoft.AspNetCore.Localization;
 using System.Text.Json.Serialization;
 
@@ -37,7 +36,6 @@ builder.Services.AddSwaggerGen(o =>
 var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseWhen(_ => builder.Environment.IsDevelopment(), branch => branch.UseMiddleware<RawRequestLoggingMiddleware>());
 app.UseRequestLocalization();
 app.MapControllers();
 

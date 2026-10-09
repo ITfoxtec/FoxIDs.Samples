@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "8f8b4d79-f4cc-4d2c-ae45-dcebf3a01410",
     "name": "Directory Connector API",
-    "description": "Directory Connector sample: synchronise users, authenticate and manage passwords. Run in order against a freshly started sample; password operations change the in-memory demo users. Restart before running again.",
+    "description": "Directory Connector sample: synchronise users, authenticate and manage passwords. Run in order against a freshly started sample; password operations change the in-memory demo users. Restart before running again. Set claimsFormat to ClaimsList or Properties to match AppSettings:ClaimsFormat on the running sample.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -32,6 +32,10 @@
     {
       "key": "apiSecret",
       "value": "zh1othCVwVkfjlvzTWY-S7SFj-RHaLkpJkdMpHSAhFg"
+    },
+    {
+      "key": "claimsFormat",
+      "value": "ClaimsList"
     }
   ],
   "item": [
@@ -1552,7 +1556,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"newuser@somewhere.org\",\n  \"password\": \"testpass123\",\n  \"confirmAccount\": false,\n  \"requireMultiFactor\": false,\n  \"claims\": [\n    {\n      \"type\": \"name\",\n      \"value\": \"New User\"\n    }\n  ]\n}",
+              "raw": "{\n  \"email\": \"newuser@somewhere.org\",\n  \"password\": \"testpass123\",\n  \"confirmAccount\": false,\n  \"requireMultiFactor\": false,\n  \"claims\": {{createUserClaims}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1624,7 +1628,7 @@
                   "const body = pm.response.json();",
                   "pm.test(\"Created directory ID\", () => pm.expect(body.directoryUserId).to.equal(pm.collectionVariables.get(\"createdDirectoryUserId\")));",
                   "pm.test(\"email\", () => pm.expect(body.email).to.eql(\"newuser@somewhere.org\"));",
-                  "pm.test(\"claims\", () => pm.expect(body.claims).to.eql([{\"type\": \"name\", \"value\": \"New User\"}]));"
+                  "pm.test('claims', () => pm.expect(body.claims).to.eql(JSON.parse(pm.variables.get('createUserClaims'))));"
                 ]
               }
             }
@@ -1719,6 +1723,37 @@
           ]
         }
       ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const format = pm.collectionVariables.get('claimsFormat');",
+          "if (!['ClaimsList', 'Properties'].includes(format)) throw new Error('Set claimsFormat to ClaimsList or Properties.');",
+          "const claims = format === 'Properties' ? { name: 'New User', role: ['read_access', 'write_access'] } : [{ type: 'name', value: 'New User' }, { type: 'role', value: 'read_access' }, { type: 'role', value: 'write_access' }];",
+          "pm.variables.set('createUserClaims', JSON.stringify(claims));"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (pm.response.code === 200 && pm.request.url.getPath().endsWith('/synchronise-user')) {",
+          "  const claims = pm.response.json().claims;",
+          "  const properties = pm.collectionVariables.get('claimsFormat') === 'Properties';",
+          "  pm.test('Configured claims format', () => properties ? pm.expect(claims).to.be.an('object') : pm.expect(claims).to.be.an('array'));",
+          "  if (pm.response.json().directoryUserId === 'dir-user-2') {",
+          "    const roles = properties ? claims.role : claims.filter(c => c.type === 'role').map(c => c.value);",
+          "    pm.test('All demo roles', () => pm.expect(roles).to.eql(['admin_access', 'read_access', 'write_access']));",
+          "  }",
+          "}"
+        ]
+      }
     }
   ]
 }

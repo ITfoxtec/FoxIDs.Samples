@@ -14,6 +14,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\DirectoryConnectorApiSample\DirectoryConnectorApiSample.csproj" />
+    <ProjectReference Include="..\..\src\ExternalClaimsApiSample\ExternalClaimsApiSample.csproj" />
   </ItemGroup>
 </Project>

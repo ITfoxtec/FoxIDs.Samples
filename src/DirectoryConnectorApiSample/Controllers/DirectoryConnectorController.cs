@@ -38,6 +38,7 @@ public class DirectoryConnectorController : ControllerBase
     }
 
     [HttpPost("synchronise-user")]
+    [ProducesResponseType(typeof(DirectoryUserResponse), StatusCodes.Status200OK)]
     public IActionResult SynchroniseUser([FromBody] DirectorySynchronisationRequest request)
     {
         if (!AuthenticateApi(out var authError))
@@ -110,6 +111,7 @@ public class DirectoryConnectorController : ControllerBase
     }
 
     [HttpPost("create-user")]
+    [ProducesResponseType(typeof(DirectoryCreateUserResponse), StatusCodes.Status200OK)]
     public IActionResult CreateUser([FromBody] DirectoryCreateUserRequest request)
     {
         if (!AuthenticateApi(out var authError))

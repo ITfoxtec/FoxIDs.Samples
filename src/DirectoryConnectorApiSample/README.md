@@ -9,12 +9,73 @@ The sample uses an in-memory directory with plaintext demo passwords. Restarting
 Run from this directory:
 
 ```bash
-dotnet run
+dotnet run --no-launch-profile -- --urls https://localhost:44362
 ```
 
 Open Swagger UI at `https://localhost:44362/swagger`. Configure FoxIDs with the sample's reachable base URL and the secret from `AppSettings:ApiSecret`. All five connector endpoints require HTTP Basic authentication with username `directory_connector` and that secret. Use a private secret and HTTPS for a deployed connector. The separate GET `/health` endpoint is a demonstration health check.
 
-Import `directory-connector-api.postman_collection.json` into Postman. Its variables contain the local base URL and demo API credentials. Run the collection in order against a freshly started sample; it includes response assertions and password changes. Restart the sample before running it again.
+Import `directory-connector-api.postman_collection.json` into Postman. Its variables contain the local base URL and demo API credentials. Set the collection's `claimsFormat` variable to match `AppSettings:ClaimsFormat`; the collection generates create-user claims and checks synchronisation responses in that format. Run the collection in order against a freshly started sample; it includes response assertions and password changes. Restart the sample before running it again.
+
+## Claims format
+
+Set `AppSettings:ClaimsFormat` to `ClaimsList` (the default) or `Properties`, and select the same **Claims format** on the Directory Connector in FoxIDs environment settings.
+
+```json
+"AppSettings": {
+  "ApiSecret": "YourSecret",
+  "ClaimsFormat": "Properties"
+}
+```
+
+The format applies to the `claims` member in create-user requests and synchronisation responses. Identifiers, passwords and account settings remain ordinary fields at the JSON root. The other endpoint contracts are the same in both formats.
+
+Restart the sample after changing the format. Swagger displays the configured schemas. You can also start with an override:
+
+```bash
+dotnet run --no-launch-profile -- --urls https://localhost:44362 --AppSettings:ClaimsFormat=Properties
+```
+
+### Claims list
+
+The endpoint examples below use `ClaimsList`. Multiple values use separate list entries with the same type:
+
+```json
+"claims": [
+  { "type": "name", "value": "User Two" },
+  { "type": "role", "value": "read_access" },
+  { "type": "role", "value": "write_access" }
+]
+```
+
+### Properties
+
+A create-user request in `Properties` format:
+
+```json
+{
+  "email": "newuser@somewhere.org",
+  "password": "testpass123",
+  "confirmAccount": false,
+  "requireMultiFactor": false,
+  "claims": {
+    "name": "New User",
+    "role": ["read_access", "write_access"]
+  }
+}
+```
+
+After creation, synchronising by the returned directory ID returns the full account snapshot with this `claims` member:
+
+```json
+"claims": {
+  "name": "New User",
+  "role": ["read_access", "write_access"]
+}
+```
+
+A string represents one value; an array of strings represents multiple values for the same claim. Names are case-sensitive, and names and string contents are preserved. Duplicate claim property names, numbers, booleans, null claim values, nested objects and non-string array elements are rejected. Both formats apply the same required-name and required-value validation.
+
+The optional `claims` member can be omitted or null when creating a user. An empty list, an empty properties object or an empty value array also adds no claims. Synchronisation returns an empty list or object in the configured format. Invalid claims or a mismatched format return HTTP 400 before an account is created.
 
 ## Demo users
 
@@ -185,6 +246,10 @@ FoxIDs sends its selected culture in `Accept-Language`. This sample supports Eng
 Authenticate `dir-user-rejected-no-message` with password `testpass4` to receive `login_rejected` without `uiErrorMessage`. FoxIDs then uses its general, localised login error. A wrong password for either user returns `invalid_password` without a UI message or the policy rejection reason. Keep credential verification before account-specific guidance in a real connector. API authentication or knowledge of a directory user ID does not establish that the person logging in owns the account.
 
 ## Tests
+
+For an end-to-end test, run the sample and the Postman collection with `ClaimsList`, then restart with `Properties` and change the collection's `claimsFormat` variable. Set the same format in FoxIDs when testing through a Login authentication method. The Postman setting only controls the test requests and assertions; it does not change the server configuration.
+
+The collection checks multiple roles and creates a user whose claims are retrieved by the following synchronisation request.
 
 Run the HTTP contract tests from the repository root:
 

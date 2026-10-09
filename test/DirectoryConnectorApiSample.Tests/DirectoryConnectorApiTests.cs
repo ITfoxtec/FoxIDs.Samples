@@ -1,12 +1,5 @@
-using DirectoryConnectorApiSample.Controllers;
-using DirectoryConnectorApiSample.Models;
 using DirectoryConnectorApiSample.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -18,32 +11,13 @@ namespace DirectoryConnectorApiSample.Tests;
 
 public class DirectoryConnectorApiTests : IDisposable
 {
-    private readonly IHost host;
+    private readonly SampleApplicationFactory host;
     private readonly HttpClient client;
 
     public DirectoryConnectorApiTests()
     {
-        host = new HostBuilder().ConfigureWebHost(webBuilder => webBuilder.UseTestServer()
-            .ConfigureServices(services =>
-            {
-                services.AddSingleton(new AppSettings { ApiSecret = "test-secret" });
-                services.AddSingleton<DemoDirectoryStore>();
-                services.Configure<RequestLocalizationOptions>(options =>
-                {
-                    options.SetDefaultCulture("en").AddSupportedCultures("en", "da").AddSupportedUICultures("en", "da");
-                    options.RequestCultureProviders = [new AcceptLanguageHeaderRequestCultureProvider()];
-                });
-                services.AddControllers().AddApplicationPart(typeof(DirectoryConnectorController).Assembly);
-            })
-            .Configure(app =>
-            {
-                app.UseRequestLocalization();
-                app.UseRouting();
-                app.UseEndpoints(endpoints => endpoints.MapControllers());
-            })).Start();
-        client = host.GetTestClient();
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-            Convert.ToBase64String(Encoding.UTF8.GetBytes("directory_connector:test-secret")));
+        host = new SampleApplicationFactory();
+        client = host.CreateApiClient();
     }
 
     [Theory]

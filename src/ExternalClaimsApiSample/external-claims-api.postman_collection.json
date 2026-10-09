@@ -1,55 +1,104 @@
 {
-	"info": {
-		"_postman_id": "2cb45da1-bacb-40a0-b856-9e8d2f3252df",
-		"name": "External Claims API",
-		"description": "Collection to test the External Claims API (Claims enrichment endpoint). Adjust host/port. Basic auth username: external_claims, password: configured secret.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19093413"
-	},
-	"item": [
-		{
-			"name": "https://localhost:44353/ExternalClaims/Claims",
-			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "VROuUboXSoLzTt9wTReWMdNseX8KIt6zMUl_eLKEHd0",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "external_claims",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n \"claims\": [\r\n        {\r\n            \"type\": \"sub\",\r\n            \"value\": \"1b1ac05e-5937-4939-a49c-0e84a89662df\"\r\n        },\r\n        {\r\n            \"type\": \"email\",\r\n            \"value\": \"some@test.org\"\r\n        }\r\n    ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44353/ExternalClaims/Claims",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44353",
-					"path": [
-						"ExternalClaims",
-						"Claims"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "2cb45da1-bacb-40a0-b856-9e8d2f3252df",
+    "name": "External Claims API",
+    "description": "Test the External Claims API. Set claimsFormat to ClaimsList or Properties to match AppSettings:ClaimsFormat on the running sample.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19093413"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "external_claims",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{apiSecret}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:44353"
+    },
+    {
+      "key": "apiSecret",
+      "value": "VROuUboXSoLzTt9wTReWMdNseX8KIt6zMUl_eLKEHd0"
+    },
+    {
+      "key": "claimsFormat",
+      "value": "ClaimsList"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const format = pm.collectionVariables.get('claimsFormat');",
+          "if (!['ClaimsList', 'Properties'].includes(format)) throw new Error('Set claimsFormat to ClaimsList or Properties.');",
+          "const claims = format === 'Properties' ? { sub: 'somewhere/user1', email: 'user1@somewhere.org', role: ['reader', 'writer'] } : { claims: [{ type: 'sub', value: 'somewhere/user1' }, { type: 'email', value: 'user1@somewhere.org' }, { type: 'role', value: 'reader' }, { type: 'role', value: 'writer' }] };",
+          "pm.variables.set('claimsRequest', JSON.stringify(claims));"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Enrich claims",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{{claimsRequest}}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/ExternalClaims/Claims",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "ExternalClaims",
+            "Claims"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "const properties = pm.collectionVariables.get('claimsFormat') === 'Properties';",
+              "pm.test('Configured claims format', () => properties ? pm.expect(body).not.to.have.property('claims') : pm.expect(body.claims).to.be.an('array'));",
+              "const sub = properties ? body.sub : body.claims.find(c => c.type === 'sub').value;",
+              "const roles = properties ? body.role : body.claims.filter(c => c.type === 'role').map(c => c.value);",
+              "pm.test('Transformed subject', () => pm.expect(sub).to.eql('somewhere/external-user1@somewhere.org'));",
+              "pm.test('All roles', () => pm.expect(roles).to.eql(['admin_access', 'read_access', 'write_access']));"
+            ]
+          }
+        }
+      ],
+      "response": []
+    }
+  ]
 }

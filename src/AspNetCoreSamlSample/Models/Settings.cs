@@ -3,6 +3,9 @@
     public class Settings
     {
         public string DownParty { get; set; }
+        public bool SendAuthMethodParameter { get; set; }
+        public string AuthMethod { get; set; }
+
         public bool SendLoginParameter { get; set; }
         public string LoginParameterProfileId { get; set; }
         public string LoginParameterDepartments { get; set; }

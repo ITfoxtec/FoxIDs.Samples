@@ -119,12 +119,18 @@ namespace AspNetCoreSamlSample.Controllers
                 //}
             };
 
-            saml2AuthnRequest.Destination = AddUpParty(saml2AuthnRequest.Destination, loginType.HasValue ? loginType.Value : LoginType.FoxIDsLogin);
+            if (!settings.SendAuthMethodParameter)
+            {
+                saml2AuthnRequest.Destination = AddUpParty(saml2AuthnRequest.Destination, loginType.HasValue ? loginType.Value : LoginType.FoxIDsLogin);
+            }
 
             var redirectUrl = binding.Bind(saml2AuthnRequest).RedirectLocation.OriginalString;
+            if (settings.SendAuthMethodParameter)
+            {
+                redirectUrl = QueryHelpers.AddQueryString(redirectUrl, "auth_method", settings.AuthMethod);
+            }
             if (settings.SendLoginParameter)
             {
-                // Append after binding to preserve the SAML request and its signature.
                 redirectUrl = QueryHelpers.AddQueryString(redirectUrl, "profile_id", settings.LoginParameterProfileId);
                 redirectUrl = QueryHelpers.AddQueryString(redirectUrl, "departments", settings.LoginParameterDepartments);
             }

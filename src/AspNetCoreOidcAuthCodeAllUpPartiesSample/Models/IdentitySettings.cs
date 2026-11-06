@@ -9,6 +9,9 @@ namespace AspNetCoreOidcAuthCodeAllUpPartiesSample.Models
         public string DownParty { get; set; }
         public string ClientSecret { get; set; }
 
+        public bool SendAuthMethodParameter { get; set; }
+        public string AuthMethod { get; set; }
+
         public bool SendLoginParameters { get; set; }
         public string LoginParameterProfileId { get; set; }
         public string LoginParameterDepartments { get; set; }

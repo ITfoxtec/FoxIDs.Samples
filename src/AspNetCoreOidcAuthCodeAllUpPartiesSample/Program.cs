@@ -147,6 +147,10 @@ builder.Services.AddAuthentication(options =>
 
         options.Events.OnRedirectToIdentityProvider = async (context) =>
         {
+            if (identitySettings.SendAuthMethodParameter)
+            {
+                context.ProtocolMessage.SetParameter("auth_method", identitySettings.AuthMethod);
+            }
             if (identitySettings.SendLoginParameters)
             {
                 context.ProtocolMessage.SetParameter("profile_id", identitySettings.LoginParameterProfileId);

@@ -2,7 +2,24 @@
 
 This sample signs in through FoxIDs using the OpenID Connect authorisation code flow. See the [sample setup guide](https://www.foxids.com/docs/samples) for the application registration and connection settings.
 
-The sample can send ordinary login parameters and an impersonation parameter independently. Both examples are **disabled by default**. Merge the settings below into the existing `IdentitySettings` section in `appsettings.json`, keeping the authority, client and other connection settings. Start or restart the sample after changing these settings.
+The sample can select authentication methods, send ordinary login parameters and send an impersonation parameter independently. These options are **disabled by default**. Merge the settings below into the existing `IdentitySettings` section in `appsettings.json`, keeping the authority, client and other connection settings. Start or restart the sample after changing these settings.
+
+## Select authentication methods
+
+Set `IdentitySettings:SendAuthMethodParameter` to `true` and configure `AuthMethod` in `appsettings.json`:
+
+```json
+"IdentitySettings": {
+  "SendAuthMethodParameter": true,
+  "AuthMethod": "login entra+work"
+}
+```
+
+Use your authentication methods' technical names, separated by spaces, and append `+profile` to select a profile. FoxIDs accepts up to four entries. The example is disabled by default and does not require **Allowed request parameters**.
+
+On each sign-in, `OnRedirectToIdentityProvider` adds `auth_method` to the OIDC authorisation query string. The authority and issuer remain unchanged. The parameter can only select methods allowed by the configured authority URL. Names outside that selection, including `*`, are ignored with a warning; if no allowed methods remain, FoxIDs rejects the request.
+
+The normal session and Home Realm Discovery flow still applies. Set `SendAuthMethodParameter` to `false` to use the authority URL's selection. See [authentication method selection](https://www.foxids.com/docs/app-reg-oidc#select-authentication-methods).
 
 ## Send login parameters
 
